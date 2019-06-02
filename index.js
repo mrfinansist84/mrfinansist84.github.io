@@ -9,7 +9,7 @@ import _repeat from './_repeat.js';
 import _subStr from './_subStr.js';
 import _trim from './_trim.js';
 
-console.log(toLC('aQQd'))
+toLC('aQQd')
 console.log(toUC('aQQd', 'en'));
 console.log(_endsWith('вопрос.', 'Быть или не быть, вот в чём вопрос.'));
 console.log(_includes('sv', 'asdASDAAaaasv'));
