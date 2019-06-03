@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.js"></script>
+    <script>
+            mocha.setup('bdd'); // minimal setup
+          </script>
+          <!-- add chai -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"></script>
+          <script>
+            // chai has a lot of stuff, let's make assert global
+            let assert = chai.assert;
+          </script>
+    <title>Document</title>
+</head>
+<body>
+        <div id="mocha"></div>
+    <script src="main.js"></script>
+    <script src="test.js"></script>
+    <script>
+        mocha.run();
+      </script>
+</body>
+</html>
