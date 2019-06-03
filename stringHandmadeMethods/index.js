@@ -16,5 +16,6 @@ console.log(_includes('sv', 'asdASDAAaaasv'));
 console.log(_indexOf('sv', 'asdASDAAasvsv'));
 console.log(_lastIndexOf('sv', 'asvdAasvcsvvvvcvbvv'));
 console.log(_repeat('dfds', 1));
-console.log(_subStr('df1111ds', 1, 5));
-console.log(_trim('  df1111d   '));
+console.log(_subStr('df1111ds', -1, 5));
+console.log(_trim('  df     1111d   '));
+console.log(_split('df1111d'));
