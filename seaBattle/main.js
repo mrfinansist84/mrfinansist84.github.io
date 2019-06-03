@@ -1,124 +1,74 @@
-const primeryFruits = ['banan', 'lemon', 'graps'];
-const goodFruits = ['mango', 'avocado'];
+const createArrOfShips = function (board) {
+    const arrOfShips = [];
 
-/* 
-Вариант 1 
-function CalcCost(...ingredients) {
-    let cost = 0;
-
-    ingredients.forEach(ingredient => {
-        if (primeryFruits.includes(ingredient)) {
-            return cost += 5;
-        } else if (goodFruits.includes(ingredient)) {
-            return cost += 7;
-        } else {
-            return cost += 9
-        }
-    })
-
-    return cost / ingredients.length;
-} */
-
-/* Вариант 2
-function CalcCost2(...ingredients) {
-    let cost = 0;
-
-    ingredients.forEach(ingredient => {
-        if (primeryFruits.filter(el => el === ingredient).length > 0 ) {
-            return cost += 5;
-        } else if (goodFruits.filter(el => el === ingredient).length > 0 ) {
-            return cost += 7;
-        } else {
-            return cost += 9
-        }
-    })
-
-    return cost / ingredients.length;
-} 
- */
-
-/* Вариант 3 */
-/* function checkEntry(ingredient, arrFruits) {
-    if (arrFruits.includes(ingredient)) {
-        return true;
-    }
+    board.forEach((row, i) => {
+        row.forEach(elInRow => {
+            if (elInRow) {
+                arrOfShips[elInRow - 1] = arrOfShips[elInRow - 1] ?
+                    arrOfShips[elInRow - 1] + 1 : 1;
+            }
+        });
+    });
+    return arrOfShips;
 }
 
-function checkIncomeData(ingredients) {
-    let arr = [];
-    ingredients.forEach(ingredient => {
-        if (typeof ingredient !== 'string') {
-            return arr.push(false);
-        } else if (ingredient.length < 2) {
-            return arr.push(false);
-        } else {
-            return arr.push(true);
-        }
-    })
-    return arr.every(el => el !== false);
-}
+const findHitandMuffPoints = function (board, attacks, arrOfShips) {
+    const arrOfShipsUnderAttack = arrOfShips,
+        result = {
+            sunk: 0,
+            damaged: 0,
+            notTouched: 0,
+            points: 0
+        },
+        POINTS_FOR_HIT = 0.5,
+        POINTS_FOR_MISSED = -1,
+        POINTS_FOR_SANK = 1;
 
-function CalcCost3(...ingredients) {
+    board.reverse();
+    board.forEach((row, i) => {
+        attacks.forEach((shut, j) => {
+            if (i === shut[1] - 1) {
 
-    if (checkIncomeData(ingredients)) {
-        let cost = 0;
+                if (row[shut[0] - 1]) {
+                    arrOfShipsUnderAttack[row[shut[0] - 1] - 1] = arrOfShipsUnderAttack[row[shut[0] - 1] - 1] - 1;
 
-        ingredients.forEach(ingredient => {
-            if (checkEntry(ingredient, primeryFruits)) {
-                return cost += 5;
-            } else if (checkEntry(ingredient, goodFruits)) {
-                return cost += 7;
-            } else {
-                return cost += 9
-            }
-        })
-        return cost / ingredients.length;
-    } else return `Incorrect data`;
-} */
-
-/* Вариант 4 */
-
-class CalcOrder {
-    constructor(...ingredients) {
-        this.ingredients = ingredients;
-    }
-    checkEntry(ingredient, arrFruits) {
-        if (arrFruits.includes(ingredient)) {
-            return true;
-        }
-    }
-    checkIncomeData(ingredients) {
-        let arr = [];
-        this.ingredients.forEach(ingredient => {
-            if (typeof ingredient !== 'string') {
-                return arr.push(false);
-            } else if (ingredient.length < 2) {
-                return arr.push(false);
-            } else {
-                return arr.push(true);
-            }
-        })
-        return arr.every(el => el !== false);
-    }
-
-    CalcCost(ingredients) {
-
-        if (this.checkIncomeData(ingredients)) {
-            let cost = 0;
-    
-            this.ingredients.forEach(ingredient => {
-                if (this.checkEntry(ingredient, primeryFruits)) {
-                    return cost += 5;
-                } else if (this.checkEntry(ingredient, goodFruits)) {
-                    return cost += 7;
+                    if (arrOfShipsUnderAttack.length === arrOfShipsUnderAttack.filter(el => el !== 0).length) {
+                        result.points += POINTS_FOR_HIT;
+                        result.damaged += 1;
+                    } else {
+                        result.points += POINTS_FOR_SANK;
+                        result.sunk += 1;
+                    }
                 } else {
-                    return cost += 9
+                    result.points += POINTS_FOR_MISSED;
                 }
-            })
-            return cost / this.ingredients.length;
-        } else return `Incorrect data`;
-    }
+            }
+        })
+    })
+    return result;
 }
 
-let calcOrder = new CalcOrder('banan', 'avvakado');
-calcOrder.CalcCost();
+
+const damagedOrSunk = function (board, attacks) {
+    let arrOfShips;
+
+    arrOfShips = createArrOfShips(board);
+    return findHitandMuffPoints(board, attacks, arrOfShips);
+}
+
+board = [
+    [0, 0, 0, 2, 4, 0],
+    [0, 3, 0, 0, 0, 0],
+    [0, 3, 0, 1, 0, 0],
+    [0, 3, 0, 1, 0, 0]
+];
+attacks = [
+    [2, 1],
+    [5, 4],
+    [4, 2],
+    [4, 3],
+    [3, 1],
+    [4, 4],
+    [4, 1],
+];
+damagedOrSunk(board, attacks);

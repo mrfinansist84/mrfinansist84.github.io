@@ -8,7 +8,7 @@ export default function _subStr(str, startIndex, lastIndex) {
         endIndex = lastIndex;
 
     if (startIndex < 0) {
-        beginningIndex = str.length - 1 + startIndex
+        beginningIndex = str.length - 1 + startIndex;
         endIndex = beginningIndex + lastIndex < str.length ?
             beginningIndex + lastIndex :
             str.length;
