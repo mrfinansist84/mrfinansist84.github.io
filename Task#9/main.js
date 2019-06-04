@@ -70,11 +70,20 @@ function getNumberFromSequence(n, pattern) {
         ['tet', tetranacci(n)]
     ]);
 
+    counter = new Map([
+        ['fib', 0],
+        ['pad', 0],
+        ['jac', 0],
+        ['pel', 0],
+        ['tri', 0],
+        ['tet', 0]
+    ]);
 
-
-    result = patternOrderLength.map((num, i) => {
-        return mapping.get(num)[i];
+    result = patternOrderLength.map((sequence, i) => {
+        let res = mapping.get(sequence)[counter.get(sequence)];
+        counter.set(sequence, counter.get(sequence) + 1);
+        return res;
     })
     return result;
 }
-console.log(getNumberFromSequence(20, ['fib', 'pad', 'pel', 'pel', 'pel', 'tri']));
+console.log(getNumberFromSequence(3, ['fib', 'pad', 'tri']));
