@@ -12,16 +12,16 @@ function checkIncomeData(length, width, symbol) {
 }
 
 export default function chessBuilder(length = 0, width = 0, symbol = '*') {
-    const symbolWithWhitespace = `${symbol} `;
+    const targetString = `${symbol} `.repeat(width);
     let result = `\n`;
 
     if (checkIncomeData(length,width,symbol)) {
         for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
-                result += `${symbolWithWhitespace.repeat(width)} \n`;
+                result += `${targetString} \n`;
             }
             if (i % 2 == 1) {
-                result += ` ${symbolWithWhitespace.repeat(width)} \n`;
+                result += ` ${targetString}\n`;
             }
         }
     } else {
