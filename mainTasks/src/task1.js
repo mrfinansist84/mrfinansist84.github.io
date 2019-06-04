@@ -14,7 +14,7 @@ function checkIncomeData(length, width, symbol) {
 export default function chessBuilder(length = 0, width = 0, symbol = '*') {
     const symbolWithWhitespace = `${symbol} `;
     let result = `\n`;
-debugger
+
     if (checkIncomeData(length,width,symbol)) {
         for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
