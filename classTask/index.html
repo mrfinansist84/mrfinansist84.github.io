@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.js"></script>
+    <script>
+            mocha.setup('bdd'); // minimal setup
+          </script>
+          <!-- add chai -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"></script>
+          <script>
+            // chai has a lot of stuff, let's make assert global
+            let assert = chai.assert;
+          </script>
+    <title>Document</title>
+</head>
+<body>
+        <div id="mocha"></div>
+
+
+<table id='table' style = 'font-size: 0;'>
+  <tbody>
+    <tr>
+      <td class='pre'><p class='sum'>4,34534<p class='date'>01.02.2018</p></p></td>
+      <td class='pre'><p class='sum'>2,4534543</p></td>
+      <td class='pre'><p class='sum'>5,3453</p></td>
+      <td class='pre'><p class='sum'>2,234234 <p class='date'>11.07.2019</p></p></td>
+     
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+    <script src="class.js"></script>
+    <script src="test.js"></script>
+    <script>
+        mocha.run();
+      </script>
+</body>
+</html>
