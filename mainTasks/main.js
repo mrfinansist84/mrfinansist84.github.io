@@ -31,7 +31,7 @@ findLuckyTicket({
     max: 411112
 });
 
-sortTriangles([{
+console.log(sortTriangles([{
         vertices: 'ABC',
         a: 10,
         b: 20,
@@ -39,8 +39,14 @@ sortTriangles([{
     },
     {
         vertices: 'CBA',
-        a: 20,
+        c: 20,
         b: 24.33,
-        c: 26
+        a: 26
+    },
+    {
+        vertices: 'VCX',
+        v: 120,
+        c: 24.33,
+        x: 100
     }
-]);
+]));
