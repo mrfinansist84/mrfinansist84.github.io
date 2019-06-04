@@ -1,8 +1,13 @@
+let curr = 'UAH';
+
 describe("toData", function () {
     it(`Является вспомогательным для метода calcSummFromRows
     принимает строку, удаляет пробелы, заменяет ',' на '.',
          и выводит число.`, function () {
         assert.equal(NumC.toData('  3,54654 '), 3.54654);
+    });
+    it(`Возвращает число`, function () {
+        assert.isNotNaN(NumC.toData('  3,54654 '));
     });
 });
 
@@ -32,7 +37,7 @@ describe("isNumeric", function () {
     it(`Является вспомогательным для метода toBuh. 
     принимает строку содерщащую сумму и проверяет можно ли ее преобразовать в 
      число возвращает булевое значение.`, function () {
-        assert.equal(NumC.isNumeric('3.54654'), true);
+        assert.isTrue(NumC.isNumeric('3.54654'));
     });
 });
 
@@ -50,6 +55,9 @@ describe("toCurrency", function () {
     возвращает буквенное обозначение валюты(тип строка)`, function () {
         assert.equal(NumC.toCurrency('€'), 'EUR');
     });
+    it(`Возвращает строку`, function () {
+        assert.isString(NumC.toCurrency('€'));
+    });
 });
 
 describe("calcSummFromRows", function () {
@@ -65,5 +73,20 @@ describe("getFALDates", function () {
     Принимает ссылку на документ откуда брать массив дат. Выбирает первую и послуднюю дату. Преобразует под требуемый формат.
     Возвращает обект с ключами last/first и значениями - даты в виде строки`, function () {
         assert.deepEqual(NumC.getFALDates(a, '.date'), {last: '2018-01-02', first: '2019-11-07'});
+    });
+    it(`Возвращает объект`, function () {
+        assert.isObject(NumC.getFALDates(a, '.date'));
+    });
+});
+
+describe("проверка аргументов", function () {
+    it(`длинна должна быть 3`, function () {
+        assert.lengthOf((curr),3);
+    });
+    it(`аргумент - строка`, function () {
+        assert.isString(curr);
+    });
+    it(`аргумент - не число и не может быть к нему преобразован`, function () {
+        assert.isNaN(curr);
     });
 });
