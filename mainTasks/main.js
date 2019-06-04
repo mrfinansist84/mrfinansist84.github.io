@@ -14,7 +14,7 @@ task5
 task6
 */
 /* checkPalindrom(1234437); */
-console.log(chessBuilder(5, 4, '+'));
+console.log(chessBuilder(6, 4, '+'));
 
 putEnvelope({
     a: 2,

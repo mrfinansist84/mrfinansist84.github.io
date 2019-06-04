@@ -1,30 +1,34 @@
-export default function chessBuilder(length = 0, width = 0, symbol = '*') {
+function checkIncomeData(length, width, symbol) {
+    let result = false;
+
     if (typeof length === 'number' &&
         typeof width === 'number' &&
         typeof symbol === 'string' &&
-        symbol.length === 1
-    ) {
-        const oddRow = [];
-        const evenRow = [];
-        let result = ``;
+        symbol.length === 1 &&
+        length >= 0 && width >= 0) {
+        result = true;
+    }
+    return result;
+}
 
-        for (let i = 0; i < width; i++) {
-            oddRow.push(symbol + ' ');
-            evenRow.push(' ' + symbol);
-        }
+export default function chessBuilder(length = 0, width = 0, symbol = '*') {
+    const symbolWithWhitespace = `${symbol} `;
+    let result = `\n`;
+debugger
+    if (checkIncomeData(length,width,symbol)) {
         for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
-                result = result.concat(oddRow.join(' '), '\n');
+                result += `${symbolWithWhitespace.repeat(width)} \n`;
             }
             if (i % 2 == 1) {
-                result = result.concat(evenRow.join(' '), '\n');
+                result += ` ${symbolWithWhitespace.repeat(width)} \n`;
             }
         }
-        return result;
     } else {
-        return ({
+        result = {
             status: 'failed',
-            reason: 'Input only numbers as length and width; symbol - one length string',
-        })
+            reason: 'Input only numbers as length and width; symbol - one symbol string',
+        };
     }
+    return result;
 }
