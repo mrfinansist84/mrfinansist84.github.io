@@ -3,6 +3,7 @@ export default function findArrNumbers(numLength = 0, square = 0) {
         typeof square === 'number' &&
         numLength > 0 &&
         square > 0) {
+
         const arrNumbers = [];
         for (let number = 0; arrNumbers.length < numLength; number++) {
             if ((number * number) > square) {
@@ -17,3 +18,5 @@ export default function findArrNumbers(numLength = 0, square = 0) {
         })
     }
 }
+
+работа с отрицательными числами;
