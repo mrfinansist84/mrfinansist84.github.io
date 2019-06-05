@@ -2,7 +2,7 @@ import chessBuilder from './src/task1.js';
 import putEnvelope from './src/task2.js';
 import sortTriangles from './src/task3.js';
 /* import checkPalindrom from './src/task4.js'; */
-import findLuckyTicket from './src/task5.js';
+import compareCalc from './src/task5.js';
 import findArrNumbers from './src/task6.js';
 /*import buildChessBoard from './src/task7.js'; */
 
@@ -26,10 +26,10 @@ putEnvelope({
 
 findArrNumbers(30, 400);
 
-findLuckyTicket({
-    min: 311133,
-    max: 411112
-});
+console.log(compareCalc({
+    min: 100099,
+    max: 712940
+}));
 
 console.log(sortTriangles([{
         vertices: 'ABC',
