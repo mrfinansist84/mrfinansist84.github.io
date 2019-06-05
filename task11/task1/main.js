@@ -12,6 +12,7 @@ function checkArg(arrNumbers, sum) {
     return res;
 }
 
+
 function calcEqualNum(arrNumbers, sum) {
     let sumArrNumbers,
         targetSum,
@@ -26,10 +27,10 @@ function calcEqualNum(arrNumbers, sum) {
                 break;
             }
         }
-        
+
         for (let i = 1; i < arrNumbers.length; i++) {
             for (let j = 2; j < arrNumbers.length; j++) {
-                
+
                 if (arrNumbers[i] * 2 + arrNumbers[j] * 2 === targetSum) {
                     result = true;
                     break;
@@ -40,4 +41,5 @@ function calcEqualNum(arrNumbers, sum) {
     return result;
 }
 
-console.log(calcEqualNum([1, 5, 3, 2, 5], -2))
+console.log(calcEqualNum([1, 5, 3, 4, 6, 7, 9, 2], -3));
+console.log(1 + 5 + 3 - 4 + 6 - 7 - 9 + 2);
