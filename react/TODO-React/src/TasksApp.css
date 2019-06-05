@@ -1,0 +1,11 @@
+.app {
+    max-width: 960px;
+    width: 100%;
+}
+
+.app__header {
+    font-size: 30px;
+    text-align: center;
+    font-weight: 500;
+    color: black;
+}
