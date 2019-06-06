@@ -3,8 +3,8 @@ import putEnvelope from './src/task2.js';
 import sortTriangles from './src/task3.js';
 /* import checkPalindrom from './src/task4.js'; */
 import compareCalc from './src/task5.js';
-import findArrNumbers from './src/task6.js';
-/*import buildChessBoard from './src/task7.js'; */
+import findrowNumbers from './src/task6.js';
+import buildFibonacciRow from './src/task7.js';
 
 /* DONE
 task1(need to add checkup)
@@ -14,6 +14,10 @@ task5
 task6
 */
 /* checkPalindrom(1234437); */
+
+console.log(buildFibonacciRow({min:30, max:650}));
+console.log(findrowNumbers(30, 360));
+
 console.log(chessBuilder(6, 4, '+'));
 
 putEnvelope({
@@ -24,18 +28,12 @@ putEnvelope({
     d: 2
 })
 
-findArrNumbers(30, 400);
+
 
 console.log(compareCalc({
     min: 100099,
     max: 712940
 }));
-
-console.log(findLuckyTicket({
-    min: 100099,
-    max: 712940
-}));
-
 
 console.log(sortTriangles([{
         vertices: 'ABC',
@@ -58,11 +56,8 @@ console.log(sortTriangles([{
 ]));
 
 
-function checkData({min, max}) {
-    if (/* typeof context === 'object' &&  */
-    /* context.hasOwnProperty(min) &&
-    context.hasOwnProperty(max) &&  */
-        typeof min === 'number' &&
+/* function checkData({min, max}) {
+    if ( typeof min === 'number' &&
         typeof max === 'number' &&
         String(min).length === 6 &&
         String(max).length === 6) {
@@ -109,4 +104,4 @@ function checkData({min, max}) {
             reason: 'Input only object with min and max number range',
         })
     }
-}
+} */
