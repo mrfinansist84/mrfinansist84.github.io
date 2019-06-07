@@ -45,7 +45,7 @@ function calcPat(n) {
 }
 
 console.log(calcPat(8));
-
+/* 
 how3 = (n/3) parseInt;
 how2=n%3;
 
@@ -53,4 +53,4 @@ if (how2 ==1) {
     how3--;
     how2 =4;
     push() || shift()
-}
+} */
