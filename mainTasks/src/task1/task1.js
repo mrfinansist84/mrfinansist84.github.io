@@ -5,17 +5,18 @@ function checkIncomeData(length, width, symbol) {
         typeof width === 'number' &&
         typeof symbol === 'string' &&
         symbol.length === 1 &&
-        length >= 0 && width >= 0) {
+        length >= 0 && width >= 0 &&
+        length && width && symbol) {
         res = true;
     }
     return res;
 }
 
-export default function chessBuilder(length = 0, width = 0, symbol = '*') {
+function chessBuilder(length, width, symbol) {
     const targetString = `${symbol} `.repeat(width);
     let result = `\n`;
 
-    if (checkIncomeData(length,width,symbol)) {
+    if (checkIncomeData(length, width, symbol)) {
         for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
                 result += `${targetString} \n`;
@@ -27,8 +28,10 @@ export default function chessBuilder(length = 0, width = 0, symbol = '*') {
     } else {
         result = {
             status: 'failed',
-            reason: 'Input only numbers as length and width; symbol - one symbol string',
+            reason: 'Input only numbers as length and width; symbol - one symbol string.',
         };
     }
     return result;
 }
+
+console.log(chessBuilder(4, 5, '@'));

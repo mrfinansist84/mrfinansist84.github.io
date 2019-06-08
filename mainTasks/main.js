@@ -1,11 +1,11 @@
-import chessBuilder from './src/task1.js';
+/* import chessBuilder from './src/task1.js';
 import putEnvelope from './src/task2.js';
 import sortTriangles from './src/task3.js';
 import checkPalindrom from './src/task4.js';
 import compareCalc from './src/task5.js';
 import findrowNumbers from './src/task6.js';
 import buildFibonacciRow from './src/task7.js';
-
+ */
 /* DONE
 task1
 task2(нет проверки)
@@ -18,25 +18,25 @@ task7(добавить проверку)
 Решить/ Дописать проверки/ Написать Юнит тесты/ Рефакторинг
 */
 
+console.log(chessBuilder(4, 5, '@'));
 /* console.log(compareCalc({
     min: '000000',
     max: '999999'
 })); */
-console.log(putEnvelope({
+/* console.log(putEnvelope({
     a: 40,
     b:70
 }, {
     p: 1,
     q: 75
 }));
-
+ */
 /* 
 console.log(checkPalindrom(5345354122145111)); 
 
 console.log(buildFibonacciRow({min:30, max:650}));
 console.log(findrowNumbers(30, 360));
 
-console.log(chessBuilder(6, 4, '+'));
 
 
 
