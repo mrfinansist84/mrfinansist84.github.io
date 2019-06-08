@@ -1,9 +1,9 @@
 function checkData({min,max}) {
     let resCheck = false;
-    if (typeof min === 'number' &&
-        typeof max === 'number' &&
-        String(min).length === 6 &&
-        String(max).length === 6) {
+    if (typeof min === 'string' &&
+        typeof max === 'string' &&
+        min.length === 6 &&
+        max.length === 6) {
         resCheck = true;
     }
     return resCheck;
@@ -11,19 +11,19 @@ function checkData({min,max}) {
 
 function findLuckyTicketEasy(tiketNumber) {
     let firstThreeNum = Math.floor(tiketNumber / 1000),
-        secondThreeNum = tiketNumber % 1000;
-    let sumFirstThreeNumbers = 0,
+        secondThreeNum = tiketNumber % 1000,
+        sumFirstThreeNumbers = 0,
         sumSecondThreeNumbers = 0,
         countEasy = 0;
 
-    while (firstThreeNum > 0) {
+        while (firstThreeNum > 0 || secondThreeNum > 0) {
         sumFirstThreeNumbers += firstThreeNum % 10;
         firstThreeNum = Math.floor(firstThreeNum / 10);
 
         sumSecondThreeNumbers += secondThreeNum % 10;
         secondThreeNum = Math.floor(secondThreeNum / 10);
     }
-    
+  
     if (sumFirstThreeNumbers === sumSecondThreeNumbers) {
         countEasy = 1;
     }

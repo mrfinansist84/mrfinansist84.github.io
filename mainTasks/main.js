@@ -8,22 +8,26 @@ import buildFibonacciRow from './src/task7.js';
 
 /* DONE
 task1
-task2(не сделана, нет проверки)
+task2(нет проверки)
 task3(need to add checkup)
 task4(детализация проверки проверки)
-task5(проблемы с вводными данными, возможно изменить проверку и/или решение)
+task5
 task6
 task7(добавить проверку)
 
 Решить/ Дописать проверки/ Написать Юнит тесты/ Рефакторинг
 */
 
+/* console.log(compareCalc({
+    min: '000000',
+    max: '999999'
+})); */
 console.log(putEnvelope({
-    a: 2,
-    b:20
+    a: 40,
+    b:70
 }, {
-    p: 100,
-    q: 2
+    p: 1,
+    q: 75
 }));
 
 /* 
@@ -37,10 +41,6 @@ console.log(chessBuilder(6, 4, '+'));
 
 
 
-console.log(compareCalc({
-    min: 100099,
-    max: 712940
-}));
 
 console.log(sortTriangles([{
         vertices: 'ABC',
@@ -61,3 +61,6 @@ console.log(sortTriangles([{
         x: 100
     }
 ])); */
+
+
+
