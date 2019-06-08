@@ -1,4 +1,4 @@
-function checkDAta(rowLength, square) {
+function checkData(rowLength, square) {
     let res = false;
     
     if (typeof rowLength === 'number' &&
@@ -19,8 +19,8 @@ export default function findrowNumbers(rowLength = 0, square = 0) {
         reason: 'Input only integers as numLength and square',
     };
 
-    if (checkDAta(rowLength, square)) {
-        for (let number = startNumber; rowNumbers.length < rowLength; number++) {
+    if (checkData(rowLength, square)) {
+        for (let number = startNumber; rowNumbers.length <= rowLength; number++) {
             rowNumbers.push(number);
         }
         result = rowNumbers.join(',');

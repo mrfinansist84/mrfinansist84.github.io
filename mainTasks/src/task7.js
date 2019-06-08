@@ -2,27 +2,42 @@ function checkData(lengthOrRest) {
     return true;
 }
 
-function calcFibonacci(lengthOrRest) {
-    let fibonacci,
-        startPoint,
+function calcFibForRest(n) {
+    const sq5 = Math.sqrt(5),
+        a = (1 + sq5) / 2,
+        b = (1 - sq5) / 2;
+    return Math.round((Math.pow(a, n) - Math.pow(b, n)) / sq5);
+}
+
+function calcFibWithLength(n) {
+    let fibonacci = [],
         endPoint;
 
-    if (lengthOrRest.length) {
-        fibonacci = [0, 1];
-        startPoint = 2;
-        endPoint = lengthOrRest.length;
-    } else {
-        fibonacci = calcFibonacci({ length: 50 });
-        startPoint = lengthOrRest.min;
-        endPoint = lengthOrRest.max;
-        return fibonacci.filter(el => el > startPoint && el < endPoint);
-    }
-
-    for (let i = startPoint; i < endPoint; i++) {
+    fibonacci = [0, 1];
+    endPoint = lengthOrRest.length;
+    for (let i = 2; i < endPoint; i++) {
         fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
     }
-
     return fibonacci;
+}
+
+function calcFibonacci(lengthOrRest) {
+    const maxValue = lengthOrRest.max,
+        minValue = lengthOrRest.min,
+        lengthValue = lengthOrRest.length;
+    let result = [],
+        fibonacciNum = 0;
+
+    if (lengthValue) {
+        result = calcFibWithLength(lengthValue);
+    } else {
+        for (let i = 0; fibonacciNum < maxValue; ++i) {
+            fibonacciNum = calcFibWithRest(i);
+            if (fibonacciNum > maxValue) break;
+            fibonacciNum >= minValue ? result.push(fibonacciNum) : 0;
+        }
+    }
+    return result;
 }
 
 export default function buildFibonacciRow(lengthOrRest) {
@@ -34,14 +49,5 @@ export default function buildFibonacciRow(lengthOrRest) {
     if (checkData(lengthOrRest)) {
         result = calcFibonacci(lengthOrRest);
     }
-
     return result;
 }
-
-/* formula BINE 
-function fibonacci(n) {
-    var sq5 = Math.sqrt(5);
-    var a = (1 + sq5) / 2;
-    var b = (1 - sq5) / 2;
-    return (Math.pow(a, n) - Math.pow(b, n)) / sq5;
-  } */

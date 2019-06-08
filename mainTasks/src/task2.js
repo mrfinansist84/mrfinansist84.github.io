@@ -1,11 +1,27 @@
 export default function putEnvelope(envelope1 = {}, envelope2 = {}) {
-    if (envelope1.a > envelope2.c &&
-        envelope1.b > envelope2.d) {
-        return 'envelope1';
-    } else if (envelope1.a < envelope2.c &&
-        envelope1.b < envelope2.d) {
-        return 'envelope2';
-    } else {
-        return '0';
+    let a = envelope1.a,
+        b = envelope1.b,
+        p = envelope2.p,
+        q = envelope2.q,
+        result;
+        
+    switch (true) {
+        case (p <= a && q <= b):
+            result = 'envelope1';
+            break;
+        case (p >= a && q >= b):
+            result = 'envelope2';
+            break;
+        case ((p < b &&
+            a <= formula)):
+            result = 'envelope1';
+            break;
+        case ( (p > b &&
+            a >= formula)):
+            result = 'envelope2';
+            break;
+        default:
+            result = 0;
     }
+    return result;
 }

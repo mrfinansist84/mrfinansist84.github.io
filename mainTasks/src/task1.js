@@ -1,14 +1,14 @@
 function checkIncomeData(length, width, symbol) {
-    let result = false;
+    let res = false;
 
     if (typeof length === 'number' &&
         typeof width === 'number' &&
         typeof symbol === 'string' &&
         symbol.length === 1 &&
         length >= 0 && width >= 0) {
-        result = true;
+        res = true;
     }
-    return result;
+    return res;
 }
 
 export default function chessBuilder(length = 0, width = 0, symbol = '*') {
