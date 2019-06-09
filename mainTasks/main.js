@@ -18,7 +18,7 @@ task7(добавить проверку)
 Решить/ Дописать проверки/ Написать Юнит тесты/ Рефакторинг
 */
 
-console.log(chessBuilder(4, 5, '@'));
+/* console.log(chessBuilder(4, 5, '@')); */
 /* console.log(compareCalc({
     min: '000000',
     max: '999999'
