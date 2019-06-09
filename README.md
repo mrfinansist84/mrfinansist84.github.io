@@ -1,5 +1,5 @@
 # allTasks
-### - [Main Task](https://mrfinansist84.github.io/Main Task/ "Main Task")
+### - [Main Task](https://mrfinansist84.github.io/AllTask/ "Main Task")
 ### - [TicTacToeGame](https://mrfinansist84.github.io/ticTacToe/ "TicTacToeGame")
 ### - [StringHandMadeMethods](https://mrfinansist84.github.io/stringHandmadeMethods "StringHandMadeMethods")
 ### - [TASK#9](https://mrfinansist84.github.io/Task9 "TASK#9")
