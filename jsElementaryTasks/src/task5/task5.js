@@ -51,7 +51,7 @@ function findLuckyTicketHard(tiketNumber) {
 }
 
 
-export default function compareCalc(range = {}) {
+function compareCalc(range = {}) {
     let countEasyWay = 0,
         countHardWay = 0,
         result = {

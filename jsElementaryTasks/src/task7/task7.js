@@ -1,5 +1,22 @@
 function checkData(lengthOrRest) {
-    return true;
+    let res = false;
+
+    if (lengthOrRest.length) {
+        if (lengthOrRest.length >= 0 &&
+            /*  нужно ли ограничевать верхнюю границу длинны ряда? */
+            typeof lengthOrRest.length === 'number') {
+            res = true;
+        }
+    }
+    if (lengthOrRest.min) {
+        if (typeof lengthOrRest.min === 'number' &&
+            typeof lengthOrRest.max === 'number' &&
+            lengthOrRest.min >= 0 &&
+            lengthOrRest.max > 0) {
+            res = true;
+        }
+    }
+    return res;
 }
 
 function calcFibForRest(n) {
@@ -40,7 +57,7 @@ function calcFibonacci(lengthOrRest) {
     return result;
 }
 
-export default function buildFibonacciRow(lengthOrRest) {
+function buildFibonacciRow(lengthOrRest) {
     let result = {
         status: 'failed',
         reason: 'Input object with only max/min values or length',

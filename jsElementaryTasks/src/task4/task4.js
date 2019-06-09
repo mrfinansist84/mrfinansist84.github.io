@@ -19,7 +19,7 @@ function findLengthPal(str, leftIndex, rightIndex) {
     return str.slice(leftPosition + 1, rightPosition);
 }
 
-export default function checkPalindrom(num) {
+function checkPalindrom(num) {
     let numToStr,
         numToStrLength,
         palindromItem,
