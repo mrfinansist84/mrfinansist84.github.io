@@ -1,10 +1,11 @@
 function checkData({ a,b }, { p,q }) {
     let res = false;
-       
+    
     if (typeof a === 'number' &&
         typeof b === 'number' &&
         typeof p === 'number' &&
-        typeof q === 'number'
+        typeof q === 'number' &&
+        (a>0 && b>0 && p>0 && q>0)
     ) {
         res = true;
     }
@@ -28,10 +29,10 @@ function checkEntersEnvelope(envelope1, envelope2) {
     if (checkData(envelope1, envelope2)) {
         switch (true) {
             case (p >= a && q >= b) || (p > a && b >= formulaEnv1):
-                result = 'envelope1';
+                result = 1;
                 break;
             case (p <= a && q <= b) || (p <= a && q >= formulaEnv2):
-                result = 'envelope2';
+                result = 2;
                 break;
             default:
                 result = 0;
@@ -41,9 +42,9 @@ function checkEntersEnvelope(envelope1, envelope2) {
 }
 
 console.log(checkEntersEnvelope({
-    a: 10,
-    b: 20
+    a: 75,
+    b: 4
 }, {
-    p: 20,
-    q: 30
+    p: 70,
+    q: 40
 }));

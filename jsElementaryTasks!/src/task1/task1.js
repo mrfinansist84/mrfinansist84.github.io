@@ -5,7 +5,7 @@ function checkIncomeData(length, width, symbol) {
         typeof width === 'number' &&
         typeof symbol === 'string' &&
         symbol.length === 1 &&
-        length >= 0 && width >= 0 &&
+        length > 0 && width > 0 &&
         length && width && symbol) {
         res = true;
     }
@@ -34,4 +34,4 @@ function chessBuilder(length, width, symbol) {
     return result;
 }
 
-console.log(chessBuilder(4, 5, '@'));
+console.log(chessBuilder(5, 5, '@'));

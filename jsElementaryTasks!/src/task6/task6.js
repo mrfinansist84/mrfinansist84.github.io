@@ -11,7 +11,7 @@ function checkData(rowLength, square) {
 }
 
 
-function findrowNumbers(rowLength = 0, square = 0) {
+function findrowNumbers(rowLength, square) {
     const rowNumbers = [],
         startNumber = Math.ceil(Math.sqrt(square));
     let result = {

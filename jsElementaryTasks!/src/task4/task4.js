@@ -2,7 +2,8 @@ function checkData(num) {
     let res = false;
 
     if (typeof num === 'number' &&
-        String(num).length <= 16) {
+        String(num).length <= 16 &&
+        String(num).length > 2) {
         res = true
     }
     return res;

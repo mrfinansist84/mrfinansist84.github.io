@@ -1,10 +1,10 @@
 function checkData(lengthOrRest) {
     let res = false;
 
-    if (lengthOrRest.length) {
-        if (lengthOrRest.length >= 0 &&
+    if (lengthOrRest.lengthFib) {
+        if (lengthOrRest.lengthFib >= 0 &&
             /*  нужно ли ограничевать верхнюю границу длинны ряда? */
-            typeof lengthOrRest.length === 'number') {
+            typeof lengthOrRest.lengthFib === 'number') {
             res = true;
         }
     }
@@ -31,7 +31,7 @@ function calcFibWithLength(n) {
         endPoint;
 
     fibonacci = [0, 1];
-    endPoint = lengthOrRest.length;
+    endPoint = n.length;
     for (let i = 2; i < endPoint; i++) {
         fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
     }
@@ -41,7 +41,7 @@ function calcFibWithLength(n) {
 function calcFibonacci(lengthOrRest) {
     const maxValue = lengthOrRest.max,
         minValue = lengthOrRest.min,
-        lengthValue = lengthOrRest.length;
+        lengthValue = lengthOrRest.lengthFib;
     let result = [],
         fibonacciNum = 0;
 
@@ -49,7 +49,7 @@ function calcFibonacci(lengthOrRest) {
         result = calcFibWithLength(lengthValue);
     } else {
         for (let i = 0; fibonacciNum < maxValue; ++i) {
-            fibonacciNum = calcFibWithRest(i);
+            fibonacciNum = calcFibForRest(i);
             if (fibonacciNum > maxValue) break;
             fibonacciNum >= minValue ? result.push(fibonacciNum) : 0;
         }
@@ -68,3 +68,5 @@ function buildFibonacciRow(lengthOrRest) {
     }
     return result;
 }
+
+console.log(buildFibonacciRow({min: 10, max: 35}));

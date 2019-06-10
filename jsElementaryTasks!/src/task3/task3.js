@@ -1,28 +1,32 @@
 function checkData(arrTriangles) {
     let res = false,
         argValue,
-        argKeys;
+        argKeys,
+        a, b, c;
 
-    arrTriangles.forEach((triangle) => {
-        argValue = Object.values(triangle);
-        argKeys = Object.keys(triangle);
+    if (Array.isArray(arrTriangles)) {
+        arrTriangles.forEach((triangle) => {
+            argValue = Object.values(triangle);
+            argKeys = Object.keys(triangle);
+            a = argValue[1];
+            b = argValue[2];
+            c = argValue[3];
 
-        if (typeof argValue[0] === 'string' &&
-            typeof argValue[1] === 'number' &&
-            typeof argValue[2] === 'number' &&
-            typeof argValue[3] === 'number' &&
-            argValue[0].length === 3 &&
-            argValue[0] === `${argKeys[1]
-                .toUpperCase()}${argKeys[2]
-                .toUpperCase()}${argKeys[3]
-                .toUpperCase()}`) {
-            res = true;
+            if (typeof argValue[0] === 'string' &&
+                typeof a === 'number' &&
+                typeof b === 'number' &&
+                typeof c === 'number' &&
+                (a > 0 && b > 0 && c > 0) &&
+                argValue[0].length === 3 &&
+                ((a + b > c) && (a + c > b) && (b + c > a)) &&
+                argValue[0] === `${a.toUpperCase()}${b.toUpperCase()}${c.toUpperCase()}`) {
+                res = true;
 
-        } else {
-            res = false;
-        }
-    });
-
+            } else {
+                res = false;
+            }
+        });
+    }
     return res;
 }
 
@@ -41,13 +45,13 @@ function buildObjectsWithTriangles(arrTriangles) {
 }
 
 function sortTriangles(arrTriangles) {
-    const groupTriangles = buildObjectsWithTriangles(arrTriangles);
     let result = {
         status: 'failed',
         reason: 'Input only 2 objects with keys vertices, side 1,2,3',
     };
 
     if (checkData(arrTriangles)) {
+        const groupTriangles = buildObjectsWithTriangles(arrTriangles);
         result = [];
         groupTriangles
             .sort((a, b) => b.square - a.square)
@@ -58,22 +62,4 @@ function sortTriangles(arrTriangles) {
     return result;
 }
 
-console.log(sortTriangles([{
-        vertices: 'ABC',
-        a: 10,
-        b: 20,
-        c: 22.36
-    },
-    {
-        vertices: 'CBA',
-        c: 20,
-        b: 24.33,
-        a: 26
-    },
-    {
-        vertices: 'VCX',
-        v: 120,
-        c: 24.33,
-        x: 100
-    }
-]));
+console.log(sortTriangles('sdfsdfsdf'));
