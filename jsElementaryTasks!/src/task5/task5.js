@@ -1,9 +1,13 @@
-function checkData({min,max}) {
+function checkData({
+    min,
+    max
+}) {
     let resCheck = false;
     if (typeof min === 'string' &&
         typeof max === 'string' &&
         min.length === 6 &&
-        max.length === 6) {
+        max.length === 6 &&
+        +min <= +max) {
         resCheck = true;
     }
     return resCheck;
@@ -16,14 +20,14 @@ function findLuckyTicketEasy(tiketNumber) {
         sumSecondThreeNumbers = 0,
         countEasy = 0;
 
-        while (firstThreeNum > 0 || secondThreeNum > 0) {
+    while (firstThreeNum > 0 || secondThreeNum > 0) {
         sumFirstThreeNumbers += firstThreeNum % 10;
         firstThreeNum = Math.floor(firstThreeNum / 10);
 
         sumSecondThreeNumbers += secondThreeNum % 10;
         secondThreeNum = Math.floor(secondThreeNum / 10);
     }
-  
+
     if (sumFirstThreeNumbers === sumSecondThreeNumbers) {
         countEasy = 1;
     }
@@ -43,7 +47,7 @@ function findLuckyTicketHard(tiketNumber) {
         sumEvenNumbers += numForCheck % 2 === 0 ? numForCheck : 0;
         num = Math.floor(num / 10);
     }
-    
+
     if (sumOddNumbers === sumEvenNumbers) {
         countHard = 1;
     }
@@ -51,30 +55,41 @@ function findLuckyTicketHard(tiketNumber) {
 }
 
 
-function compareCalc(range = {}) {
+function compareCalc(range) {
     let countEasyWay = 0,
         countHardWay = 0,
         result = {
             status: 'failed',
-            reason: 'Input only object with min and max number range',
-        };
+            reason: 'Input only object with min and max number range. Min value must be less max',
+        },
+        winner;
 
     if (checkData(range)) {
         for (let i = range.min; i < range.max; i++) {
             countEasyWay += findLuckyTicketEasy(i);
             countHardWay += findLuckyTicketHard(i);
         }
-        if (countEasyWay > countHardWay) {
-            result = (`Выиграл "Простой" метод со счетом ${countEasyWay} 
-        против ${countHardWay} у "Сложного"`);
+
+        if (countEasyWay === countHardWay) {
+            winner = 'Ничья';
         } else {
-            result = `Выиграл "Сложный" метод со счетом ${countHardWay} 
-        против ${countEasyWay} у "Простого"`
+            winner = countEasyWay > countHardWay ? 'Простой' : 'Сложный';
+        }
+        result = {
+            winner,
+            easyWay: countEasyWay,
+            hardWay: countHardWay
         }
     }
+
     return result;
 }
 
+
+console.log(compareCalc({
+    min: '000100',
+    max: '100999'
+}));
 
 
 /* function checkData({min, max}) {
