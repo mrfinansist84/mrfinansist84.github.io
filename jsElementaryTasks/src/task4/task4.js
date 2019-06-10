@@ -8,14 +8,15 @@ function checkData(num) {
     return res;
 }
 
-function findLengthPal(str, leftIndex, rightIndex) {
-    let leftPosition = leftIndex,
-        rightPosition = rightIndex;
+function findLengthPal(str, i) {
+    let leftPosition = i - 1,
+        rightPosition = i + 1;
 
     while (str[leftPosition] === str[rightPosition] && str[leftPosition]) {
         leftPosition -= 1;
         rightPosition += 1;
     }
+    
     return str.slice(leftPosition + 1, rightPosition);
 }
 
@@ -35,13 +36,16 @@ function checkPalindrom(num) {
 
         for (let i = 0; i < numToStrLength; i++) {
             palindromItem = numToStr[i - 1] === numToStr[i + 1] ?
-                findLengthPal(numToStr, i - 1, i + 1) : 0;
+                findLengthPal(numToStr, i) : 0;
 
             palindromItem.length > 3 ?
                 palindromsArr.push(Number(palindromItem.split('|').join(''))) : 0;
         }
-      
-        result = Math.max(...palindromsArr);
+
+        result = palindromsArr.length !== 0 ? Math.max(...palindromsArr) : 0;
     }
     return result;
 }
+
+
+console.log(checkPalindrom(5345354122145111));
