@@ -17,7 +17,6 @@ function findLengthPal(str, i) {
         leftPosition -= 1;
         rightPosition += 1;
     }
-    
     return str.slice(leftPosition + 1, rightPosition);
 }
 

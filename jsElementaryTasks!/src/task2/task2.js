@@ -5,8 +5,7 @@ function checkData({ a,b }, { p,q }) {
         typeof b === 'number' &&
         typeof p === 'number' &&
         typeof q === 'number' &&
-        (a>0 && b>0 && p>0 && q>0)
-    ) {
+        (a > 0 && b > 0 && p > 0 && q > 0)) {
         res = true;
     }
     return res;
@@ -23,6 +22,7 @@ function checkEntersEnvelope(envelope1, envelope2) {
         q = envelope2.q,
         formulaEnv1 = (2 * p * q * a + (p * p - q * q) *
             Math.sqrt(p * p + q * q - a * a)) / (p * p + q * q),
+
         formulaEnv2 = (2 * b * a * p + (a * a - b * b) *
             Math.sqrt(a * a + b * b - p * p)) / (a * a + b * b);
 
@@ -48,3 +48,4 @@ console.log(checkEntersEnvelope({
     p: 70,
     q: 40
 }));
+

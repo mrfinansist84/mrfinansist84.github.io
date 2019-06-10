@@ -4,7 +4,9 @@ function checkData(arrTriangles) {
         argKeys,
         a, b, c;
 
-    if (Array.isArray(arrTriangles)) {
+    if (Array.isArray(arrTriangles) &&
+        arrTriangles.length > 0) {
+
         arrTriangles.forEach((triangle) => {
             argValue = Object.values(triangle);
             argKeys = Object.keys(triangle);
@@ -13,13 +15,12 @@ function checkData(arrTriangles) {
             c = argValue[3];
 
             if (typeof argValue[0] === 'string' &&
+                argValue[0].length === 3 &&
                 typeof a === 'number' &&
                 typeof b === 'number' &&
                 typeof c === 'number' &&
                 (a > 0 && b > 0 && c > 0) &&
-                argValue[0].length === 3 &&
-                ((a + b > c) && (a + c > b) && (b + c > a)) &&
-                argValue[0] === `${a.toUpperCase()}${b.toUpperCase()}${c.toUpperCase()}`) {
+                ((a + b > c) && (a + c > b) && (b + c > a))) {
                 res = true;
 
             } else {
