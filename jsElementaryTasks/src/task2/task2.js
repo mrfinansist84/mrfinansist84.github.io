@@ -15,18 +15,19 @@ function checkEntersEnvelope(envelope1, envelope2) {
     let result = {
             status: 'failed',
             reason: 'Input only 2 objects with keys (a,b) and (p,q)',
-        },
-        a = envelope1.a,
-        b = envelope1.b,
-        p = envelope2.p,
-        q = envelope2.q,
-        formulaEnv1 = (2 * p * q * a + (p * p - q * q) *
-            Math.sqrt(p * p + q * q - a * a)) / (p * p + q * q),
-
-        formulaEnv2 = (2 * b * a * p + (a * a - b * b) *
-            Math.sqrt(a * a + b * b - p * p)) / (a * a + b * b);
-
-    if (checkData(envelope1, envelope2)) {
+        };
+        
+        if (checkData(envelope1, envelope2)) {
+        let a = envelope1.a,
+            b = envelope1.b,
+            p = envelope2.p,
+            q = envelope2.q,
+            formulaEnv1 = (2 * p * q * a + (p * p - q * q) *
+                Math.sqrt(p * p + q * q - a * a)) / (p * p + q * q),
+    
+            formulaEnv2 = (2 * b * a * p + (a * a - b * b) *
+                Math.sqrt(a * a + b * b - p * p)) / (a * a + b * b);
+                
         switch (true) {
             case (p >= a && q >= b) || (p > a && b >= formulaEnv1):
                 result = 1;

@@ -13,19 +13,20 @@ function checkData(rowLength, square) {
 
 
 function findRowNumbers(rowLength, square) {
-    const rowNumbers = [];
     let result = {
             status: 'failed',
             reason: 'Input only integers as numLength and square',
-        },
-        startNumber = Math.ceil(Math.sqrt(square));
+        };
 
-    if (checkData(rowLength, square)) {
-        for (startNumber; rowNumbers.length < rowLength; startNumber++) {
-            rowNumbers.push(startNumber);
+        if (checkData(rowLength, square)) {
+            const rowNumbers = [];
+            let startNumber = Math.ceil(Math.sqrt(square));
+
+            for (startNumber; rowNumbers.length < rowLength; startNumber++) {
+                rowNumbers.push(startNumber);
+            }
+            result = rowNumbers.join(',');
         }
-        result = rowNumbers.join(',');
-    }
     return result;
 }
 

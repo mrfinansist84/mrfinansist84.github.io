@@ -21,16 +21,17 @@ function findLengthPal(str, i) {
 }
 
 function checkPalindrom(num) {
-    let numToStr,
-        numToStrLength,
-        palindromItem,
-        palindromsArr = [],
-        result = {
+    let result = {
             status: 'failed',
             reason: 'Input only number, length until 16',
         };
 
     if (checkData(num)) {
+        let numToStr,
+        numToStrLength,
+        palindromItem,
+        palindromsArr = [];
+        
         numToStr = String(num).split('').join('|');
         numToStrLength = numToStr.length;
 

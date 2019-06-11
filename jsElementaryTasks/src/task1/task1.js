@@ -13,10 +13,11 @@ function checkIncomeData(length, width, symbol) {
 }
 
 function chessBuilder(length, width, symbol) {
-    const targetString = `${symbol} `.repeat(width);
     let result = `\n`;
-
+    
     if (checkIncomeData(length, width, symbol)) {
+        const targetString = `${symbol} `.repeat(width);
+
         for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
                 result += `${targetString} \n`;

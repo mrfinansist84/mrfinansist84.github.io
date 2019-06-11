@@ -56,15 +56,16 @@ function findLuckyTicketHard(tiketNumber) {
 
 
 function compareCalc(range) {
-    let countEasyWay = 0,
-        countHardWay = 0,
-        result = {
-            status: 'failed',
-            reason: 'Input only object with min and max number range. Min value must be less max',
-        },
-        winner;
-
+    let result = {
+        status: 'failed',
+        reason: 'Input only object with min and max number range. Min value must be less max',
+    };
+    
     if (checkData(range)) {
+        let countEasyWay = 0,
+            countHardWay = 0,
+            winner;
+
         for (let i = range.min; i < range.max; i++) {
             countEasyWay += findLuckyTicketEasy(i);
             countHardWay += findLuckyTicketHard(i);
