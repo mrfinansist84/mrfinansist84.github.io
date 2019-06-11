@@ -16,9 +16,9 @@ function chessBuilder(length, width, symbol) {
     let result = `\n`;
     
     if (checkIncomeData(length, width, symbol)) {
-        const targetString = `${symbol} `.repeat(width);
+        const targetString = `${symbol} `.repeat(length);
 
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < width; i++) {
             if (i % 2 == 0) {
                 result += `${targetString} \n`;
             }
