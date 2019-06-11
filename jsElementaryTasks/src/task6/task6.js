@@ -20,7 +20,7 @@ function findRowNumbers(rowLength, square) {
 
         if (checkData(rowLength, square)) {
             const rowNumbers = [];
-            let startNumber = Math.ceil(Math.sqrt(square));
+            let startNumber = Math.sqrt(square);
 
             for (startNumber; rowNumbers.length < rowLength; startNumber++) {
                 rowNumbers.push(startNumber);
