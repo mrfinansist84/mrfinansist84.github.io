@@ -1,0 +1,15 @@
+@mixin day-container {
+    width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    line-height: 35px;
+    margin: 0 auto;
+}
+
+@mixin day-container-item {
+    width: 30px;
+    margin: 0;
+    padding: 7px;
+    border: 2px solid transparent;
+}

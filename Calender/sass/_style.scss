@@ -1,1 +1,82 @@
 /* font-family: 'Roboto', Arial, Helvetica, sans-serif; */
+.calender {
+    font-family: $font;
+    background-color: $backgroundColor;
+    width: 360px;
+    margin: 0 auto;
+    padding: 20px 10px 20px 20px;
+    color: $baseFontColor;
+}
+
+.calender__clock {
+    margin: 0 auto;
+    width: 300px;
+    border-bottom: 1px solid $colorOfLineSeparator;
+}
+
+.calender__clock-item {
+    font-size: 45px;
+    margin: 0
+}
+
+.calender__clock-date {
+    color: $colorForDateNow;
+}
+
+.calender__controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 300px;
+}
+
+.calender__controls-container {
+    display: flex;
+
+}
+
+.calender__controls-btn {
+    margin: 0;
+    padding: 10px;
+    width: 40px;
+    border: none;
+    color: $baseFontColor;
+    background-color: inherit;
+}
+
+.calender__date-container {
+    @include day-container;
+    height: 300px;
+
+    &-item {
+        @include day-container-item;
+
+        &:hover {
+            border: 2px solid $colorOfLineSeparator;
+        }
+       
+        &--dayIsToday {
+                     
+                background-color: $fillForCurrentDate;
+                outline: 2px solid $borderInDayToday;
+                outline-offset: -5px;
+                &:hover {
+                    border: 2px solid $borderAroundDateDayToday;
+                }
+            
+        }
+
+        &--prev-month {
+            color: $colorFordisabledDate;
+        }
+    }
+}
+
+.calender__weekday {
+    @include day-container;
+
+    &-item {
+        @include day-container-item;
+        font-size: 12px;
+    }
+}
