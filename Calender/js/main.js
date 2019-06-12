@@ -2,7 +2,10 @@
 function starter() {
   findDateForClockAndControl();
   buidClock();
-  createCalender()
+  createCalender();
+  slideMonth();
+  checkingDay();
+  markDay()
 }
 /* дата для верхушки */
 function findDateForClockAndControl() {
@@ -54,7 +57,7 @@ function createCalender(newYear, newMonth) {
     currYear = newYear ? newYear : date.getFullYear(),
     currMonth = newMonth ? newMonth : date.getMonth(),
     currDate = new Date(currYear, currMonth); /*  по умолчанию текущая дата */
-    
+
   let dayStartCurrMonth = currDate.getDay(new Date(currYear, currMonth, 1)) - 1,
     dayNumPrevMonth,
     dayCurrMonth,
@@ -62,7 +65,12 @@ function createCalender(newYear, newMonth) {
     weekdayNextMonth,
     numdayNextMonth,
     dayNextMonth,
-    dayIsToday = new Date().getDate();
+    dayIsToday = new Date().toLocaleString('ru', {
+      month: 'long',
+      year: 'numeric',
+      day: 'numeric'
+    }),
+    todaysCheck;
 
   currDate.setDate(currDate.getDate() - dayStartCurrMonth);
   /*сдвиг  объекта даты для расчета пред дней мес для отображения  */
@@ -80,9 +88,15 @@ function createCalender(newYear, newMonth) {
   /* убираем сдвиг объекта даты */
 
   while (currDate.getMonth() == currMonth) {
-    if (currDate.getDate() === dayIsToday) {
+    todaysCheck = currDate.toLocaleString('ru', {
+      month: 'long',
+      year: 'numeric',
+      day: 'numeric'
+    });
+    if (todaysCheck === dayIsToday) {
       dayCurrMonth = buildElement('p', `${currDate.getDate()}`, {
-        class: 'calender__date-container-item calender__date-container-item--dayIsToday'
+        class: `calender__date-container-item calender__date-container-item--dayIsToday
+        calender__date-container-item--checked`
       });
     } else {
       dayCurrMonth = buildElement('p', `${currDate.getDate()}`, {
@@ -106,7 +120,6 @@ function createCalender(newYear, newMonth) {
 }
 
 /* конструктор элементов. */
-/* НАДО использовать DocumentFragment */
 function buildElement(tags, postText, className) {
   const elem = document.createElement(tags);
   for (const key in className) {
@@ -114,4 +127,88 @@ function buildElement(tags, postText, className) {
   };
   elem.textContent = postText;
   return elem;
+}
+
+function slideMonth() {
+  const targetElementNext = document.querySelector('.calender__controls-btn--next-month'),
+    targetElementPrev = document.querySelector('.calender__controls-btn--prev-month');
+
+  targetElementNext.addEventListener('click', slideMonthNext);
+  targetElementPrev.addEventListener('click', slideMonthPrev);
+  localStorage.setItem("currMonth", `${new Date().getMonth()}`)
+}
+
+function slideMonthNext() {
+  const incrementMonth = +(localStorage.getItem("currMonth")) + 1;
+
+  localStorage.setItem("currMonth", `${incrementMonth}`);
+  changeMonth(incrementMonth);
+};
+
+function slideMonthPrev() {
+  const decrementMonth = +(localStorage.getItem("currMonth")) - 1;
+
+  localStorage.setItem("currMonth", `${decrementMonth}`);
+
+  changeMonth(decrementMonth);
+};
+
+function changeMonth(targertMonth) {
+  document.querySelector('.calender__date-container').innerHTML = '';
+
+  createCalender(2019, targertMonth);
+
+  const strMonth = new Date(2019, targertMonth, 1).toLocaleString('ru', {
+    month: 'long',
+    year: 'numeric'
+  });
+
+  document.querySelector('.calender__controls-weekday-year-item').innerHTML = `${strMonth}`;
+}
+
+function checkingDay() {
+  const targetElementNext = document.querySelector('.calender__controls-btn--next-day'),
+    targetElementPrev = document.querySelector('.calender__controls-btn--prev-day');
+
+  targetElementNext.addEventListener('click', checkDayNext);
+  targetElementPrev.addEventListener('click', checkDayPrev);
+}
+
+function checkDayNext(e) {
+  let targetEl = document.querySelector('.calender__date-container-item--checked'),
+  firstEl = document.querySelector('.calender__date-container').firstElementChild;
+ 
+  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') : 
+  targetEl = firstEl;
+  if (targetEl.nextElementSibling) {
+    targetEl.nextElementSibling.classList.add('calender__date-container-item--checked');
+  } else {
+    firstEl.classList.add('calender__date-container-item--checked');
+  }
+}
+
+function checkDayPrev(e) {
+  let targetEl = document.querySelector('.calender__date-container-item--checked'),
+    lastEl = document.querySelector('.calender__date-container').lastChild;
+   
+  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') : 
+  targetEl = lastEl;
+
+  if (targetEl.previousElementSibling) {
+    targetEl.previousElementSibling.classList.add('calender__date-container-item--checked');
+  } else {
+    lastEl.classList.add('calender__date-container-item--checked');
+  }
+}
+
+function markDay() {
+  const targetElement = document.querySelector('.calender__date-container');
+  targetElement.addEventListener('click', addBorder);
+}
+
+function addBorder(e) {
+  let tergetEl = document.querySelector('.calender__date-container-item--checked');
+  tergetEl ? tergetEl.classList.remove('calender__date-container-item--checked') : 0;
+
+  e.target.classList.add('calender__date-container-item--checked');
 }

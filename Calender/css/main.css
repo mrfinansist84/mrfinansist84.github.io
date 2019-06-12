@@ -2,7 +2,6 @@
   font-family: "Roboto";
   src: url("../fonts/RobotoCondensed-Regular.eot") format("eot"), url("../fonts/RobotoCondensed-Regular.woff2") format("woff2"), url("../fonts/RobotoCondensed-Regular.woff") format("woff"), url("../fonts/RobotoCondensed-Regular.ttf") format("truetype"), url("../fonts/RobotoCondensed-Regular.svg") format("svg");
 }
-/* font-family: 'Roboto', Arial, Helvetica, sans-serif; */
 .calender {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
   background-color: #545454;
@@ -11,42 +10,85 @@
   padding: 20px 10px 20px 20px;
   color: #F2F3F2;
 }
-
 .calender__clock {
   margin: 0 auto;
   width: 300px;
   border-bottom: 1px solid #777777;
 }
-
 .calender__clock-item {
   font-size: 45px;
   margin: 0;
 }
-
 .calender__clock-date {
   color: #4B96D4;
 }
-
 .calender__controls {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
   width: 300px;
 }
-
 .calender__controls-container {
   display: flex;
 }
-
 .calender__controls-btn {
-  margin: 0;
-  padding: 10px;
-  width: 40px;
+  width: 30px;
+  height: 30px;
   border: none;
-  color: #F2F3F2;
+  outline: none;
   background-color: inherit;
 }
-
+.calender__controls-btn--prev-day, .calender__controls-btn--next-day, .calender__controls-btn--prev-month, .calender__controls-btn--next-month {
+  position: relative;
+}
+.calender__controls-btn--prev-day::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../img/prevDayarrow.png");
+}
+.calender__controls-btn--next-day::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../img/nextDayarrow.png");
+}
+.calender__controls-btn--prev-month::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../img/prevMontharrow.png");
+}
+.calender__controls-btn--next-month::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../img/nextMontharrow.png");
+}
 .calender__date-container {
   width: 350px;
   display: flex;
@@ -62,6 +104,9 @@
   padding: 7px;
   border: 2px solid transparent;
 }
+.calender__date-container-item--checked {
+  border: 2px solid #016bff;
+}
 .calender__date-container-item:hover {
   border: 2px solid #777777;
 }
@@ -76,7 +121,6 @@
 .calender__date-container-item--prev-month {
   color: #8F8F8F;
 }
-
 .calender__weekday {
   width: 350px;
   display: flex;

@@ -1,4 +1,3 @@
-/* font-family: 'Roboto', Arial, Helvetica, sans-serif; */
 .calender {
     font-family: $font;
     background-color: $backgroundColor;
@@ -6,77 +5,110 @@
     margin: 0 auto;
     padding: 20px 10px 20px 20px;
     color: $baseFontColor;
-}
 
-.calender__clock {
-    margin: 0 auto;
-    width: 300px;
-    border-bottom: 1px solid $colorOfLineSeparator;
-}
+    &__clock {
+        margin: 0 auto;
+        width: 300px;
+        border-bottom: 1px solid $colorOfLineSeparator;
 
-.calender__clock-item {
-    font-size: 45px;
-    margin: 0
-}
-
-.calender__clock-date {
-    color: $colorForDateNow;
-}
-
-.calender__controls {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    width: 300px;
-}
-
-.calender__controls-container {
-    display: flex;
-
-}
-
-.calender__controls-btn {
-    margin: 0;
-    padding: 10px;
-    width: 40px;
-    border: none;
-    color: $baseFontColor;
-    background-color: inherit;
-}
-
-.calender__date-container {
-    @include day-container;
-    height: 300px;
-
-    &-item {
-        @include day-container-item;
-
-        &:hover {
-            border: 2px solid $colorOfLineSeparator;
+        &-item {
+            font-size: 45px;
+            margin: 0
         }
-       
-        &--dayIsToday {
-                     
+
+        &-date {
+            color: $colorForDateNow;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        width: 300px;
+
+        &-container {
+            display: flex;
+        }
+
+        &-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            outline: none;
+            background-color: inherit;
+
+            &--prev-day,
+            &--next-day,
+            &--prev-month,
+            &--next-month {
+                position: relative;
+            }
+
+
+            &--prev-day::after {
+                @include psevdoButton;
+                background-image: url('../img/prevDayarrow.png');
+                
+            }
+
+            &--next-day::after {
+                @include psevdoButton;
+                background-image: url('../img/nextDayarrow.png');
+            }
+
+            &--prev-month::after {
+                @include psevdoButton;
+                background-image: url('../img/prevMontharrow.png');
+            }
+
+            &--next-month::after {
+                @include psevdoButton;
+                background-image: url('../img/nextMontharrow.png');
+            }
+
+           
+        }
+    }
+
+    &__date-container {
+        @include day-container;
+        height: 300px;
+
+        &-item {
+            @include day-container-item;
+
+            &--checked {
+                border: 2px solid $fillForCurrentDate;
+            }
+
+            &:hover {
+                border: 2px solid $colorOfLineSeparator;
+            }
+
+            &--dayIsToday {
+
                 background-color: $fillForCurrentDate;
                 outline: 2px solid $borderInDayToday;
                 outline-offset: -5px;
+
                 &:hover {
                     border: 2px solid $borderAroundDateDayToday;
                 }
-            
-        }
+            }
 
-        &--prev-month {
-            color: $colorFordisabledDate;
+            &--prev-month {
+                color: $colorFordisabledDate;
+            }
         }
     }
-}
 
-.calender__weekday {
-    @include day-container;
+    &__weekday {
+        @include day-container;
 
-    &-item {
-        @include day-container-item;
-        font-size: 12px;
+        &-item {
+            @include day-container-item;
+            font-size: 12px;
+        }
     }
 }
