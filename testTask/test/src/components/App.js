@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/App.css';
+import './css/app.css';
 import BtnRequest from './BtnRequest';
 import InfoDashboard from './InfoDashboard';
 
@@ -7,7 +7,7 @@ import InfoDashboard from './InfoDashboard';
 const App = () => {
   
   return (
-    <div className="App">
+    <div className="app">
       <BtnRequest />
       <InfoDashboard />
     </div>

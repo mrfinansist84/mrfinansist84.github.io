@@ -1,12 +1,20 @@
 import React from 'react';
 import './css/ImgSalat.css';
+import { connect } from 'react-redux';
 
-
-const ImgSalat = () => {
+const ImgSalat = ({url}) => {
     return (
-        <img src='./img/salat.jpg' alt="salatImg" />
+        <img src={url} alt='salatImg' className='app__img'/>
     );
 }
 
-export default ImgSalat;
+const mapStateToProps = (state) => {
+    return {
+        ...state,
+        loading: state.loading,
+        url: state.url,
+    }
+}
+
+export default connect(mapStateToProps)(ImgSalat); 
 

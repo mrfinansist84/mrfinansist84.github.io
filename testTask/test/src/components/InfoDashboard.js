@@ -7,7 +7,7 @@ import TextSalat from './TextSalat';
 const InfoDashboard = () => {
      
     return (
-        <div>
+        <div className='app__infoDashboard'>
             <ImgSalat />
             <TextSalat />
         </div>

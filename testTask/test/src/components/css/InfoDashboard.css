@@ -1,0 +1,4 @@
+.app__infoDashboard {
+    display: flex;
+    flex-direction: column;
+}

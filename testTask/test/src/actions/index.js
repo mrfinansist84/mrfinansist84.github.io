@@ -1,53 +1,49 @@
-const newSalat = {
-    id: 1,
-    name: 'Napolitana'
-};
-const newVegatable = ['tomatoes', 'cabbage'];
-const newMeat = 'chicken';
-const newUrl = 'url'
+ const salatLoaded = (response) => {
+     return {
+         type: 'SALAT_LOADED',
+         payload: response
+     }
+ }
 
-const salatLoaded = () => dispatch => {
-    setTimeout(() => {
-        dispatch({type: 'SALAT_LOADED', payload: newSalat})
-    }, 500)
-}
+ const vegatablesLoaded = (response) => {
+     return {
+         type: 'VEGATABLES_LOADED',
+         payload: response.vegetables
+     }
+ }
 
-const vegatablesLoaded = () => dispatch => {
-    setTimeout(() => {
-        dispatch({type: 'VEGATABLES_LOADED', payload: newVegatable})
-    }, 500)
-}
-
-const meatLoaded = ()=> dispatch => {
-    setTimeout(() => {
-        dispatch({type: 'MEAT_LOADED', payload: newMeat})
-    }, 500)
-}
-  
-const URLLoaded = () => dispatch => {
-    setTimeout(() => {
-        dispatch({type: 'URL_LOADED', payload: newUrl})
-    }, 1000)
-}
-
-export const salatFetchData = (url) => {
-    return (dispatch) => {
-        fetch(url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                return response;
-            })
-            .then((response) => response.json())
-            .then((response) => console.log(response))
-            .catch(() => console.log('Error'));
-    };
-} 
-export {
-    salatLoaded,
-    vegatablesLoaded,
-    meatLoaded,
-    URLLoaded
-};
-
+ const URLLoaded = (response) => {
+     return {
+         type: 'URL_LOADED',
+         payload: response.imgUrl
+        }
+    }
+    
+    const meatLoaded = (response) => dispatch => {
+        setTimeout(()=>{
+           dispatch ({
+               type: 'MEAT_LOADED',
+               payload: response.meat
+           })
+        }, 1000)
+    }
+ export const salatFetchData = (url, action) => {
+     return (dispatch) => {
+         fetch(url)
+             .then((response) => {
+                 if (!response.ok) {
+                     throw Error(response.statusText);
+                 }
+                 return response;
+             })
+             .then((response) => response.json())
+             .then(response => dispatch(action(response)))
+             .catch(() => console.log('Error'));
+     };
+ }
+ export {
+     salatLoaded,
+     vegatablesLoaded,
+     meatLoaded,
+     URLLoaded
+ };

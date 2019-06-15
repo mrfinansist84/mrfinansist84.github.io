@@ -6,7 +6,7 @@ const initialState = {
     },
     vegetables:['Click the button'],
     meat: 'Click the button',
-    url:'./img/salat.jpg'
+    url: './img/initSalat.jpg'
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,13 +26,13 @@ const reducer = (state = initialState, action) => {
             case 'MEAT_LOADED':
             return {
                 ...state,
-                loading: true,
+                loading: false,
                 meat: action.payload
             };
             case 'URL_LOADED':
             return {
                 ...state,
-                loading: false,
+                loading: true,
                 url: action.payload
             };
             default:

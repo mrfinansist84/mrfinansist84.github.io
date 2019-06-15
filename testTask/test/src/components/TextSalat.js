@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import Spinner from './Spinner';
 
 const TextSalat = ({ salat, vegetables, meat, loading }) => {
-    const text = (<div>
-        <p>name: {salat.name}</p>
-        <p>vegetables: {vegetables.join(',')}</p>
-        <p>meat: {meat}</p>
+    const text = (<div className='app__infoDashboard-text'>
+        <p className='app__infoDashboard-text-item'>name: {salat.name}</p>
+        <p className='app__infoDashboard-text-item'>vegetables: {vegetables.join(',')}</p>
+        <p className='app__infoDashboard-text-item'>meat: {meat}</p>
                   </div>),
         spinner = <Spinner />
 

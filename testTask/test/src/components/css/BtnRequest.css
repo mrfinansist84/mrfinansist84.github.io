@@ -1,0 +1,12 @@
+.app__btn {
+    background-color: #7fffd4;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    font-size: 20px;
+    padding: 10px 40px;
+    outline: none;
+    margin-bottom: 50px;
+}
+.app__btn:hover {
+    background-color: #4affc3;
+}
