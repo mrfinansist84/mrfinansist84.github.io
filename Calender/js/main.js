@@ -59,12 +59,8 @@ function createCalender(newYear, newMonth) {
     currDate = new Date(currYear, currMonth); /*  по умолчанию текущая дата */
 
   let dayStartCurrMonth = currDate.getDay(new Date(currYear, currMonth, 1)) - 1,
-    dayNumPrevMonth,
-    dayCurrMonth,
-    dayPrevMonth,
-    weekdayNextMonth,
-    numdayNextMonth,
-    dayNextMonth,
+    dayNumMonth,
+    dayMonth,
     dayIsToday = new Date().toLocaleString('ru', {
       month: 'long',
       year: 'numeric',
@@ -74,50 +70,43 @@ function createCalender(newYear, newMonth) {
 
   currDate.setDate(currDate.getDate() - dayStartCurrMonth);
   /*сдвиг  объекта даты для расчета пред дней мес для отображения  */
-  dayNumPrevMonth = currDate.getDate();
+  dayNumMonth = currDate.getDate();
   /* дата с которой внести дни пред месяца  */
 
-  for (let i = 0; i < dayStartCurrMonth; i++) {
-    dayPrevMonth = buildElement('p', `${dayNumPrevMonth+i}`, {
-      class: 'calender__date-container-item calender__date-container-item--prev-month'
-    });
-    fragment.appendChild(dayPrevMonth);
-  }
+  for (let i = 0; i < 42; i++) {
+    dayNumMonth = currDate.getDate();
 
-  currDate.setDate(currDate.getDate() + dayStartCurrMonth);
-  /* убираем сдвиг объекта даты */
-
-  while (currDate.getMonth() == currMonth) {
-    todaysCheck = currDate.toLocaleString('ru', {
-      month: 'long',
-      year: 'numeric',
-      day: 'numeric'
-    });
-    if (todaysCheck === dayIsToday) {
-      dayCurrMonth = buildElement('p', `${currDate.getDate()}`, {
-        class: `calender__date-container-item calender__date-container-item--dayIsToday
-        calender__date-container-item--checked`
+    if (currDate.getMonth() == currMonth) {
+      todaysCheck = currDate.toLocaleString('ru', {
+        month: 'long',
+        year: 'numeric',
+        day: 'numeric'
       });
-    } else {
-      dayCurrMonth = buildElement('p', `${currDate.getDate()}`, {
-        class: 'calender__date-container-item'
-      });
+      if (todaysCheck === dayIsToday) {
+        dayMonth = buildElement('p', `${currDate.getDate()}`, {
+          class: `calender__date-container-item calender__date-container-item--dayIsToday
+           calender__date-container-item--checked`
+        });
+      } else {
+        dayMonth = buildElement('p', `${dayNumMonth}`, {
+          class: 'calender__date-container-item'
+        });
+      }
+      fragment.appendChild(dayMonth);
+      currDate.setDate(currDate.getDate() + 1);
+      continue;
     }
-    fragment.appendChild(dayCurrMonth);
-    currDate.setDate(currDate.getDate() + 1);
-  }
 
-  weekdayNextMonth = 7 - (currDate.getDay()) + 1;
-  numdayNextMonth = currDate.getDate();
-
-  for (let i = 0; i < weekdayNextMonth; i++) {
-    dayNextMonth = buildElement('p', `${numdayNextMonth+i}`, {
+    dayMonth = buildElement('p', `${dayNumMonth}`, {
       class: 'calender__date-container-item calender__date-container-item--prev-month'
     });
-    fragment.appendChild(dayNextMonth);
+
+    fragment.appendChild(dayMonth);
+    currDate.setDate(currDate.getDate() + 1);
   }
   targetElement.appendChild(fragment);
 }
+
 
 /* конструктор элементов. */
 function buildElement(tags, postText, className) {
@@ -135,30 +124,43 @@ function slideMonth() {
 
   targetElementNext.addEventListener('click', slideMonthNext);
   targetElementPrev.addEventListener('click', slideMonthPrev);
-  localStorage.setItem("currMonth", `${new Date().getMonth()}`)
+  localStorage.setItem("currMonth", `${new Date().getMonth()}`);
+  localStorage.setItem("currYear", `${new Date().getFullYear()}`);
 }
 
 function slideMonthNext() {
   const incrementMonth = +(localStorage.getItem("currMonth")) + 1;
+  let curYear = +(localStorage.getItem("currYear"));
+  if (incrementMonth > 11) {
+    localStorage.setItem("currMonth", `0`);
+    localStorage.setItem("currYear", `${+(localStorage.getItem("currYear"))+1}`);
+    
+  } else {
+    localStorage.setItem("currMonth", `${incrementMonth}`);
+  }
 
-  localStorage.setItem("currMonth", `${incrementMonth}`);
-  changeMonth(incrementMonth);
+  changeMonth(curYear, incrementMonth);
 };
 
 function slideMonthPrev() {
   const decrementMonth = +(localStorage.getItem("currMonth")) - 1;
-
-  localStorage.setItem("currMonth", `${decrementMonth}`);
-
-  changeMonth(decrementMonth);
+  let curYear = +(localStorage.getItem("currYear"))
+  if (decrementMonth < 0) {
+    localStorage.setItem("currMonth", `11`);
+    localStorage.setItem("currYear", `${+(localStorage.getItem("currYear"))-1}`);
+  
+  } else {
+    localStorage.setItem("currMonth", `${decrementMonth}`);
+  }
+  changeMonth(curYear, decrementMonth);
 };
 
-function changeMonth(targertMonth) {
+function changeMonth(curYear, targertMonth) {
   document.querySelector('.calender__date-container').innerHTML = '';
 
-  createCalender(2019, targertMonth);
+  createCalender(curYear, targertMonth);
 
-  const strMonth = new Date(2019, targertMonth, 1).toLocaleString('ru', {
+  const strMonth = new Date(curYear, targertMonth, 1).toLocaleString('ru', {
     month: 'long',
     year: 'numeric'
   });
@@ -176,10 +178,10 @@ function checkingDay() {
 
 function checkDayNext(e) {
   let targetEl = document.querySelector('.calender__date-container-item--checked'),
-  firstEl = document.querySelector('.calender__date-container').firstElementChild;
- 
-  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') : 
-  targetEl = firstEl;
+    firstEl = document.querySelector('.calender__date-container').firstElementChild;
+
+  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') :
+    targetEl = firstEl;
   if (targetEl.nextElementSibling) {
     targetEl.nextElementSibling.classList.add('calender__date-container-item--checked');
   } else {
@@ -190,9 +192,9 @@ function checkDayNext(e) {
 function checkDayPrev(e) {
   let targetEl = document.querySelector('.calender__date-container-item--checked'),
     lastEl = document.querySelector('.calender__date-container').lastChild;
-   
-  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') : 
-  targetEl = lastEl;
+
+  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') :
+    targetEl = lastEl;
 
   if (targetEl.previousElementSibling) {
     targetEl.previousElementSibling.classList.add('calender__date-container-item--checked');
