@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'; 
 import './css/BtnRequest.css';
-import {  salatLoaded,
+import {  salatFetchData, salatLoaded,
     vegatablesLoaded,
     meatLoaded,
     URLLoaded } from '../actions/index'; 
@@ -9,7 +9,7 @@ import {  salatLoaded,
 
 const BtnRequest = ({salat2Loaded, veg2Loaded, meat2Loaded, url2Loaded}) => {
 const init = () => {
-    salat2Loaded(); veg2Loaded(); meat2Loaded(); url2Loaded()
+    salat2Loaded(); veg2Loaded(); salatFetchData("http://localhost:5001/meat"); url2Loaded()
 }
     return (
         <button className='button' onClick={init}>

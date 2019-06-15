@@ -1,0 +1,28 @@
+{
+  "saladOfTheDay": {
+    "id": 1,
+    "name": "Napolitana"
+  },
+  "vegetables": [{
+    "id": 1,
+    "vegetables": ["tomatoes", "cabbage"]
+  },
+  {
+    "id": 2,
+    "vegetables": ["orange", "papao"]
+  }
+],
+  "meat": [{
+    "id": 1,
+    "meat": "chicken"
+  },
+  {
+    "id": 2,
+    "meat": "fish"
+  }
+],
+  "saladImageGenerator": {
+    "id": 1,
+    "imgUrl": "./img/salat.jpg"
+  }
+}

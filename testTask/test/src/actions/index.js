@@ -40,10 +40,7 @@ export const salatFetchData = (url) => {
                 return response;
             })
             .then((response) => response.json())
-            .then(() => dispatch(salatLoaded()))
-            .then(() => dispatch(vegatablesLoaded()))
-            .then(() => dispatch(meatLoaded()))
-            .then(() => dispatch(URLLoaded()))
+            .then((response) => console.log(response))
             .catch(() => console.log('Error'));
     };
 } 
