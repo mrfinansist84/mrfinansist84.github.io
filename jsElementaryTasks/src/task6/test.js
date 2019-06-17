@@ -19,13 +19,22 @@ describe(`Числовая последовательность. Вспомог�
  Проверяет 2 параметра длина - тип число и больше 0. 
  Значение минимального квадрата - тип число и больше 0.
  Выводит при прохождении проверки true, иначе false`, function () {
-    it('При вводе отрицательных значений выдаст false', function () {
-        assert.deepEqual(checkData(10, -10), false);
-    });
-    it('При вводе любого типа данных кроме числа выдаст false', function () {
-        assert.equal(checkData('345', 1), false);
+     it('Проверяет 2 параметра длина - тип число', function () {
+         assert.deepEqual(checkData('345', 1), {
+             status: 'failed',
+             reason: 'Wrong type of the arguments',
+         });
+     });
+    it('Проверяет 2 параметра длина больше 0', function () {
+        assert.deepEqual(checkData(10, -10), {
+            status: 'failed',
+            reason: 'Too small value of argument',
+        });
     });
     it('Проверка является ли аргумент square квадратом числа', function () {
-        assert.equal(checkData(10, 9), true);
+        assert.deepEqual(checkData(10, 5), {
+            status: 'failed',
+            reason: 'The value in arguments "minimum square" must be the square of a number.',
+        });
     });
 });

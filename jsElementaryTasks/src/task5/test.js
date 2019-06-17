@@ -34,50 +34,66 @@
  3)длинна min равна шести символам;
  4)длинна max равна шести символам;
  5)min меньше либо равен max;`, function () {
-       it('min тип - строка', function () {
-           assert.equal(checkData({
-               min: '000100',
-               max: '100999'
-           }), true);
-       });
-       it('max тип - строка', function () {
-           assert.equal(checkData({
+
+       it('min, max тип - строка', function () {
+           assert.deepEqual(checkData({
                min: '000100',
                max: 100999
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'Missed or wrong type of the arguments',
+        });
        });
        it('при деструктуризации проверяет что передан объект с ключами min и max;', function () {
-           assert.equal(checkData('dsgfgjkj'), false);
+           assert.deepEqual(checkData('dsgfgjkj'), {
+            status: 'failed',
+            reason: 'Missed or wrong type of the arguments',
+        });
        });
        it('при деструктуризации проверяет что передан объект с ключами min и max;', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                avr: '000100',
                max: '100999'
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'Missed or wrong type of the arguments',
+        });
        });
        it('при деструктуризации проверяет что передан объект с 2 свойствами;', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                max: '100999'
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'Missed or wrong type of the arguments',
+        });
        });
 
        it('длинна min равна шести символам', function () {
-           assert.equal(checkData({
-               min: '0000',
+           assert.deepEqual(checkData({
+               min: '0001',
                max: '100999'
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'Wrong length of argument (need 6 members)',
+        });
        });
        it('длинна max равна шести символам', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                min: '000100',
                max: '1099'
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'Wrong length of argument (need 6 members)',
+        });
        });
        it('min меньше либо равен max', function () {
-           assert.equal(checkData({
+           assert.deepEqual (checkData({
                min: '100100',
                max: '100000'
-           }), false);
+           }), {
+            status: 'failed',
+            reason: 'The maximum value must be greater than the minimum',
+        });
        });
    });
 

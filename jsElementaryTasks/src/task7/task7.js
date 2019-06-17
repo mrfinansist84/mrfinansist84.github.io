@@ -1,28 +1,93 @@
+function buildFibonacciRow(lengthOrRange) {
+    let result = checkData(lengthOrRange);
+
+    if (!checkData(lengthOrRange)) {
+        result = calcFibonacci(lengthOrRange);
+    }
+
+    return result;
+}
+
 function checkData(lengthOrRange) {
+    const errorType = {
+            status: 'failed',
+            reason: 'Wrong type of the arguments',
+        },
+        errorValue = {
+            status: 'failed',
+            reason: 'Value of arguments must be longer 0',
+        };
     let res = false;
 
     if (!Array.isArray(lengthOrRange) &&
         typeof lengthOrRange !== 'string') {
 
         if (lengthOrRange.length) {
-            if (typeof lengthOrRange.length === 'number' && 
-            lengthOrRange.length >= 0) {
-                res = true;
+            switch (false) {
+                case (typeof lengthOrRange.length === 'number'):
+                    res = errorType;
+                    break;
+                case (lengthOrRange.length >= 0):
+                    res = errorValue;
+                    break;
             }
         }
-        
-        if (lengthOrRange.max) {
-            const {min, max} = lengthOrRange;
-            if (typeof min === 'number' &&
-                typeof max === 'number' &&
-                min >= 0 &&
-                max > 0  &&
-                min < max) {
-                res = true;
+
+        if (lengthOrRange.max > -1) {
+            const {
+                min,
+                max
+            } = lengthOrRange;
+
+            switch (false) {
+                case (typeof min === 'number' &&
+                    typeof max === 'number'):
+                    res = errorType;
+                    break;
+
+                case (min >= 0 &&
+                    max > 0):
+                    res = errorValue;
+                    break;
+
+                case (min < max):
+                    res = {
+                        status: 'failed',
+                        reason: 'The maximum value must be greater than the minimum',
+                    };
+                    break;
             }
         }
+
+    } else {
+        res = {
+            status: 'failed',
+            reason: 'Not object passed to the arguments',
+        };
     }
+
     return res;
+}
+
+function calcFibonacci(lengthOrRange) {
+    const maxValue = lengthOrRange.max,
+        minValue = lengthOrRange.min,
+        lengthValue = lengthOrRange.length;
+
+    let result = [],
+        fibonacciNum = 0;
+
+    if (lengthValue) {
+        result = calcFibWithLength(lengthValue);
+    } else {
+        for (let i = 0; fibonacciNum < maxValue; ++i) {
+            fibonacciNum = calcFibForRange(i);
+            if (fibonacciNum > maxValue) break;
+            fibonacciNum >= minValue ? result.push(fibonacciNum) : 0;
+        }
+    };
+
+    return result;
 }
 
 function calcFibForRange(n) {
@@ -42,42 +107,9 @@ function calcFibWithLength(n) {
     return fibonacci;
 }
 
-function calcFibonacci(lengthOrRange) {
-    const maxValue = lengthOrRange.max,
-        minValue = lengthOrRange.min,
-        lengthValue = lengthOrRange.length;
 
-    let result = [],
-        fibonacciNum = 0;
-
-    if (lengthValue) {
-        result = calcFibWithLength(lengthValue);
-    } else {
-        for (let i = 0; fibonacciNum < maxValue; ++i) {
-            fibonacciNum = calcFibForRange(i);
-            if (fibonacciNum > maxValue) break;
-            fibonacciNum >= minValue ? result.push(fibonacciNum) : 0;
-        }
-    }
-    return result;
-}
-
-function buildFibonacciRow(lengthOrRange) {
-    let result = {
-        status: 'failed',
-        reason: 'Input object with only max/min values or length',
-    };
-
-    if (checkData(lengthOrRange)) {
-        result = calcFibonacci(lengthOrRange);
-    }
-    return result;
-}
 
 console.log(buildFibonacciRow({
     min: 0,
-    max: 11,
-}));
-console.log(buildFibonacciRow({
-    length: 10
+    max: 10,
 }));

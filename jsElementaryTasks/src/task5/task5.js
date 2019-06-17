@@ -1,16 +1,60 @@
+function compareCalc(range) {
+    let result = checkData(range);
+
+    if (!checkData(range)) {
+        let countEasyWay = 0,
+            countHardWay = 0,
+            winner;
+
+        for (let i = range.min; i < range.max; i++) {
+            countEasyWay += findLuckyTicketEasy(i);
+            countHardWay += findLuckyTicketHard(i);
+        }
+
+        if (countEasyWay === countHardWay) {
+            winner = 'Ничья';
+        } else {
+            winner = countEasyWay > countHardWay ? 'Простой' : 'Сложный';
+        }
+        result = {
+            winner,
+            easyWay: countEasyWay,
+            hardWay: countHardWay
+        }
+    }
+
+    return result;
+}
+
 function checkData({
     min,
     max
 }) {
-    let resCheck = false;
-    if (typeof min === 'string' &&
-        typeof max === 'string' &&
-        min.length === 6 &&
-        max.length === 6 &&
-        +min <= +max) {
-        resCheck = true;
+    let res = false;
+    switch (false) {
+        case (typeof min === 'string' &&
+            typeof max === 'string'):
+            res = {
+                status: 'failed',
+                reason: 'Missed or wrong type of the arguments',
+            };
+            break;
+        case (min.length === 6 &&
+            max.length === 6):
+            res = {
+                status: 'failed',
+                reason: 'Wrong length of argument (need 6 members)',
+            };
+            break;
+        case (+min <= +max):
+            res = {
+                status: 'failed',
+                reason: 'The maximum value must be greater than the minimum',
+            }
+            break;
+
     }
-    return resCheck;
+    return res;
 }
 
 function findLuckyTicketEasy(tiketNumber) {
@@ -55,88 +99,7 @@ function findLuckyTicketHard(tiketNumber) {
 }
 
 
-function compareCalc(range) {
-    let result = {
-        status: 'failed',
-        reason: 'Input only object with min and max number range. Min value must be less max',
-    };
-    
-    if (checkData(range)) {
-        let countEasyWay = 0,
-            countHardWay = 0,
-            winner;
-
-        for (let i = range.min; i < range.max; i++) {
-            countEasyWay += findLuckyTicketEasy(i);
-            countHardWay += findLuckyTicketHard(i);
-        }
-
-        if (countEasyWay === countHardWay) {
-            winner = 'Ничья';
-        } else {
-            winner = countEasyWay > countHardWay ? 'Простой' : 'Сложный';
-        }
-        result = {
-            winner,
-            easyWay: countEasyWay,
-            hardWay: countHardWay
-        }
-    }
-
-    return result;
-}
-
-
 console.log(compareCalc({
     min: '000100',
     max: '100999'
 }));
-
-
-/* function checkData({min, max}) {
-    if ( typeof min === 'number' &&
-        typeof max === 'number' &&
-        String(min).length === 6 &&
-        String(max).length === 6) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function findLuckyTicket(context = {}) {
-    if (checkData(context)) {
-        let countLTEW = 0;
-        let countLTDW = 0;
-        for (let i = context.min; i < context.max; i++) {
-            let firstThreeNumbers = String(i).split('').slice(0, 3)
-                .reduce((acc, cur) => +acc + +cur);
-
-            let secondThreeNumbers = String(i).split('').slice(3, 6)
-                .reduce((acc, cur) => +acc + +cur);
-
-            if (firstThreeNumbers === secondThreeNumbers) {
-                countLTEW += 1;
-            }
-            let evenNumbers = String(i).split('').filter(num => num % 2 == 0)
-                .reduce(((acc, cur) => +acc + +cur), 0);
-            let oddNumbers = String(i).split('').filter(num => num % 2 == 1)
-                .reduce(((acc, cur) => +acc + +cur), 0);
-            if (evenNumbers === oddNumbers) {
-                countLTDW += 1;
-            }
-        }
-        if (countLTEW > countLTDW) {
-            return (`Выиграл "Простой" метод со счетом ${countLTEW} 
-        против ${countLTDW} у "Сложного"`);
-        } else {
-            return `Выиграл "Сложного" метод со счетом ${countLTDW} 
-        против ${countLTEW} у "Простой"`
-        }
-    } else {
-        return ({
-            status: 'failed',
-            reason: 'Input only object with min and max number range',
-        })
-    }
-} */

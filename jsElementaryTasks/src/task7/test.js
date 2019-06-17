@@ -20,15 +20,6 @@
                max: 1000,
            }), [144, 233, 377, 610, 987]);
        });
-       it('Введен неверный объект с данными', function () {
-        assert.deepEqual(buildFibonacciRow({
-            min: -10,
-            max: 1000,
-        }), {
-            status: 'failed',
-            reason: 'Input object with only max/min values or length',
-        });
-    });
    });
 
    describe(`Ряд Фибоначчи для диапазона. Вспомогательная функция checkData.
@@ -46,44 +37,68 @@
   3.3) значение max больше 0;
   3.4) начало диапазона меньше максимального значения(опционно)`, function () {
        it('Проверка на то, что аргумент не массив', function () {
-           assert.equal(checkData([345, 435]), false);
+           assert.deepEqual(checkData([345, 435]), {
+               status: 'failed',
+               reason: 'Not object passed to the arguments',
+           });
        });
        it('Проверка на то, что аргумент не строка', function () {
-           assert.equal(checkData('gdfdfgdf'), false);
+           assert.deepEqual(checkData('gdfdfgdf'), {
+               status: 'failed',
+               reason: 'Not object passed to the arguments',
+           });
        });
        it('Проверка при св-ве length. Тип значения свойства - число', function () {
-           assert.equal(checkData({
-               length: 10
-           }), true);
+           assert.deepEqual(checkData({
+               length: '10'
+           }), {
+               status: 'failed',
+               reason: 'Wrong type of the arguments',
+           });
        });
        it('Проверка при св-ве length. Значение больше или равно 0', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                length: -10
-           }), false);
+           }), {
+               status: 'failed',
+               reason: 'Value of arguments must be longer 0',
+           });
        });
        it('Проверка при св-вах min, max. Переданы оба свойства с типом значений-число', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                min: 'dfsdf',
                max: 11,
-           }), false);
+           }), {
+               status: 'failed',
+               reason: 'Wrong type of the arguments',
+           });
        });
        it('Проверка при св-вах min, max. Значение min больше либо равно 0', function () {
-           assert.equal(checkData({
+           assert.deepEqual(checkData({
                min: -10,
                max: 11,
-           }), false);
+           }), {
+               status: 'failed',
+               reason: 'Value of arguments must be longer 0',
+           });
        });
        it('Проверка при св-вах min, max. Значение max больше 0', function () {
-           assert.equal(checkData({
-               min: 0,
+           assert.deepEqual(checkData({
+               min: -10,
                max: 0,
-           }), false);
+           }), {
+               status: 'failed',
+               reason: 'Value of arguments must be longer 0',
+           });
        });
-       it('Проверка при св-вах min, max. Начало диапазона меньше максимального значения', function () {
-           assert.equal(checkData({
-               min: 10,
+       it('Проверка при св-вах min, max. Начало диапазона должно быть меньше максимального значения', function () {
+           assert.deepEqual(checkData({
+               min: 100,
                max: 10,
-           }), false);
+           }), {
+               status: 'failed',
+               reason: 'The maximum value must be greater than the minimum',
+           });
        });
    });
 
@@ -114,7 +129,7 @@
    Расчет массива чисел Фибоначчи заданной длинны. Принимает 1 параметр - длинну массива(тип число).
    Выводит массив чисел.`, function () {
        it('Длинна массива 5', function () {
-           assert.deepEqual(calcFibWithLength(5), [ 0, 1, 1, 2, 3 ]);
+           assert.deepEqual(calcFibWithLength(5), [0, 1, 1, 2, 3]);
        });
        it('Введена длина 10', function () {
            assert.deepEqual(calcFibWithLength(10), [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]);
@@ -131,5 +146,3 @@
            assert.equal(calcFibForRange(10), 55);
        });
    });
-
-   
