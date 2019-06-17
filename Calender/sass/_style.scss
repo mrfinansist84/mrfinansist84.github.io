@@ -79,7 +79,11 @@
         &-item {
             @include day-container-item;
             cursor: pointer;
-            
+
+            &--weekend {
+                color: #ff0000;
+            }
+
             &--checked {
                 border: 2px solid $fillForCurrentDate;
             }

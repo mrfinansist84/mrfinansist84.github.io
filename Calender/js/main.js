@@ -92,9 +92,15 @@ function createCalender(newYear, newMonth) {
         });
 
       } else {
-        dayMonth = buildElement('p', `${dayNumMonth}`, {
-          class: 'calender__date-container-item'
-        });
+        if (currDate.getDay() === 6 || currDate.getDay() === 0) {
+          dayMonth = buildElement('p', `${dayNumMonth}`, {
+            class: 'calender__date-container-item calender__date-container-item--weekend'
+          }); 
+        } else {
+          dayMonth = buildElement('p', `${dayNumMonth}`, {
+            class: 'calender__date-container-item'
+          });
+        }
       }
       fragment.appendChild(dayMonth);
       currDate.setDate(currDate.getDate() + 1);

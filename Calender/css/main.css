@@ -106,6 +106,9 @@
   border: 2px solid transparent;
   cursor: pointer;
 }
+.calender__date-container-item--weekend {
+  color: #ff0000;
+}
 .calender__date-container-item--checked {
   border: 2px solid #016bff;
 }
