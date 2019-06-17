@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", starter);
+
 /* инициализатор */
 function starter() {
   findDateForClockAndControl();
