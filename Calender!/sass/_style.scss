@@ -1,0 +1,123 @@
+.calender {
+    font-family: $font;
+    background-color: $backgroundColor;
+    width: 360px;
+    margin: 0 auto;
+    padding: 20px 10px 20px 20px;
+    color: $baseFontColor;
+
+    &__clock {
+        margin: 0 auto;
+        width: 300px;
+        border-bottom: 1px solid $colorOfLineSeparator;
+
+        &-item {
+            font-size: 45px;
+            margin: 0
+        }
+
+        &-date {
+            color: $colorForDateNow;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        width: 300px;
+
+        &-container {
+            display: flex;
+        }
+
+        &-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            outline: none;
+            background-color: inherit;
+            cursor: pointer;
+            
+            &--prev-day,
+            &--next-day,
+            &--prev-month,
+            &--next-month {
+                position: relative;
+            }
+
+
+            &--prev-day::after {
+                @include psevdoButton;
+                background-image: url('../img/prevDayarrow.png');
+                
+            }
+
+            &--next-day::after {
+                @include psevdoButton;
+                background-image: url('../img/nextDayarrow.png');
+            }
+
+            &--prev-month::after {
+                @include psevdoButton;
+                background-image: url('../img/prevMontharrow.png');
+            }
+
+            &--next-month::after {
+                @include psevdoButton;
+                background-image: url('../img/nextMontharrow.png');
+            }
+
+           
+        }
+    }
+
+    &__date-container {
+        @include day-container;
+        height: 300px;
+
+        &-item {
+            @include day-container-item;
+            cursor: pointer;
+
+            &--weekend {
+                color: #ff0000;
+            }
+
+            &--checked {
+                border: 2px solid $fillForCurrentDate;
+            }
+
+            &:hover {
+                border: 2px solid $colorOfLineSeparator;
+            }
+
+            &--dayIsToday {
+
+                background-color: $fillForCurrentDate;
+                outline: 2px solid $borderInDayToday;
+                outline-offset: -5px;
+
+                &:hover {
+                    border: 2px solid $borderAroundDateDayToday;
+                }
+            }
+
+            &--prev-month {
+                color: $colorFordisabledDate;
+            }
+        }
+    }
+
+    &__weekday {
+        @include day-container;
+
+        &-item {
+            @include day-container-item;
+            font-size: 12px;
+        }
+    }
+}
+#container {
+    border: none;
+}
