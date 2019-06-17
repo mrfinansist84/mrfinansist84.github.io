@@ -1,7 +1,7 @@
 # allTasks
 
 ### - [Calender](https://mrfinansist84.github.io/Calender "Calender")
-### - [jsElementaryTasks](https://mrfinansist84.github.io/jsElementaryTasks "jsElementaryTasks")
+### - [jsElementaryTasks](https://mrfinansist84.github.io/jsElementaryTasks "jsElementaryTasks ")
 ### - [TicTacToeGame](https://mrfinansist84.github.io/ticTacToe/ "TicTacToeGame")
 ### - [StringHandMadeMethods](https://mrfinansist84.github.io/stringHandmadeMethods "StringHandMadeMethods")
 ### - [TASK#9](https://mrfinansist84.github.io/Task9 "TASK#9")
