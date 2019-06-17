@@ -1,23 +1,7 @@
-function checkData({ a, b}, { p, q }) {
-    let res = false;
-
-    if (typeof a === 'number' &&
-        typeof b === 'number' &&
-        typeof p === 'number' &&
-        typeof q === 'number' &&
-        (a > 0 && b > 0 && p > 0 && q > 0)) {
-        res = true;
-    }
-    return res;
-}
-
 function checkEntersEnvelope(envelope1, envelope2) {
-    let result = {
-        status: 'failed',
-        reason: 'Input only 2 objects with keys (a,b) and (p,q)',
-    };
+    let result = checkData(envelope1, envelope2);
 
-    if (checkData(envelope1, envelope2)) {
+    if (!checkData(envelope1, envelope2)) {
         let a = envelope1.a,
             b = envelope1.b,
             p = envelope2.p,
@@ -35,7 +19,7 @@ function checkEntersEnvelope(envelope1, envelope2) {
             case (p <= a && q <= b) || (p <= a && q >= formulaEnv2):
                 result = 2;
                 break;
-    
+
             default:
                 result = 0;
         }
@@ -43,10 +27,36 @@ function checkEntersEnvelope(envelope1, envelope2) {
     return result;
 }
 
+function checkData({ a, b }, { p, q }) {
+    let res = false;
+    
+    switch (false) {
+        case (typeof a === 'number' &&
+            typeof b === 'number' &&
+            typeof p === 'number' &&
+            typeof q === 'number'):
+            res = {
+                status: 'failed',
+                reason: 'Wrong type of arguments',
+            };
+            break;
+
+        case (a > 0 && b > 0 && p > 0 && q > 0):
+            res = {
+                status: 'failed',
+                reason: 'Too small value of argument',
+            };
+            break;
+    }
+
+    return res;
+}
+
+
 console.log(checkEntersEnvelope({
-    a: 75,
-    b: 4
+    a: 30,
+    b: 40
 }, {
-    p: 70,
-    q: 40
+    p: 20,
+    q: 30
 }));

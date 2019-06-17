@@ -1,21 +1,7 @@
-function checkIncomeData(length, width, symbol) {
-    let res = false;
-
-    if (typeof length === 'number' &&
-        typeof width === 'number' &&
-        typeof symbol === 'string' &&
-        symbol.length === 1 &&
-        length > 0 && width > 0 &&
-        length && width && symbol) {
-        res = true;
-    }
-    return res;
-}
-
 function chessBuilder(length, width, symbol) {
     let result = `\n`;
-    
-    if (checkIncomeData(length, width, symbol)) {
+
+    if (!checkIncomeData(length, width, symbol)) {
         const targetString = `${symbol} `.repeat(length);
 
         for (let i = 0; i < width; i++) {
@@ -27,12 +13,38 @@ function chessBuilder(length, width, symbol) {
             }
         }
     } else {
-        result = {
-            status: 'failed',
-            reason: 'Input only numbers as length and width; symbol - one symbol string.',
-        };
+        result = checkIncomeData(length, width, symbol);
     }
+
     return result;
 }
 
-console.log(chessBuilder(5, 5, '@'));
+function checkIncomeData(length = 0, width = 0, symbol = '') {
+    let res = false;
+
+    switch (false) {
+        case (length > 0 && width > 0 &&
+            length && width && symbol):
+
+            res = {
+                status: 'failed',
+                reason: 'Wrong value or missed some arguments: length & width > 0; symbol = 1 item',
+            };
+            break;
+
+        case (typeof length === 'number' &&
+            typeof width === 'number' &&
+            typeof symbol === 'string'):
+
+            res = {
+                status: 'failed',
+                reason: 'Wrong type of arguments',
+            };
+            break;
+
+    }
+    return res;
+}
+
+
+console.log(chessBuilder(4, 4, '@'));

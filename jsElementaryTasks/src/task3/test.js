@@ -27,37 +27,55 @@
   describe(`Сортировка треугольников: 
   вспомогательная функция проверки аргументов checkData`, function () {
       it('проверка первого аргумента на то, что название треугольника это строка', function () {
-          assert.equal(checkData([{
-              vertices: 'ABC',
+          assert.deepEqual(checkData([{
+              vertices: 5345345,
               a: 10,
               b: 20,
               c: 22.36
-          }]), true);
+          }]), {
+            status: 'failed',
+            reason: 'Wrong type of the arguments',
+        });
       });
       it('проверка на то, что стороны переданы числами', function () {
-          assert.equal(checkData([{
+          assert.deepEqual(checkData([{
               vertices: 'ABC',
               a: 'sdfsdf',
               b: 20,
               c: 22.36
-          }]), false);
+          }]), {
+            status: 'failed',
+            reason: 'Wrong type of the arguments',
+        });
       });
-      it('проверка на то, что стороны переданы 2,3,4-м аргументом', function () {
-        assert.equal(checkData([{
-            a: 10,
+      it('проверка на то, что стороны больше 0', function () {
+        assert.deepEqual(checkData([{
             vertices: 'ABC',
+            a: -10,
             b: 20,
             c: 22.36
-        }]), false);
+        }]), {
+            status: 'failed',
+            reason: 'Too small value of argument',
+        });
     });
-      it('проверка длинны названия треугольника - должна быть длинна 3 символа', function () {
-          assert.equal(checkData([{
-              vertices: 'ABC',
-              a: 10,
-              b: 20,
-              c: 22.36
-          }]), true);
-      });
+    it('нарушен закон неравенства сторон трехугольника', function () {
+        assert.deepEqual(checkData([{
+            vertices: 'ABC',
+            a: 1,
+            b: 2,
+            c: 3
+        }]), {
+            status: 'failed',
+            reason: 'The law of triangles is broken',
+        });
+    });
+    it('в аргументах пустой массив или передан не массив', function () {
+        assert.deepEqual(checkData([]), {
+            status: 'failed',
+            reason: 'Not array or empty array passed to the arguments',
+        });
+    });
   });
 
 
