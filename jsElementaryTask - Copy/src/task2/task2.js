@@ -6,11 +6,24 @@ export default function checkEntersEnvelope(envelope1, envelope2) {
             b = envelope1.b,
             p = envelope2.p,
             q = envelope2.q,
+            bufferSide,
             formulaEnv1 = (2 * p * q * a + (p * p - q * q) *
                 Math.sqrt(p * p + q * q - a * a)) / (p * p + q * q),
 
             formulaEnv2 = (2 * b * a * p + (a * a - b * b) *
                 Math.sqrt(a * a + b * b - p * p)) / (a * a + b * b);
+
+        if (a > b) {
+            bufferSide = a;
+            a = b;
+            b = bufferSide;
+        }
+
+        if (p > q) {
+            bufferSide = p;
+            p = q;
+            q = bufferSide;
+        }
 
         switch (true) {
             case (p >= a && q >= b) || (p >= a && b >= formulaEnv1):
@@ -29,7 +42,7 @@ export default function checkEntersEnvelope(envelope1, envelope2) {
 
 function checkData({ a, b }, { p, q }) {
     let res = false;
-    
+
     switch (false) {
         case (typeof a === 'number' &&
             typeof b === 'number' &&
@@ -51,5 +64,3 @@ function checkData({ a, b }, { p, q }) {
 
     return res;
 }
-
-
