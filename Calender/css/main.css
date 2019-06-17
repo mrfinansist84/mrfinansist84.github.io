@@ -37,6 +37,7 @@
   border: none;
   outline: none;
   background-color: inherit;
+  cursor: pointer;
 }
 .calender__controls-btn--prev-day, .calender__controls-btn--next-day, .calender__controls-btn--prev-month, .calender__controls-btn--next-month {
   position: relative;
@@ -103,6 +104,7 @@
   margin: 0;
   padding: 7px;
   border: 2px solid transparent;
+  cursor: pointer;
 }
 .calender__date-container-item--checked {
   border: 2px solid #016bff;

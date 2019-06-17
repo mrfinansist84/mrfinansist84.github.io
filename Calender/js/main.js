@@ -6,8 +6,8 @@ function starter() {
   slideMonth();
   checkingDay();
   markDay();
-/*   aaa() */
 }
+
 /* дата для верхушки */
 function findDateForClockAndControl() {
   const date = new Date(),
@@ -18,27 +18,27 @@ function findDateForClockAndControl() {
       weekday: 'long',
       timezone: 'UTC',
     },
-
-    containerForClockDate = document.querySelector('.calender__clock'),
-    containerForControlDate = document.querySelector('.calender__controls-weekday-year'),
     formatedClockDate = date.toLocaleString('ru', options),
     formatedControlDate = date.toLocaleString('ru', {
       month: 'long',
       year: 'numeric'
     }),
-
+    containerForClockDate = document.querySelector('.calender__clock'),
+    containerForControlDate = document.querySelector('.calender__controls-weekday-year'),
     clockDate = buildElement('p', `${formatedClockDate}`, {
       class: 'calender__clock-date'
     }),
     controlDate = buildElement('span', `${formatedControlDate}`, {
       class: 'calender__controls-weekday-year-item'
     });
+
   containerForClockDate.appendChild(clockDate);
-  containerForControlDate.appendChild(controlDate)
+  containerForControlDate.appendChild(controlDate);
 }
 
 /* часики */
 function buidClock() {
+
   const date = new Date(),
     elementForClock = document.querySelector('.calender__clock-item'),
     clock = date.toLocaleTimeString('ru-Ru', {
@@ -57,17 +57,17 @@ function createCalender(newYear, newMonth) {
     fragment = document.createDocumentFragment(),
     date = new Date(),
     currYear = newYear ? newYear : date.getFullYear(),
-    currMonth = newMonth ? newMonth : date.getMonth(),
+    currMonth = newMonth > -1 ? newMonth : date.getMonth(),
     currDate = new Date(currYear, currMonth); /*  по умолчанию текущая дата */
 
   let dayStartCurrMonth = currDate.getDay(new Date(currYear, currMonth, 1)) - 1,
-    dayNumMonth,
-    dayMonth,
     dayIsToday = new Date().toLocaleString('ru', {
       month: 'long',
       year: 'numeric',
       day: 'numeric'
     }),
+    dayNumMonth,
+    dayMonth,
     todaysCheck;
 
   currDate.setDate(currDate.getDate() - dayStartCurrMonth);
@@ -79,17 +79,18 @@ function createCalender(newYear, newMonth) {
     dayNumMonth = currDate.getDate();
 
     if (currDate.getMonth() == currMonth) {
-      /* console.log(currDate.getMonth(), currMonth) !!!!!!!!!!!!!!!!!!! проблема здесь*/
       todaysCheck = currDate.toLocaleString('ru', {
         month: 'long',
         year: 'numeric',
         day: 'numeric'
       });
+
       if (todaysCheck === dayIsToday) {
         dayMonth = buildElement('p', `${currDate.getDate()}`, {
           class: `calender__date-container-item calender__date-container-item--dayIsToday
            calender__date-container-item--checked`
         });
+
       } else {
         dayMonth = buildElement('p', `${dayNumMonth}`, {
           class: 'calender__date-container-item'
@@ -103,7 +104,6 @@ function createCalender(newYear, newMonth) {
     dayMonth = buildElement('p', `${dayNumMonth}`, {
       class: 'calender__date-container-item calender__date-container-item--prev-month'
     });
-
     fragment.appendChild(dayMonth);
     currDate.setDate(currDate.getDate() + 1);
   }
@@ -112,12 +112,14 @@ function createCalender(newYear, newMonth) {
 
 
 /* конструктор элементов. */
-function buildElement(tags, postText, className) {
+function buildElement(tags, elemText, className) {
   const elem = document.createElement(tags);
+
   for (const key in className) {
     elem.setAttribute(`${key}`, className[key]);
   };
-  elem.textContent = postText;
+  elem.textContent = elemText;
+
   return elem;
 }
 
@@ -127,6 +129,7 @@ function slideMonth() {
 
   targetElementNext.addEventListener('click', slideMonthNext);
   targetElementPrev.addEventListener('click', slideMonthPrev);
+
   localStorage.setItem("currMonth", `${new Date().getMonth()}`);
   localStorage.setItem("currYear", `${new Date().getFullYear()}`);
 }
@@ -144,10 +147,9 @@ function slideMonthNext() {
   } else {
     localStorage.setItem("currMonth", `${incrementMonth}`);
     incrementMonth = +(localStorage.getItem("currMonth"));
-
   }
+
   changeMonth(curYear, incrementMonth);
-  
 };
 
 function slideMonthPrev() {
@@ -164,19 +166,23 @@ function slideMonthPrev() {
     localStorage.setItem("currMonth", `${decrementMonth}`);
     decrementMonth = +(localStorage.getItem("currMonth"));
   }
-  changeMonth(curYear, decrementMonth);
 
+  changeMonth(curYear, decrementMonth);
 };
 
 function changeMonth(curYear, targertMonth) {
   document.querySelector('.calender__date-container').innerHTML = '';
 
   createCalender(curYear, targertMonth);
+  changeInControlsWeekdayYear(curYear, targertMonth);
+}
 
+function changeInControlsWeekdayYear(curYear, targertMonth) {
   const strMonth = new Date(curYear, targertMonth, 1).toLocaleString('ru', {
     month: 'long',
     year: 'numeric'
   });
+
   document.querySelector('.calender__controls-weekday-year-item').innerHTML = `${strMonth}`;
 }
 
@@ -189,58 +195,49 @@ function checkingDay() {
 }
 
 function checkDayNext() {
-  let targetEl = document.querySelector('.calender__date-container-item--checked'),
-    firstEl = document.querySelector('.calender__date-container').firstElementChild;
-
-  targetEl ? targetEl.classList.remove('calender__date-container-item--checked') :
-    targetEl = firstEl;
-  if (targetEl.nextElementSibling) {
-    targetEl.nextElementSibling.classList.add('calender__date-container-item--checked');
-  } else {
-    firstEl.classList.add('calender__date-container-item--checked');
-  }
-
+  checkDaySwitch('firstElementChild', 'nextElementSibling');
 }
 
 function checkDayPrev() {
+  checkDaySwitch('lastChild', 'previousElementSibling');
+}
 
-  let targetEl = document.querySelector('.calender__date-container-item--checked'),
-    lastEl = document.querySelector('.calender__date-container').lastChild;
+function checkDaySwitch(next, sibling) {
+  const nextElAfterEnd = document.querySelector('.calender__date-container')[next];
+  let targetEl = document.querySelector('.calender__date-container-item--checked');
 
   targetEl ? targetEl.classList.remove('calender__date-container-item--checked') :
-    targetEl = lastEl;
+    targetEl = nextElAfterEnd;
 
-  if (targetEl.previousElementSibling) {
-    targetEl.previousElementSibling.classList.add('calender__date-container-item--checked');
+  if (targetEl[sibling]) {
+    targetEl[sibling].classList.add('calender__date-container-item--checked');
   } else {
-    lastEl.classList.add('calender__date-container-item--checked');
+    nextElAfterEnd.classList.add('calender__date-container-item--checked');
   }
-
 }
 
 function markDay() {
   const targetElement = document.querySelector('.calender__date-container');
   const targetElBody = document.body;
+
   targetElement.addEventListener('click', addBorder);
   targetElBody.addEventListener('keydown', addBorderByBtnArrow);
 }
 
 function addBorder(e) {
-  let targetEl = document.querySelector('.calender__date-container-item--checked');
+  const targetEl = document.querySelector('.calender__date-container-item--checked');
 
   targetEl ? targetEl.classList.remove('calender__date-container-item--checked') : 0;
-
   e.target.classList.add('calender__date-container-item--checked');
 }
 
 function addBorderByBtnArrow(e) {
   switch (e.keyCode) {
     case 37: // если нажата клавиша влево
-    checkDayPrev()
+      checkDayPrev()
       break;
     case 39: // если нажата клавиша вправо
-    checkDayNext()
+      checkDayNext()
       break;
   }
 }
-
