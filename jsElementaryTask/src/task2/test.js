@@ -11,7 +11,7 @@
      it('в случае если невозможно вложить конверт один в другой выводит 0', function () {
          assert.equal(checkEntersEnvelope({
             a: 100,
-            b: 20
+            b: 5
         }, {
             p: 20,
             q: 30

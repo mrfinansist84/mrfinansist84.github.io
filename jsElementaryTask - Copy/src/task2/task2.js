@@ -1,4 +1,4 @@
-export default function checkEntersEnvelope(envelope1, envelope2) {
+function checkEntersEnvelope(envelope1, envelope2) {
     let result = checkData(envelope1, envelope2);
 
     if (!checkData(envelope1, envelope2)) {
