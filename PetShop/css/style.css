@@ -1,0 +1,52 @@
+.card {
+    position: relative;
+    margin-left: 20px;
+    background-color: gray;
+    padding: 20px;
+}
+
+.cart {
+    position: absolute;
+    bottom: -17px;
+    left: 40%;
+    font-size: 20px;
+    background-color: aqua;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.wrapp {
+    display: flex;
+}
+
+.animalInfo {
+    display: none;
+}
+
+img {
+    max-width: 200px;
+}
+
+.addInfo {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: bisque;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.grid-container {
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+}
+
+.language {
+    width:100%;
+    text-align: center;
+    margin-bottom: 50px;
+}
