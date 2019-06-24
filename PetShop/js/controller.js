@@ -9,25 +9,13 @@ import {
     BirdRu,
     FishRu
 } from './model.js';
+import getStart from './main.js'
 
-
-class getStart {
-    static getData(url = 'js/dataBaseEn.json') {
-        fetch(url)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                init.init(data)
-            })
-    }
-}
-
-class init {
+export default class init {
     constructor(dataBase) {}
     static productionAnimal(dataBase) {
         const res = [];
-        console.log(res);
+        
         dataBase.forEach(element => {
             switch (element.type) {
                 case 'cat':
@@ -73,22 +61,21 @@ class init {
         btnContainer.addEventListener('click', this.switchLang);
 
         const container = document.querySelector('.grid-container');
-        container.addEventListener('click', this.showInfo.bind(this));
+        container.addEventListener('click', this.showInfo);
 
     }
     static showInfo(e) {
         switch (e.target.innerText) {
             case 'More info': {
-                console.log("1")
                 e.target.previousSibling.previousSibling.classList.toggle('addInfo');
             };
             break;
         case 'next': {
-            this.cs.create();
+            init.cs.create();
         };
         break;
         case 'prev': {
-            this.cs.createPrev()
+            init.cs.createPrev()
         };
         break;
         }
@@ -106,5 +93,3 @@ class init {
         }
     }
 }
-
-getStart.getData();

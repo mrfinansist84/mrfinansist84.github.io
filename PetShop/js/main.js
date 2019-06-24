@@ -10,7 +10,7 @@ export default class getStart {
             return response.json()
         })
         .then(data => {
-            init.init(data)
+            init.init(data);
         })}
     
 }
