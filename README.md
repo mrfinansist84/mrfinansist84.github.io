@@ -1,5 +1,6 @@
 # allTasks
 
+### - [PetShop](https://mrfinansist84.github.io/PetShop "PetShop")
 ### - [Calender](https://mrfinansist84.github.io/Calender! "Calender")
 ### - [jsElementaryTask](https://mrfinansist84.github.io//jsElementaryTask%20-%20Copy/ "jsElementaryTask")
 ### - [TicTacToeGame](https://mrfinansist84.github.io/ticTacToe/ "TicTacToeGame")
