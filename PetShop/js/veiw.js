@@ -1,47 +1,43 @@
 export default class ComposeSlider {
-  constructor(goodsForRending, link, count /* arr of obj */ ) {
+  constructor(goodsForRending, count /* arr of obj */) {
     this.targetElem = document.querySelector('.content');
     this.goodsForRending = goodsForRending;
-    this.link = link;
     this.count = count;
   }
 
-  create() {
+   create() {
     this.targetElem.innerHTML = '';
     let parentDiv = document.createElement('div');
     parentDiv.classList.add('wrapp');
-    this.link = {link: parentDiv};
 
     for (let i = 0; i < 4; i++) {
-      
       parentDiv.appendChild(BuildCard.builItem(this.goodsForRending[this.count]));
       this.count < 19 ? this.count++ : this.count = 0;
-
     }
-  
+
     this.targetElem.appendChild(parentDiv);
   }
-  
-  createPrev() {
+
+   createPrev() {
     this.targetElem.innerHTML = '';
     let parentDiv = document.createElement('div');
     parentDiv.classList.add('wrapp');
-    this.link = {link: parentDiv};
+    this.link = {
+      link: parentDiv
+    };
 
     for (let i = 0; i < 4; i++) {
-     
       parentDiv.appendChild(BuildCard.builItem(this.goodsForRending[this.count]));
       this.count > 0 ? this.count-- : this.count = 19;
-
     }
-  
+
     this.targetElem.appendChild(parentDiv);
   }
 }
 
 class BuildCard {
-  constructor(goodsUnit) {
-    this.goodsUnit = goodsUnit;
+  constructor() {
+   
   }
 
   static chooseSpecialCharacteristics(goodsUnit) {
@@ -58,7 +54,7 @@ class BuildCard {
 
   static builItem(goodsUnit) {
     let cardDiv = document.createElement('div');
-    
+
     cardDiv.classList.add('card');
     cardDiv.innerHTML = `
                 <img src=${goodsUnit.url}>
