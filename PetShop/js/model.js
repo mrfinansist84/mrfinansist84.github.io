@@ -3,20 +3,28 @@ import init from './controller.js';
 export default class GetStart {
     constructor() {}
 
-    static getData(url = 'js/dataBaseEn.json') {
-        return fetch(url)
+    static getData() {
+        fetch('js/dictionary.json')
+            .then(response => {
+                return response.json()
+            })
+            .then(dictionary => {
+                p.makeDictinary(dictionary);
+            })
+        fetch('js/dataBase.json')
             .then(response => {
                 return response.json()
             })
             .then(data => {
                 p.makeInst(data);
-            })
+            });
     }
 }
 
-export class ProductionAnimal {
+export class MakeData {
     constructor() {
         this.container;
+        this.dictionary;
     }
     makeInst(dataBase) {
         const res = [];
@@ -41,73 +49,12 @@ export class ProductionAnimal {
         init.init(this.container);
     }
 
-    translate(lang) {
-        switch (lang) {
-            case "EN": {
-                fetch('js/dictionaryRuEn.json')
-                    .then(response => {
-                        return response.json()
-                    })
-                    .then(dictionary => {
-            
-                        this.translaterMan(dictionary);
-                    })
-                    break;
-            }
-            case "RU": {
-                fetch('js/dictionaryEnRu.json')
-                    .then(response => {
-                        return response.json()
-                    })
-                    .then(dictionary => {
-                        this.translaterMan(dictionary);
-                    })
-                    break;
-            }
-        }
-      
-        init.init(this.container);
+    makeDictinary(dictionary) {
+        this.dictionary = dictionary;
     }
-    translaterMan(dictionary) {
-        this.container.forEach(element => {
-            for (let keya in dictionary) {
-                for (let keyb in element) {
-                    if (keya === element[keyb]) {
-                        element[keyb] = dictionary[keya];
-                    }
-                    if (keya === keyb) {
-                        element[dictionary[keya]] = element[keyb];
-                        delete element[keyb];
-                    }
-
-                    for (let keyb in element.feature) {
-                        if (Array.isArray(element.feature[keyb])) {
-                            element.feature[keyb].forEach((el, i) => {
-                                if (keya === el) {
-                                    element.feature[keyb][i] = dictionary[keya];
-                                }
-                            })
-                        }
-                        if (keya === element.feature[keyb]) {
-                            element.feature[keyb] = dictionary[keya];
-                        }
-                        if (keya === keyb) {
-                            element.feature[dictionary[keya]] = element.feature[keyb];
-                            delete element.feature[keyb];
-
-                        }
-                    }
-                }
-            }
-        });
-    }
-
 }
 
-export const p = new ProductionAnimal();
-
-
-
+export const p = new MakeData();
 
 class Animal {
     constructor(dataBase) {
@@ -116,76 +63,53 @@ class Animal {
         this.name = dataBase.name;
         this.price = dataBase.price;
         this.url = dataBase.url;
-        this.feature = {
-            quantity: dataBase.quantity,
-            ageMonth: dataBase.ageMonth,
-            weightKg: dataBase.weightKg,
-            color: dataBase.color,
-            gender: dataBase.gender,
-            lifetimeYears: dataBase.lifetimeYears,
-            rapacity: dataBase.rapacity
-        }
+        this.quantity = dataBase.quantity;
+        this.ageMonth = dataBase.ageMonth;
+        this.weightKg = dataBase.weightKg;
+        this.color = dataBase.color;
+        this.gender = dataBase.gender;
+        this.lifetimeYears = dataBase.lifetimeYears;
+        this.rapacity = dataBase.rapacity
     }
 }
 
 class CatDog extends Animal {
     constructor(dataBase) {
         super(dataBase);
-        const feature = this.feature;
-        this.feature = {
-            ...feature,
-            fur: dataBase.fur,
-            shortLegged: dataBase.shortLegged,
-            pedigree: dataBase.pedigree,
-            trimming: dataBase.trimming,
-        }
+        this.fur = dataBase.fur;
+        this.shortLegged = dataBase.shortLegged;
+        this.pedigree = dataBase.pedigree;
+        this.trimming = dataBase.trimming;
     }
 }
 
 export class Cat extends CatDog {
     constructor(dataBase) {
         super(dataBase);
-        const feature = this.feature;
-        this.feature = {
-            ...feature,
-            lopiness: dataBase.lopiness
-        }
+        this.lopiness = dataBase.lopiness;
     }
 }
 
 export class Dog extends CatDog {
     constructor(dataBase) {
         super(dataBase);
-        const feature = this.feature;
-        this.feature = {
-            ...feature,
-            specialization: dataBase.shortLegged
-        }
+        this.specialization = dataBase.shortLegged;
     }
 }
 
 export class Fish extends Animal {
     constructor(dataBase) {
         super(dataBase);
-        const feature = this.feature;
-        this.feature = {
-            ...feature,
-            freshwater: dataBase.zonality,
-            zonality: dataBase.zonality
-        }
+        this.freshwater = dataBase.zonality;
+        this.zonality = dataBase.zonality;
     }
 }
 
 export class Bird extends Animal {
     constructor(dataBase) {
         super(dataBase);
-        const feature = this.feature;
-        this.feature = {
-            ...feature,
-            flying: dataBase.flying,
-            talking: dataBase.talking,
-            singing: dataBase.singing,
-
-        }
+        this.flying = dataBase.flying;
+        this.talking = dataBase.talking;
+        this.singing = dataBase.singing;
     }
 }

@@ -1,14 +1,11 @@
 import ComposeSlider from './veiw.js';
-import { p } from './model.js';
-import GetStart from './model.js'
 
 export default class init {
-    constructor() {
-    }
     static init(container) {
-        let count = 0;
-        this.cs = new ComposeSlider(container, count);
-        this.cs.create();
+       
+        this.cs = new ComposeSlider(container);
+        this.lang = 'en';
+        this.cs.create(this.lang);
         this.listeners();
     }
 
@@ -26,11 +23,12 @@ export default class init {
                 break;
             };
         case 'next': {
-            init.cs.create();
+            init.cs.create(init.lang);
             break;
         };
         case 'prev': {
-            init.cs.createPrev()
+
+            init.cs.createPrev(init.lang)
             break;
         };
         }
@@ -38,13 +36,20 @@ export default class init {
     static switchLang(e) {
         switch (e.target.innerText) {
             case 'РУССКИЙ': {
-                p.translate('RU')
+                init.lang = 'ru';
+                init.cs.create(init.lang);
+                break;
             };
-            break;
         case 'ENGLISH': {
-            p.translate('EN')
+            init.lang = 'en';
+            init.cs.create(init.lang);
+            break;
         };
-        break;
+        case 'УКРАIНСЬКИЙ': {
+            init.lang = 'ua';
+            init.cs.create(init.lang);
+            break;
+        };
         }
     }
 }
