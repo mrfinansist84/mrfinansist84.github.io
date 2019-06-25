@@ -37,17 +37,17 @@ export default class init {
         switch (e.target.innerText) {
             case 'РУССКИЙ': {
                 init.lang = 'ru';
-                init.cs.create(init.lang);
+                init.cs.createWithAnotherLang(init.lang);
                 break;
             };
         case 'ENGLISH': {
             init.lang = 'en';
-            init.cs.create(init.lang);
+            init.cs.createWithAnotherLang(init.lang);
             break;
         };
         case 'УКРАIНСЬКИЙ': {
             init.lang = 'ua';
-            init.cs.create(init.lang);
+            init.cs.createWithAnotherLang(init.lang);
             break;
         };
         }

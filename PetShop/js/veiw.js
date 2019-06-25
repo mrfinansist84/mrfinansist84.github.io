@@ -22,6 +22,11 @@ export default class ComposeSlider {
     this.targetElem.appendChild(parentDiv);
   }
 
+  createWithAnotherLang(lang) {
+    this.count = this.count - 4;
+    this.create(lang);
+  }
+
   createPrev(lang) {
     this.targetElem.innerHTML = '';
     let parentDiv = document.createElement('div');
