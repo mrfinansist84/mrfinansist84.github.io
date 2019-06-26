@@ -1,14 +1,6 @@
-import ComposeSlider from './veiw.js';
+import LaunchView from './veiw.js';
 
-export default class init {
-    static init(container) {
-       
-        this.cs = new ComposeSlider(container);
-        this.lang = 'en';
-        this.cs.create(this.lang);
-        this.listeners();
-    }
-
+export default class HangEvents {    
     static listeners() {
         const btnContainer = document.querySelector('.language');
         btnContainer.addEventListener('click', this.switchLang);
@@ -18,17 +10,13 @@ export default class init {
     }
     static showInfo(e) {
         switch (e.target.innerText) {
-            case 'More info': {
-                e.target.previousSibling.previousSibling.classList.toggle('addInfo');
-                break;
-            };
         case 'next': {
-            init.cs.create(init.lang);
+          LaunchView.cs.create(LaunchView.lang);
             break;
         };
         case 'prev': {
 
-            init.cs.createPrev(init.lang)
+          LaunchView.cs.createPrev(LaunchView.lang)
             break;
         };
         }
@@ -36,18 +24,18 @@ export default class init {
     static switchLang(e) {
         switch (e.target.innerText) {
             case 'РУССКИЙ': {
-                init.lang = 'ru';
-                init.cs.createWithAnotherLang(init.lang);
+              LaunchView.lang = 'ru';
+              LaunchView.cs.createWithAnotherLang(LaunchView.lang);
                 break;
             };
         case 'ENGLISH': {
-            init.lang = 'en';
-            init.cs.createWithAnotherLang(init.lang);
+          LaunchView.lang = 'en';
+          LaunchView.cs.createWithAnotherLang(LaunchView.lang);
             break;
         };
         case 'УКРАIНСЬКИЙ': {
-            init.lang = 'ua';
-            init.cs.createWithAnotherLang(init.lang);
+          LaunchView.lang = 'ua';
+          LaunchView.cs.createWithAnotherLang(LaunchView.lang);
             break;
         };
         }

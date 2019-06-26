@@ -1,4 +1,4 @@
-import init from './controller.js';
+import LaunchView from './veiw.js';
 
 export default class GetStart {
     constructor() {}
@@ -9,19 +9,19 @@ export default class GetStart {
                 return response.json()
             })
             .then(dictionary => {
-                p.makeDictinary(dictionary);
+                dataForRendiring.makeDictinary(dictionary);
             })
         fetch('js/dataBase.json')
             .then(response => {
                 return response.json()
             })
             .then(data => {
-                p.makeInst(data);
+                dataForRendiring.makeInst(data);
             });
     }
 }
 
-export class MakeData {
+class MakeData {
     constructor() {
         this.container;
         this.dictionary;
@@ -46,7 +46,7 @@ export class MakeData {
             }
         });
         this.container = res;
-        init.init(this.container);
+        LaunchView.rendering(this.container); 
     }
 
     makeDictinary(dictionary) {
@@ -54,7 +54,7 @@ export class MakeData {
     }
 }
 
-export const p = new MakeData();
+export const dataForRendiring = new MakeData();
 
 class Animal {
     constructor(dataBase) {

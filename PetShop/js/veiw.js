@@ -1,8 +1,18 @@
-import {
-  p
-} from './model.js';
 
-export default class ComposeSlider {
+import  {dataForRendiring}  from './model.js';
+import  HangEvents  from './controller.js';
+
+export default class LaunchView {
+  static rendering(container) {
+    
+    this.cs = new ComposeSlider(container);
+    this.lang = 'en';
+    this.cs.create(this.lang);
+    HangEvents.listeners();
+  }
+}
+
+class ComposeSlider {
   constructor(goodsForRending) {
     this.targetElem = document.querySelector('.content');
     this.goodsForRending = goodsForRending;
@@ -12,18 +22,20 @@ export default class ComposeSlider {
 
   create(lang) {
     this.targetElem.innerHTML = '';
+
     let parentDiv = document.createElement('div');
     parentDiv.classList.add('wrapp');
 
     for (let i = 0; i < 4; i++) {
       parentDiv.appendChild(BuildCard.builItem(this.goodsForRending[this.count], lang));
       this.count < 19 ? this.count++ : this.count = 0;
+
     }
     this.targetElem.appendChild(parentDiv);
   }
 
   createWithAnotherLang(lang) {
-    this.count = this.count - 4;
+    this.count = this.count - 4 < 0 ? this.count = 0 : this.count - 4;
     this.create(lang);
   }
 
@@ -49,11 +61,11 @@ class BuildCard {
 
       if (Array.isArray(goodsUnit[key])) {
         goodsUnit[key].forEach((el) => {
-          values += `${p.dictionary[lang][el]} `
+          values += `${dataForRendiring.dictionary[lang][el]} `
         })
       } else {
         values = Number.isNaN(+[goodsUnit[key]]) ?
-          p.dictionary[lang][goodsUnit[key]] :
+        dataForRendiring.dictionary[lang][goodsUnit[key]] :
           goodsUnit[key];
       }
 
@@ -63,7 +75,7 @@ class BuildCard {
         key !== "type" &&
         key !== "price") {
 
-        res += `<p>${p.dictionary[lang][key]} : ${values}</p>`
+        res += `<p>${dataForRendiring.dictionary[lang][key]} : ${values}</p>`
       }
     }
     return res;
@@ -76,12 +88,11 @@ class BuildCard {
     cardDiv.innerHTML = `
                 <img src=${goodsUnit.url}>
                 <div class="card-section">
-                <h4>${p.dictionary[lang][goodsUnit.name]}</h4>
+                <h4>${dataForRendiring.dictionary[lang][goodsUnit.name]}</h4>
                 <p>${goodsUnit.price}$</p>
                 <div class="animalInfo">
                 ${this.chooseSpecialCharacteristics(goodsUnit, lang)}
                 </div>
-                <button class="detalies button">More info</button>
                 </div>
                 <a href="#" class="cart">cart</a>
                 `
