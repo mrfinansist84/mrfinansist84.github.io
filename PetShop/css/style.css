@@ -1,3 +1,7 @@
+body{
+    position: relative;
+}
+
 .card {
     position: relative;
     margin-left: 20px;
@@ -19,8 +23,20 @@
     font-size: 12px;
     height: 95%;
     padding-top: 20px;
-}
-
+} 
+ .order-controls{
+    display: block;
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+ }
+ .showPopup {
+    display: block;
+    position: absolute;
+    color:red;
+    top: 120%;
+    z-index: 11;
+ }
 .cart {
     position: absolute;
     bottom: -17px;
@@ -52,4 +68,29 @@ img {
     width: 100%;
     text-align: center;
     margin-bottom: 50px;
+    position: relative;
+}
+
+.CartCart{
+    display: none;
+    position: absolute;
+    background-color: red; 
+}
+.showCart{
+    display: block;
+    z-index: 12;
+}
+.modalPurchase {
+    position: fixed;
+    z-index: 20;
+    top:30%;
+    left:20%;
+    width: 800px;
+ padding: 50px;
+    background-color: red;
+}
+
+.modalPurchase__form{
+    display: flex;
+    flex-direction: column;
 }
