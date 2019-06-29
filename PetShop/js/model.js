@@ -1,4 +1,4 @@
-import LaunchView from './veiw.js';
+import ViewInit from './veiw.js';
 
 export default class GetStart {
     constructor() {}
@@ -24,6 +24,9 @@ export default class GetStart {
 class MakeData {
     constructor() {
             this.container;
+            this.filterContainer = [];
+            this.subFilterContainer = [];
+            this.filterParams = [];
             this.dictionary;
             this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
                 JSON.parse(localStorage.getItem("cartOrderAmount")): []
@@ -52,7 +55,7 @@ class MakeData {
                     JSON.parse(localStorage.getItem("container")): res;
 
                     localStorage.setItem("container", JSON.stringify(this.container));
-                    LaunchView.rendering(this.container);
+                    ViewInit.create();
 
                 }
 
@@ -101,7 +104,7 @@ class MakeData {
             export class Dog extends CatDog {
                 constructor(dataBase) {
                     super(dataBase);
-                    this.specialization = dataBase.shortLegged;
+                    this.specialization = dataBase.specialization;
                 }
             }
 

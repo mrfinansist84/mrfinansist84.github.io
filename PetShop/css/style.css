@@ -1,5 +1,8 @@
-body{
-    position: relative;
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
 }
 
 .card {
@@ -23,20 +26,23 @@ body{
     font-size: 12px;
     height: 95%;
     padding-top: 20px;
-} 
- .order-controls{
+}
+
+.order-controls {
     display: block;
     position: absolute;
     top: 100%;
     z-index: 10;
- }
- .showPopup {
+}
+
+.showPopup {
     display: block;
     position: absolute;
-    color:red;
+    color: red;
     top: 120%;
     z-index: 11;
- }
+}
+
 .cart {
     position: absolute;
     bottom: -17px;
@@ -71,26 +77,131 @@ img {
     position: relative;
 }
 
-.CartCart{
+.CartCart {
     display: none;
     position: absolute;
-    background-color: red; 
-}
-.showCart{
-    display: block;
-    z-index: 12;
-}
-.modalPurchase {
-    position: fixed;
-    z-index: 20;
-    top:30%;
-    left:20%;
-    width: 800px;
- padding: 50px;
     background-color: red;
 }
 
-.modalPurchase__form{
+.showCart {
+    display: block;
+    z-index: 12;
+}
+
+.modalPurchase {
+    position: fixed;
+    z-index: 20;
+    top: 30%;
+    left: 20%;
+    width: 800px;
+    padding: 50px;
+    background-color: red;
+}
+
+.modalPurchase__form {
     display: flex;
     flex-direction: column;
+}
+
+.categories-items-all:hover {
+    background-color: rgba(248, 170, 170, 0.5);
+    color: black;
+}
+
+.categories-items-cats:hover {
+    background-color: #b7f8aa80;
+    color: black;
+}
+
+.categories-items-dogs:hover {
+    background-color: #f659fc80;
+    color: black;
+}
+
+.categories-items-fishes:hover {
+    background-color: #bd6efd80;
+    color: black;
+}
+
+.categories-items-birds:hover {
+    background-color: #7a86f880;
+    color: black;
+}
+
+.header {
+    background-color: #fab209;
+    position: relative;
+    height: 100px;
+    justify-content: flex-start;
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.main {
+    height: 70%;
+}
+
+.main__wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.footer {
+    background-color: #000000;
+    justify-self: flex-end;
+    height: 200px;
+}
+
+.footer__wrapper {
+    width: 60%;
+    height: 80%;
+    margin: 0 auto;
+    color: #777676;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-bottom: 1px solid #777676;
+
+}
+
+.footer__item {
+    margin: 0 50px;
+}
+
+.page-choice {
+    display: flex;
+}
+
+/* .footer__item--tel {
+
+} */
+
+.main__start-page-block{
+    display: flex;
+    color: white;
+    justify-content: center;
+}
+.main__start-page-block--categories{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+}
+.main__start-page-block-links {
+    display: flex;
+    text-align: center;
+}
+.main__start-page-block--bird{
+    background-color: #000000;
+}
+.main__start-page-block--dog{
+    background-color: #fab209;
+}
+.cartttt {
+    width:200px;
 }

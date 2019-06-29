@@ -1,7 +1,12 @@
-import LaunchView, {
+import {
+  LaunchView,
   ViewPopupEnough,
   ViewCart,
-  ViewModalPurchase
+  ViewModalPurchase,
+  ViewFilterCat,
+  ViewFilterDog,
+  ViewFilterFish,
+  ViewFilterBird
 } from './veiw.js';
 import {
   dataForRendiring
@@ -73,9 +78,8 @@ export default class HangEvents {
 
             e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
             el.orderAmount === 0 ? cart.splice(i, 1) : 0;
-            document.querySelector('.cartttt').children[0].remove();
+            document.querySelector('.CartCart').remove();
             ViewCart.buildCart();
-
             document.querySelector('.goodsIntoCart').innerText = cart.length;
             localStorage.setItem("cartOrderAmount", JSON.stringify(cart));
             localStorage.setItem("container", JSON.stringify(data));
@@ -126,7 +130,7 @@ export default class HangEvents {
           }
         })
       }
-      document.querySelector('.cartttt').children[0].remove();
+      document.querySelector('.CartCart').remove();
       ViewCart.buildCart();
     }
     break;
@@ -143,7 +147,7 @@ export default class HangEvents {
       form[3].value = clientData.tel;
     }
   }
-  
+
   static confirmOrder() {
     const form = document.querySelector('.modalPurchase__form'),
       clientData = {
@@ -167,12 +171,97 @@ export default class HangEvents {
     localStorage.setItem("container", JSON.stringify(dataForRendiring.container));
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
     document.querySelector('.modalPurchase').remove();
-    document.querySelector('.cartttt').children[0].remove();
+    document.querySelector('.CartCart').remove();
     ViewCart.buildCart();
     LaunchView.cs.createWithAnotherLang(LaunchView.lang);
   }
 
+  static chooseCategory(e) {
+    switch (true) {
+      case (e.target.classList.value.includes('all')): {
+        document.body.querySelector('.page-choice').remove();
+        /*    document.querySelector('.categories__filters').remove();  */
+        dataForRendiring.filterContainer = dataForRendiring.container;
+        LaunchView.rendering(dataForRendiring.container);
+        break;
+      }
+      case (e.target.classList.value.includes('cats')): {
+        HangEvents.chooseCategoryWorker('cat');
+        ViewFilterCat.createPageChoice();
+        break;
+      }
+      case (e.target.classList.value.includes('dogs')): {
+        HangEvents.chooseCategoryWorker('dog');
+        ViewFilterDog.createPageChoice()
+        break;
+      }
+      case (e.target.classList.value.includes('fishes')): {
+        HangEvents.chooseCategoryWorker('fish');
+        ViewFilterFish.createPageChoice()
+        break;
+      }
+      case (e.target.classList.value.includes('birds')): {
+        HangEvents.chooseCategoryWorker('bird');
+        ViewFilterBird.createPageChoice()
+        break;
+      }
+    }
+  }
+
+  static chooseCategoryWorker(type) {
+     document.querySelector('.page-choice').remove(); 
+    /*  document.querySelector('.categories__filters').remove();  */
+    dataForRendiring.filterContainer = dataForRendiring.container
+      .filter((el) => el.type == type);
+    LaunchView.rendering(dataForRendiring.filterContainer);
+  }
+
+  static filtersCheckbox(e) {
+    document.querySelector('.page-choice').remove();
+    /* document.querySelector('.categories__filters').remove();  */
+    if (e.target.checked) {
+      dataForRendiring.filterParams.push(e.target.id);
+    } else {
+      dataForRendiring.filterParams = dataForRendiring.filterParams
+        .filter((el) => el != e.target.id);
+    }
+    dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
+      .filter((el) => HangEvents.filtersCheckboxWorker(el));
+    LaunchView.rendering(dataForRendiring.subFilterContainer);
+
+  }
+  static filtersCheckboxWorker(el) {
+    let res = 0;
+    dataForRendiring.filterParams.forEach((param) => {
+      el[param] ? res++ : 0;
+      if (typeof el[param] !== "boolean") {
+        Object.values(el).join('').includes(param) ? res++ : 0
+      };
+    })
+    return res === dataForRendiring.filterParams.length;
+  }
+
+
+  static filterSearchBar(e) {
+    dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
+      .filter((el) => el.name.includes(e.target.value));
+
+    document.querySelector('.page-choice').remove();
+    LaunchView.rendering(dataForRendiring.subFilterContainer);
+  }
+
+  static handlerEnter(e) {
+    console.dir(e.target)
+    console.dir(e.currentTarget)
+    if (e.target.classList.value.includes('btn')) {
+      document.querySelector('.main__wrapper').innerHTML = '';
+      LaunchView.rendering(dataForRendiring.container)
+    }
+  }
+
 }
+
+
 
 
 
