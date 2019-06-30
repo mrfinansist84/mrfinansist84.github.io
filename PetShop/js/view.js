@@ -122,18 +122,20 @@ class ViewBuildCard {
     cardDiv.classList.add('card');
     /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
     cardDiv.innerHTML = `
+                <div class="card-wrap">           
                 <img src=${goodsUnit.url}>
                 <div class="card-section">
                 <h4>${dataForRendiring.dictionary[lang][goodsUnit.name]}</h4>
                 <p>${goodsUnit.price}$</p>
+                <div class="animalInfo">
+                ${this.chooseSpecialCharacteristics(goodsUnit, lang)}
+                </div>
+                </div>
+                </div>
                 <div class="order-controls">
                 <button class="btn-remove-from-cart" data-id=${goodsUnit.id}>-</button>
                 <span class="order-amount">${goodsUnit.orderAmount}</span>
                 <button class="btn-add-from-cart" data-id=${goodsUnit.id}>+</button>
-                </div>
-                <div class="animalInfo">
-                ${this.chooseSpecialCharacteristics(goodsUnit, lang)}
-                </div>
                 </div>
                 `;
     return cardDiv;
@@ -177,8 +179,10 @@ export class ViewCart {
       </div>`
       })
       popup.innerHTML += `
+      <div class="totalPrice">
       <span>Total cost: ${totalCost}</span>
       <button class="purchase">BUY</button>
+      </div>
       `
     }
     /*      popup.querySelector('.order-controlsss') !== null ? 
@@ -198,7 +202,8 @@ export class ViewModalPurchase {
     let modalPurchase = document.createElement('div');
     modalPurchase.classList.add('modalPurchase');
     modalPurchase.innerHTML += `
-    <form action="mailto:vlad@htbook.ru" class="modalPurchase__form">
+    <span class="modalPurchase__form-abort">X</span>
+    <form action="#" class="modalPurchase__form">
       <label for="name">Name</label>
       <input type="text" placeholder="Input your name" id="name" required="required" class="modalPurchase__form-name">
       <label for="surname">Surname</label>
@@ -212,6 +217,8 @@ export class ViewModalPurchase {
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
       .addEventListener('click', HangEvents.confirmOrder);
+      document.querySelector('.modalPurchase__form-abort')
+      .addEventListener('click', HangEvents.modalClose);
   }
 }
 
@@ -417,6 +424,7 @@ class ViewHeader {
     let header = document.createElement('header');
     header.classList.add('header');
     header.innerHTML += `
+    <div class="modalPurchaseBack"></div>
     <div class="header__wrapper">
     <a href='javascript:void(0);'>
     <img src='assets/img/generic/logo.png'>
@@ -433,7 +441,6 @@ class ViewHeader {
     </button>
   </div>
     <div class="cartttt">
-      КОРЗИНА
       <span><i class="goodsIntoCart"></i> item(s)</span>
     </div>
     </div>
@@ -496,7 +503,7 @@ class ViewStartPage {
           </div>
 
     <div class="main__start-page-block main__start-page-block--categories">
-    <h2 class="main__start-page-block-header">Popular categories</h2>
+    <h2 class="main__start-page-block-header main__start-page-block-header--popular">Popular categories</h2>
     <div class="main__start-page-block-links">
       <a href="javascript:void(0);" class="main__start-page-block-dogs">
       <figure class="main__start-page-block-dogs">

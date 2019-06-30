@@ -142,6 +142,7 @@ console.log(e.target)
   }
   static purchaseGoods() {
     ViewModalPurchase.buildModalPurchase();
+    document.querySelector('.modalPurchaseBack').classList.add('modalPurchaseBack-show');
     const form = document.querySelector('.modalPurchase__form'),
       clientData = JSON.parse(localStorage.getItem("clientData"));
     if (clientData) {
@@ -177,6 +178,7 @@ console.log(e.target)
     document.querySelector('.modalPurchase').remove();
     document.querySelector('.CartCart').remove();
     ViewCart.buildCart();
+    document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
     LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer);
   }
 
@@ -256,10 +258,14 @@ console.log(e.target)
   static handlerEnter(e) {
     if (e.target.classList.value.includes('enterBtn')) {
       document.querySelector('.main__wrapper').innerHTML = '';
-      LaunchView.rendering(dataForRendiring.container)
+      LaunchView.rendering(dataForRendiring.container);
     }
   }
-
+static modalClose(){
+  document.querySelector('.modalPurchase').remove();
+  document.querySelector('.CartCart').classList.toggle("showCart");
+  document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
+}
 }
 
 
