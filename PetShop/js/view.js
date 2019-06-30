@@ -6,75 +6,83 @@ import HangEvents from './controller.js';
 export default class ViewInit {
   static create() {
     ViewHeader.create();
+    ViewCart.buildCart(LaunchView.lang = 'en');
     ViewMain.create();
     ViewStartPage.create();
-    ViewCart.buildCart(LaunchView.lang = 'en');
     ViewFooter.create();
     document.querySelector('.main__wrapper').addEventListener('click', HangEvents.handlerEnter);
     document.querySelector('.main__wrapper').addEventListener('click', HangEvents.chooseCategory);
-    document.querySelector('.cartttt').addEventListener('click', HangEvents.showCart);
-    console.log(dataForRendiring.cartOrderAmount.length)
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
+    document.querySelector('.cartttt').addEventListener('click', HangEvents.showCart);
   }
 }
 
- export class LaunchView {
+export class LaunchView {
   static rendering(container) {
+    dataForRendiring.filterContainer = dataForRendiring.container;
     ViewPageChoice.createPageChoice();
     this.cs = new ViewComposeSlider(container);
     this.lang = 'en';
     this.cs.create(this.lang);
     HangEvents.listeners();
+    document.querySelector('.CartCart').remove();
     ViewCart.buildCart();
   }
 }
+
 
 export class ViewComposeSlider {
   constructor(goodsForRending) {
     this.targetElem = document.querySelector('.slider');
     this.goodsForRending = goodsForRending;
-    this.count = 0;
-    this.goodsLength = this.goodsForRending.length < 4 ?
-      this.goodsForRending.length : 4;
     this.lang;
   }
 
-  create(lang, data = this.goodsForRending) {
+  create(lang, data = this.goodsForRending, count = dataForRendiring.count) {
     this.targetElem.innerHTML = '';
     let parentDiv = document.createElement('div');
     parentDiv.classList.add('wrapp');
-
-    for (let i = 0; i < this.goodsLength; i++) {
-      if (data[this.count]) {
-        parentDiv.appendChild(ViewBuildCard.buildItem(data[this.count], lang));
-        this.count < 19 ? this.count++ : this.count = 0;
+    parentDiv.innerHTML += `<button class="btn-slider">
+    prev
+  </button>`
+    let dataLength = data.length < 4 ? data.length : 4;
+    for (let i = 0; i < dataLength; i++) {
+      console.log(count)
+      if (data[count]) {
+        parentDiv.appendChild(ViewBuildCard.buildItem(data[count], lang));
+        dataForRendiring.count < 19 ?dataForRendiring.count++ : dataForRendiring.count = 0;
+        count++
       }
     }
+    parentDiv.innerHTML += `<button class="btn-slider">
+    next
+  </button>`
+ /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
     document.querySelector('.slider').appendChild(parentDiv);
   }
 
 
-  createWithAnotherLang(lang) {
-    this.count = this.count - 4 < 0 ?
-      this.count = 0 :
-      this.count - 4;
-    this.create(lang);
-  }
-
-  createNext(lang) {
-    let data = this.goodsForRending[0].id === 1 ?
-      this.goodsForRending :
-      this.goodsForRending.reverse();
-
+  createWithAnotherLang(lang, data) {
+    dataForRendiring.count = dataForRendiring.count - 4 < 0 ?
+    dataForRendiring.count = 0 :
+    dataForRendiring.count - 4;
     this.create(lang, data);
   }
 
-  createPrev(lang) {
-    let data = this.goodsForRending[0].id === 1 ?
-      this.goodsForRending.reverse() :
-      this.goodsForRending;
+  createNext(lang, data) {
+    let data_ = data[0].id === 1 ?
+      data :
+      data.reverse();
 
-    this.create(lang, data);
+    this.create(lang, data_);
+  }
+
+  createPrev(lang, data) {
+    let data_ = data[0].id === 1 ?
+      data.reverse() :
+      data;
+
+    this.create(lang, data_);
   }
 }
 
@@ -127,9 +135,7 @@ class ViewBuildCard {
                 ${this.chooseSpecialCharacteristics(goodsUnit, lang)}
                 </div>
                 </div>
-               
                 `;
-    cardDiv.querySelector('.order-controls').addEventListener('click', HangEvents.handlerCart);
     return cardDiv;
   }
 }
@@ -147,26 +153,28 @@ export class ViewPopupEnough {
 
 export class ViewCart {
   static buildCart() {
-console.log(dataForRendiring.cartOrderAmount)
     let totalCost = 0,
-      popup = document.createElement('div');
+    popup = document.createElement('div');
     popup.classList.add('CartCart');
 
     if (dataForRendiring.cartOrderAmount.length === 0) {
-      
+
       popup.innerHTML = `<p>Nothing ordered</p>`
 
     } else {
       dataForRendiring.cartOrderAmount.forEach((goodsUnit) => {
-        console.log(dataForRendiring.dictionary)
         totalCost += (goodsUnit.price * goodsUnit.orderAmount);
 
         popup.innerHTML += `
+        <div class="cart-item">
       <div>
-      <img src=${goodsUnit.url}>
-      <span>${dataForRendiring.dictionary[LaunchView.lang][goodsUnit.name]}</span>
-      <p>${goodsUnit.price}$ x ${goodsUnit.orderAmount}</p>
-      </div> `
+      <img src=${goodsUnit.url} class="purches-img">
+      </div>
+      <div>
+      <span class="purches-name">${dataForRendiring.dictionary[LaunchView.lang][goodsUnit.name]}</span>
+      <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}</p>
+      </div> 
+      </div>`
       })
       popup.innerHTML += `
       <span>Total cost: ${totalCost}</span>
@@ -213,7 +221,7 @@ export class ViewPageChoice {
     let pageChoice = document.createElement('div');
     pageChoice.classList.add('page-choice');
     pageChoice.innerHTML += `
-    <aside>
+    <aside class="page-choice-aside">
     <ul class="categories">
     <li class="categories-items categories-items-all">All Animals</li>
     <li class="categories-items categories-items-cats">Cats</li>
@@ -221,24 +229,40 @@ export class ViewPageChoice {
     <li class="categories-items categories-items-fishes">Fishes</li>
     <li class="categories-items categories-items-birds">Birds</li>
     </aside>
-    <div class="grid-container">
-    <button class="button-prev">
-      prev
-    </button>
+
+    <div class="main__slider">
+    <div class="main__filter">
+    <div class="categories__filters">
+    <label>Breed
+    <input type="text" id="searchBar" class="filters-searchBar">
+    </label>
+    </div>
+    </div>
     <div class='slider'></div>
-    
-    <button class="button-next">
-      next
-    </button>
   </div>
-    
     `
     pageChoice.querySelector('.categories')
       .addEventListener('click', HangEvents.chooseCategory);
+      pageChoice.querySelector('.filters-searchBar')
+      .addEventListener('keyup', HangEvents.filterSearchBar);
     document.querySelector('.main__wrapper').appendChild(pageChoice);
   }
 }
+export class ViewFilterAll {
+  static create() {
+    let filters = document.createElement('div');
+    filters.classList.add('categories__filters');
+    filters.innerHTML += `
+    <label>Breed
+    <input type="text" id="searchBar" class="filters-searchBar">
+    </label>
+    `
+    filters.querySelector('.filters-searchBar')
+      .addEventListener('keyup', HangEvents.filterSearchBar);
 
+    document.querySelector('.main__filter').appendChild(filters);
+  }
+} 
 export class ViewFilterCat {
   static createPageChoice() {
     let filters = document.createElement('div');
@@ -264,7 +288,7 @@ export class ViewFilterCat {
     filters.querySelector('.filters-searchBar')
       .addEventListener('keyup', HangEvents.filterSearchBar);
 
-    document.querySelector('.main__wrapper').appendChild(filters);
+    document.querySelector('.main__filter').appendChild(filters);
   }
 }
 
@@ -284,8 +308,9 @@ export class ViewFilterDog {
     <input type="checkbox" id="pedigree" class="e">
     <label for="trimming">trimming</label>
     <input type="checkbox" id="trimming" class="e">
-   
-    <p>specialization: </p>
+   </div>
+   <div>
+   <span class="extraFeature"> Specialization: </span>
     <label for="domastic">domastic</label>
     <input type="checkbox" id="domastic" class="e">
     <label for="decorate">decorate</label>
@@ -294,13 +319,13 @@ export class ViewFilterDog {
     <input type="checkbox" id="guard" class="e">
     <label for="hunting">hunting</label>
     <input type="checkbox" id="hunting" class="e">
-    
+    </div>
     `
-    filters.querySelector('.filters-checkbox')
-      .addEventListener('click', HangEvents.filtersCheckbox);
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
-    document.querySelector('.main__wrapper').appendChild(filters);
+    .addEventListener('keyup', HangEvents.filterSearchBar);
+    document.querySelector('.main__filter').appendChild(filters);
+    document.querySelector('.categories__filters')
+      .addEventListener('click', HangEvents.filtersCheckbox);
   }
 }
 
@@ -316,16 +341,18 @@ export class ViewFilterFish {
     <div class="filters-checkbox">
     <label for="freshwater">freshwater</label>
     <input type="checkbox" id="freshwater" class="e">
-    
-    <p>zonality: </p>
+    </div>
+    <div>
+    <span class="extraFeature">zonality: </span>
     <label for="up">up</label>
     <input type="checkbox" id="up" class="e">
     <label for="down">down</label>
     <input type="checkbox" id="down" class="e">
     <label for="mid">mid</label>
     <input type="checkbox" id="mid" class="e">
-
-    <p>color: </p>
+    </div>
+    <div>
+    <span class="extraFeature">color: </span>
     <label for="yellow">yellow</label>
     <input type="checkbox" id="yellow" class="e">
     <label for="grey">grey</label>
@@ -334,12 +361,14 @@ export class ViewFilterFish {
     <input type="checkbox" id="blue" class="e">
     <label for="red">red</label>
     <input type="checkbox" id="red" class="e">
+    </div>
     `
-    filters.querySelector('.filters-checkbox')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+  
     filters.querySelector('.filters-searchBar')
       .addEventListener('keyup', HangEvents.filterSearchBar);
-    document.querySelector('.main__wrapper').appendChild(filters);
+    document.querySelector('.main__filter').appendChild(filters);
+    document.querySelector('.categories__filters')
+      .addEventListener('click', HangEvents.filtersCheckbox);
   }
 }
 
@@ -358,8 +387,9 @@ export class ViewFilterBird {
     <input type="checkbox" id="talking" class="e">
     <label for="singing">singing</label>
     <input type="checkbox" id="singing" class="e">
-
-    <p>color: </p>
+    </div>
+    <div>
+    <span class="extraFeature">color: </span>
     <label for="yellow">yellow</label>
     <input type="checkbox" id="yellow" class="e">
     <label for="grey">grey</label>
@@ -370,12 +400,15 @@ export class ViewFilterBird {
     <input type="checkbox" id="red" class="e">
     <label for="white">white</label>
     <input type="checkbox" id="white" class="e">
+    </div>
+    
     `
-    filters.querySelector('.filters-checkbox')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+   
     filters.querySelector('.filters-searchBar')
       .addEventListener('keyup', HangEvents.filterSearchBar);
-    document.querySelector('.main__wrapper').appendChild(filters);
+    document.querySelector('.main__filter').appendChild(filters);
+    document.querySelector('.categories__filters')
+      .addEventListener('click', HangEvents.filtersCheckbox);
   }
 }
 
@@ -458,7 +491,7 @@ class ViewStartPage {
           <h2 class="main__start-page-block-header">Birds of any breeds and colors</h2>
           <p class="main__start-page-block-subheader">Birds are extraordinarily pleasant 
           creatures. With their appearance, songs, lively bustle, they can decorate any home.</p>
-          <button class="main__start-page-block-btn">enter</button>
+          <button class="main__start-page-block-enterBtn">enter</button>
           </div>
           </div>
 
@@ -500,7 +533,7 @@ class ViewStartPage {
     <h2 class="main__start-page-block-header">Dog of any breeds and specializations</h2>
     <p class="main__start-page-block-subheader">Dogs tend to give than to ask for something for themselves. 
     Their love is unconditional.</p>
-    <button class="main__start-page-block-btn">enter</button>
+    <button class="main__start-page-block-enterBtn">enter</button>
     </div>
   <div class="main__start-page-block-img">
   <img src='assets/img/generic/pug.jpg'>

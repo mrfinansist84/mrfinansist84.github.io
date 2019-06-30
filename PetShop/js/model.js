@@ -1,4 +1,4 @@
-import ViewInit from './veiw.js';
+import ViewInit from './view.js';
 
 export default class GetStart {
     constructor() {}
@@ -28,6 +28,7 @@ class MakeData {
             this.subFilterContainer = [];
             this.filterParams = [];
             this.dictionary;
+            this.count = 0;
             this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
                 JSON.parse(localStorage.getItem("cartOrderAmount")): []
                 }

@@ -1,3 +1,4 @@
 import GetStart from './model.js';
 
-GetStart.getData();
+document.addEventListener('DOMContentLoaded', GetStart.getData)
+
