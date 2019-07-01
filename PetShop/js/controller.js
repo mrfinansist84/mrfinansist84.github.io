@@ -7,7 +7,8 @@ import {
   ViewFilterDog,
   ViewFilterFish,
   ViewFilterBird,
-  ViewFilterAll
+  ViewFilterAll,
+  ViewModalHistory
 } from './view.js';
 import {
   dataForRendiring
@@ -64,8 +65,9 @@ export default class HangEvents {
       LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
       break;
     };
-    }
+   
   }
+}
 
   static handlerCart(e) {
     let check = true,
@@ -78,7 +80,6 @@ export default class HangEvents {
           if (el.id == e.target.dataset.id) {
             el.orderAmount--;
             data[el.id - 1].orderAmount = el.orderAmount;
-
             e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
             el.orderAmount === 0 ? cart.splice(i, 1) : 0;
             document.querySelector('.CartCart').remove();
@@ -103,7 +104,6 @@ export default class HangEvents {
           }
           data[el.id - 1].orderAmount = el.orderAmount;
           check = false;
-
           e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
           document.querySelector('.goodsIntoCart').innerText = cart.length;
           localStorage.setItem("cartOrderAmount", JSON.stringify(cart));
@@ -144,10 +144,10 @@ export default class HangEvents {
     const form = document.querySelector('.modalPurchase__form'),
       clientData = JSON.parse(localStorage.getItem("clientData"));
     if (clientData) {
-      form[0].value = clientData.name;
-      form[1].value = clientData.surname;
-      form[2].value = clientData.email;
-      form[3].value = clientData.tel;
+      form[0].value = clientData[clientData.length - 1].name;
+      form[1].value = clientData[clientData.length - 1].surname;
+      form[2].value = clientData[clientData.length - 1].email;
+      form[3].value = clientData[clientData.length - 1].tel;
     }
   }
 
@@ -160,7 +160,14 @@ export default class HangEvents {
         tel: form[3].value,
         order: dataForRendiring.cartOrderAmount
       };
-    localStorage.setItem("clientData", JSON.stringify(clientData));
+      let purchaseHistory = [];
+
+    if (localStorage.getItem("clientData")) {
+      purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
+    };
+    
+    purchaseHistory.push(clientData);
+    localStorage.setItem("clientData", JSON.stringify(purchaseHistory));
     dataForRendiring.cartOrderAmount.forEach((order) => {
       dataForRendiring.container.forEach((data) => {
         if (order.id === data.id) {
@@ -178,6 +185,7 @@ export default class HangEvents {
     ViewCart.buildCart();
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
     LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer);
+    ViewModalHistory.create(); 
   }
 
   static chooseCategory(e) {
@@ -264,52 +272,8 @@ export default class HangEvents {
     document.querySelector('.CartCart').classList.toggle("showCart");
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
   }
+  
+  static handlerHistory(){
+    document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
+  }
 }
-
-
-
-
-
-/* class EventObserver {
-    constructor () {
-      this.observers = []
-    }
-  
-    subscribe (fn) {
-      this.observers.push(fn)
-    }
-  
-    unsubscribe (fn) {
-      this.observers = this.observers.filter(subscriber => subscriber !== fn)
-    }
-  
-    broadcast (data) {
-      this.observers.forEach(subscriber => subscriber(data))
-    }
-  }
-
-  const blogObserver = new EventObserver()
-  
-  const btnContainer = document.querySelector('.language');
-  const btnDet = document.querySelector('.detalies');
-
-  btnContainer.addEventListener('click', ()=> {
-    blogObserver.broadcast(btnDet);
-  });
-
-  const changeLangElements = (text) => {
-    switch (text) {
-        case 'РУССКИЙ': {
-            btnDet = 'Больше инфы';
-        };
-        break;
-    case 'ENGLISH': {
-        btnDet = 'More info';
-    };
-    break;
-    }
-  }
-
-  blogObserver.subscribe(btnDet => {
-    btnDet.innerText = changeLangElements(btnDet.innerText)
-  }); */

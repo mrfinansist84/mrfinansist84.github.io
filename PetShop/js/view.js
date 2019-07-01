@@ -10,6 +10,7 @@ export default class ViewInit {
     ViewMain.create();
     ViewStartPage.create();
     ViewFooter.create();
+    ViewModalHistory.create(); 
     document.querySelector('.main__wrapper').addEventListener('click', HangEvents.handlerEnter);
     document.querySelector('.main__wrapper').addEventListener('click', HangEvents.chooseCategory);
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
@@ -27,6 +28,7 @@ export class LaunchView {
     HangEvents.listeners();
     document.querySelector('.CartCart').remove();
     ViewCart.buildCart();
+    ViewModalHistory.create(); 
   }
 }
 
@@ -115,7 +117,7 @@ class ViewBuildCard {
   }
 
   static buildItem(goodsUnit, lang) {
-    let cardDiv = document.createElement('div');
+    const cardDiv = document.createElement('div');
 
     cardDiv.classList.add('card');
     /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
@@ -142,7 +144,7 @@ class ViewBuildCard {
 
 export class ViewPopupEnough {
   static showPopup(element) {
-    let popup = document.createElement('div');
+    const popup = document.createElement('div');
     popup.classList.add('showPopup');
     popup.innerText = `Not enough goods in stock`;
     element.appendChild(popup);
@@ -197,7 +199,7 @@ export class ViewCart {
 export class ViewModalPurchase {
   static buildModalPurchase() {
 
-    let modalPurchase = document.createElement('div');
+    const modalPurchase = document.createElement('div');
     modalPurchase.classList.add('modalPurchase');
     modalPurchase.innerHTML += `
     <span class="modalPurchase__form-abort">X</span>
@@ -220,19 +222,27 @@ export class ViewModalPurchase {
   }
 }
 
-
 export class ViewPageChoice {
   static createPageChoice() {
-    let pageChoice = document.createElement('div');
+    const pageChoice = document.createElement('div');
     pageChoice.classList.add('page-choice');
     pageChoice.innerHTML += `
     <aside class="page-choice-aside">
-    <ul class="categories">
-    <li class="categories-items categories-items-all">All Animals</li>
-    <li class="categories-items categories-items-cats">Cats</li>
-    <li class="categories-items categories-items-dogs">Dogs</li>
-    <li class="categories-items categories-items-fishes">Fishes</li>
-    <li class="categories-items categories-items-birds">Birds</li>
+    <div class="categories">
+    <input type="radio" name="pets" class="categories-items-input categories-items-input-all" id="radio-all"></input>
+    <label class="categories-items categories-items-all" for="radio-all">All Animals</label>
+
+    <input type="radio" name="pets" class="categories-items-input categories-items-input-cats" id="radio-cats"></input>
+    <label class="categories-items categories-items-cats" for="radio-cats">Cats</label>
+
+    <input type="radio" name="pets" class="categories-items-input categories-items-input-dogs" id="radio-dogs"></input>
+    <label class="categories-items categories-items-dogs" for="radio-dogs">Dogs</label>
+
+    <input type="radio" name="pets" class="categories-items-input categories-items-input-fishes" id="radio-fishes"></input>
+    <label class="categories-items categories-items-fishes" for="radio-fishes">Fishes</label>
+
+    <input type="radio" name="pets" class="categories-items-input categories-items-input-birds" id="radio-birds"></input>
+    <label class="categories-items categories-items-birds" for="radio-birds">Birds</label>
     </aside>
 
     <div class="main__slider">
@@ -255,7 +265,7 @@ export class ViewPageChoice {
 }
 export class ViewFilterAll {
   static create() {
-    let filters = document.createElement('div');
+    const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
     <label>Breed
@@ -270,7 +280,7 @@ export class ViewFilterAll {
 } 
 export class ViewFilterCat {
   static createPageChoice() {
-    let filters = document.createElement('div');
+    const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
     <label>Breed
@@ -299,7 +309,7 @@ export class ViewFilterCat {
 
 export class ViewFilterDog {
   static createPageChoice() {
-    let filters = document.createElement('div');
+    const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
 
@@ -336,7 +346,7 @@ export class ViewFilterDog {
 
 export class ViewFilterFish {
   static createPageChoice() {
-    let filters = document.createElement('div');
+    const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
 
@@ -379,7 +389,7 @@ export class ViewFilterFish {
 
 export class ViewFilterBird {
   static createPageChoice() {
-    let filters = document.createElement('div');
+    const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
     <label>Breed
@@ -419,7 +429,7 @@ export class ViewFilterBird {
 
 class ViewHeader {
   static create() {
-    let header = document.createElement('header');
+    const header = document.createElement('header');
     header.classList.add('header');
     header.innerHTML += `
     <div class="modalPurchaseBack"></div>
@@ -437,19 +447,24 @@ class ViewHeader {
     <button class="btn-lang-en">
       ENGLISH
     </button>
-  </div>
-    <div class="cartttt">
-      <span><i class="goodsIntoCart"></i> item(s)</span>
     </div>
+    <div class="cartttt">
+    <span><i class="goodsIntoCart"></i> item(s)</span>
+    </div>
+    <button class="btn-history">
+    Purches History
+  </button>
     </div>
     `
     document.querySelector('.root').appendChild(header);
+    header.querySelector('.btn-history')
+      .addEventListener('click', HangEvents.handlerHistory);
   }
 }
 
 class ViewMain {
   static create() {
-    let main = document.createElement('main');
+    const main = document.createElement('main');
     main.classList.add('main');
     main.innerHTML += `
     <div class="main__wrapper">
@@ -461,7 +476,7 @@ class ViewMain {
 
 class ViewFooter {
   static create() {
-    let footer = document.createElement('footer');
+    const footer = document.createElement('footer');
     footer.classList.add('footer');
     footer.innerHTML += `
     <div class="footer__wrapper">
@@ -483,7 +498,7 @@ class ViewFooter {
 
 class ViewStartPage {
   static create() {
-    let startPage = document.createElement('div');
+    const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
     startPage.innerHTML += `
   
@@ -546,5 +561,45 @@ class ViewStartPage {
 </div>
     `
     document.querySelector('.main__wrapper').appendChild(startPage);
+  }
+}
+
+export class ViewModalHistory{
+  static create(){
+    const history = document.createElement('div'),
+    purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
+    /* let order =``; */
+    
+    document.querySelector('.main__history-modal') ? 
+    document.querySelector('.main__history-modal').remove(): 0;
+    
+    history.classList.add('main__history-modal');
+    if (purchaseHistory){ 
+      purchaseHistory.forEach((purchase, i)=>{
+        let order = ``;
+       purchase.order.forEach((el)=>order +=`
+       <div>
+       <span>${el.type}</span> 
+       <span>${el.name}</span> 
+       <span>${el.orderAmount}</span>
+       </div>`); 
+        history.innerHTML += `
+    <div class="main__history-modal-item">
+    <p>${i+1}</p> 
+    <span>${purchase.name}</span> 
+    <span>${purchase.surname}</span>
+    <div>
+    ${order}
+    </div>
+    </div>
+        `
+      })
+     }
+    else {
+      history.innerHTML += `
+      There were no purchases yet.
+      `
+    }
+    document.querySelector('.header').appendChild(history);
   }
 }

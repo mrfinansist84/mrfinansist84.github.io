@@ -75,16 +75,13 @@
     background-color: aqua;
     padding: 5px;
     border-radius: 50%;
-
 }
 
 .wrapp {
     display: flex;
     width: 1200px;
-    min-height: 350px;
-    /*  flex: 0 0 350px; */
+    margin-bottom: 220px;
 }
-
 
 img {
     max-width: 200px;
@@ -101,7 +98,6 @@ img {
     display: none;
     position: absolute;
     background-color: rgb(229, 255, 0);
-    ;
     top: 100%;
     right: 200px;
     width: 350px;
@@ -147,7 +143,7 @@ img {
     position: fixed;
     display: block;
     width: 100vw;
-    height: 1000vh;
+    height: 100vh;
     background-color: #000000;
     opacity: 0.8;
     z-index: 19;
@@ -185,27 +181,32 @@ img {
     flex-direction: column;
 }
 
-.categories-items-all:hover {
+.categories-items-all:hover,
+.categories-items-input-all:checked+.categories-items-all {
     background-color: rgba(248, 170, 170, 0.5);
     color: black;
 }
 
-.categories-items-cats:hover {
+.categories-items-cats:hover,
+.categories-items-input-cats:checked+.categories-items-cats {
     background-color: #b7f8aa80;
     color: black;
 }
 
-.categories-items-dogs:hover {
+.categories-items-dogs:hover,
+.categories-items-input-dogs:checked+.categories-items-dogs {
     background-color: #f659fc80;
     color: black;
 }
 
-.categories-items-fishes:hover {
+.categories-items-fishes:hover,
+.categories-items-input-fishes:checked+.categories-items-fishes {
     background-color: #bd6efd80;
     color: black;
 }
 
-.categories-items-birds:hover {
+.categories-items-birds:hover,
+.categories-items-input-birds:checked+.categories-items-birds {
     background-color: #7a86f880;
     color: black;
 }
@@ -213,7 +214,6 @@ img {
 .header {
     background-color: #fab209;
     position: relative;
-    height: 70px;
     justify-content: flex-start;
 }
 
@@ -225,9 +225,7 @@ img {
     margin: 0 auto;
 }
 
-.main {
-    height: 73.45%;
-}
+
 
 .main__wrapper {
     display: flex;
@@ -238,12 +236,12 @@ img {
 .footer {
     background-color: #000000;
     justify-self: flex-end;
-    height: 179px;
+    padding-top: 100px;
+    padding-bottom: 40px;
 }
 
 .footer__wrapper {
     width: 60%;
-    height: 80%;
     margin: 0 auto;
     color: #777676;
     display: flex;
@@ -357,30 +355,34 @@ img {
 .main__slider {
     display: flex;
     flex-direction: column;
+    min-height: 685px;
 }
 
 .main__filter {
-    height: 100px;
-
+    min-height: 100px;
 }
 
 .page-choice-aside {
     width: 200px;
     margin-right: 100px;
-
 }
 
 .categories {
-    list-style: none;
     margin-top: 100px;
     font-size: 30px;
     line-height: 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 .categories__filters {
     display: flex;
     padding: 20px;
     line-height: 20px;
+}
+
+.categories-items-input {
+    display: none; 
 }
 
 .extraFeature {
@@ -421,7 +423,7 @@ img {
     position: relative;
     outline: none;
     cursor: pointer;
-    margin-right:35px;
+    margin-right: 35px;
 }
 
 .btn-slider--next::after,
@@ -441,4 +443,19 @@ img {
 
 .btn-slider--prev::after {
     background-image: url(../assets/img/generic/prev.png);
+}
+.main__history-modal{
+    display: none;
+    position: absolute;
+    right: 10px;
+    background-color: #fab209;
+    padding: 10px;
+    
+}
+.main__history-modal--show{
+    display: block;
+}
+.main__history-modal-item{
+    border-bottom: 1px solid #df7700;
+    margin-bottom: 10px;
 }
