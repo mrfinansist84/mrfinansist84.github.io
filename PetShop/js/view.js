@@ -30,7 +30,6 @@ export class LaunchView {
   }
 }
 
-
 export class ViewComposeSlider {
   constructor(goodsForRending) {
     this.targetElem = document.querySelector('.slider');
@@ -42,19 +41,18 @@ export class ViewComposeSlider {
     this.targetElem.innerHTML = '';
     let parentDiv = document.createElement('div');
     parentDiv.classList.add('wrapp');
-    parentDiv.innerHTML += `<button class="btn-slider">
+    parentDiv.innerHTML += `<button class="btn-slider btn-slider--prev">
     prev
   </button>`
     let dataLength = data.length < 4 ? data.length : 4;
     for (let i = 0; i < dataLength; i++) {
-      console.log(count)
       if (data[count]) {
         parentDiv.appendChild(ViewBuildCard.buildItem(data[count], lang));
         dataForRendiring.count < 19 ?dataForRendiring.count++ : dataForRendiring.count = 0;
         count++
       }
     }
-    parentDiv.innerHTML += `<button class="btn-slider">
+    parentDiv.innerHTML += `<button class="btn-slider btn-slider--next">
     next
   </button>`
  /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
@@ -492,7 +490,7 @@ class ViewStartPage {
 
     <div class="main__start-page-block main__start-page-block--bird">
             <div class="main__start-page-block-img">
-            <img src='assets/img/generic/papuga.jpg'>
+            <img src='assets/img/generic/papuga.jpg' class="main__start-page-block-img-item" alt="papu">
             </div>
           <div class="main__start-page-block-text">
           <h2 class="main__start-page-block-header">Birds of any breeds and colors</h2>
@@ -543,7 +541,7 @@ class ViewStartPage {
     <button class="main__start-page-block-enterBtn">enter</button>
     </div>
   <div class="main__start-page-block-img">
-  <img src='assets/img/generic/pug.jpg'>
+  <img src="assets/img/generic/pug.jpg" class="main__start-page-block-img-item" alt="pug">
   </div>
 </div>
     `

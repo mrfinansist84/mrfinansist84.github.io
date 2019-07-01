@@ -19,14 +19,14 @@ export default class HangEvents {
     const btnContainer = document.querySelector('.language');
     btnContainer.addEventListener('click', this.switchLang);
 
-   const container = document.querySelector('.slider');
-    container.addEventListener('click', this.showInfo); 
+    const container = document.querySelector('.slider');
+    container.addEventListener('click', this.showInfo);
 
     const cartttt = document.querySelector('.cartttt');
     cartttt.addEventListener('click', this.showCart);
 
     const orderControls = document.querySelector('.slider');
-    orderControls.addEventListener('click', this.handlerCart); 
+    orderControls.addEventListener('click', this.handlerCart);
 
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
   }
@@ -36,7 +36,6 @@ export default class HangEvents {
   }
 
   static showInfo(e) {
-    console.log(e.target.innerText)
     switch (e.target.innerText) {
       case 'next': {
         LaunchView.cs.createNext(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
@@ -69,7 +68,6 @@ export default class HangEvents {
   }
 
   static handlerCart(e) {
-console.log(e.target)
     let check = true,
       data = dataForRendiring.container,
       cart = dataForRendiring.cartOrderAmount;
@@ -185,7 +183,7 @@ console.log(e.target)
   static chooseCategory(e) {
     switch (true) {
       case (e.target.classList.value.includes('all')): {
-     document.body.querySelector('.main__filter').innerHTML = ""; 
+        document.body.querySelector('.main__filter').innerHTML = "";
         dataForRendiring.filterContainer = dataForRendiring.container;
         dataForRendiring.count = 0;
         ViewFilterAll.create();
@@ -194,33 +192,33 @@ console.log(e.target)
       }
       case (e.target.classList.value.includes('cats')): {
         HangEvents.chooseCategoryWorker('cat');
-        ViewFilterCat.createPageChoice(); 
+        ViewFilterCat.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('dogs')): {
         HangEvents.chooseCategoryWorker('dog');
-        ViewFilterDog.createPageChoice(); 
+        ViewFilterDog.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('fishes')): {
         HangEvents.chooseCategoryWorker('fish');
-         ViewFilterFish.createPageChoice(); 
+        ViewFilterFish.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('birds')): {
         HangEvents.chooseCategoryWorker('bird');
-         ViewFilterBird.createPageChoice(); 
+        ViewFilterBird.createPageChoice();
         break;
       }
     }
   }
 
   static chooseCategoryWorker(type) {
-     document.body.querySelector('.main__filter').innerHTML = ""; 
+    document.body.querySelector('.main__filter').innerHTML = "";
     dataForRendiring.filterContainer = dataForRendiring.container
       .filter((el) => el.type == type);
-      dataForRendiring.count = 0;
-      LaunchView.cs.create(LaunchView.lang, dataForRendiring.filterContainer);
+    dataForRendiring.count = 0;
+    LaunchView.cs.create(LaunchView.lang, dataForRendiring.filterContainer);
   }
 
   static filtersCheckbox(e) {
@@ -232,8 +230,8 @@ console.log(e.target)
     }
     dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
       .filter((el) => HangEvents.filtersCheckboxWorker(el));
-      dataForRendiring.count = 0;
-      LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
+    dataForRendiring.count = 0;
+    LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
 
   }
   static filtersCheckboxWorker(el) {
@@ -251,8 +249,8 @@ console.log(e.target)
   static filterSearchBar(e) {
     dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
       .filter((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()));
-      dataForRendiring.count = 0;
-      LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
+    dataForRendiring.count = 0;
+    LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
   }
 
   static handlerEnter(e) {
@@ -261,11 +259,11 @@ console.log(e.target)
       LaunchView.rendering(dataForRendiring.container);
     }
   }
-static modalClose(){
-  document.querySelector('.modalPurchase').remove();
-  document.querySelector('.CartCart').classList.toggle("showCart");
-  document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
-}
+  static modalClose() {
+    document.querySelector('.modalPurchase').remove();
+    document.querySelector('.CartCart').classList.toggle("showCart");
+    document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
+  }
 }
 
 

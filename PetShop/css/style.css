@@ -8,6 +8,9 @@
     background-color: gray;
     padding: 20px;
     width: 200px;
+    font-size: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .card-wrap {
@@ -37,7 +40,23 @@
     display: block;
     position: absolute;
     top: 100%;
+    left: 30%;
     z-index: 10;
+
+}
+
+.order-controls>button {
+    border-radius: 5px;
+    width: 50px;
+    outline: none;
+}
+
+.order-controls>button:first-of-type {
+    background-color: #008cff;
+}
+
+.order-controls>button:last-of-type {
+    background-color: #b30000;
 }
 
 .showPopup {
@@ -56,7 +75,7 @@
     background-color: aqua;
     padding: 5px;
     border-radius: 50%;
-   
+
 }
 
 .wrapp {
@@ -154,11 +173,13 @@ img {
     font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
 }
-.modalPurchase__form-abort:hover{
+
+.modalPurchase__form-abort:hover {
     font-weight: 600;
-    color:red;
+    color: red;
     cursor: pointer;
 }
+
 .modalPurchase__form {
     display: flex;
     flex-direction: column;
@@ -239,30 +260,34 @@ img {
 .page-choice {
     display: flex;
 }
+
 .footer__item {
     position: relative;
 }
 
 .footer__item--tel::after,
 .footer__item--adress::after,
-.footer__item--email::after{
+.footer__item--email::after {
     content: '';
     position: absolute;
     display: block;
-    top:-50px;
+    top: -50px;
     left: 20%;
     width: 45px;
     height: 45px;
     background-repeat: no-repeat;
     background-size: contain;
-} 
-.footer__item--tel::after{
+}
+
+.footer__item--tel::after {
     background-image: url(../assets/img/generic/tel.png);
 }
-.footer__item--adress::after{
+
+.footer__item--adress::after {
     background-image: url(../assets/img/generic/adress.png);
 }
-.footer__item--email::after{
+
+.footer__item--email::after {
     background-image: url(../assets/img/generic/email.png);
 }
 
@@ -382,4 +407,38 @@ img {
 .main__start-page-block-fishes,
 .main__start-page-block-header--popular {
     color: black;
+}
+
+.main__start-page-block-img-item {
+    max-width: 250px;
+    padding-top: 20px;
+}
+
+.btn-slider {
+    border: none;
+    background: none;
+    font-size: 0;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    margin-right:35px;
+}
+
+.btn-slider--next::after,
+.btn-slider--prev::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.btn-slider--next::after {
+    background-image: url(../assets/img/generic/next.png);
+}
+
+.btn-slider--prev::after {
+    background-image: url(../assets/img/generic/prev.png);
 }
