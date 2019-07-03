@@ -1,6 +1,17 @@
 import ViewInit from './view.js';
 
-export default class GetStart {
+
+class ModelMain {
+    addToLocalStorage(key, data){
+        localStorage.setItem(key, JSON.stringify(data));
+    }
+    getFromLocalStorage(key){
+        JSON.parse(localStorage.getItem(key))
+    }
+}
+
+
+class GetStart {
     constructor() {}
 
     static getData() {
@@ -21,107 +32,110 @@ export default class GetStart {
     }
 }
 
-class MakeData {
+class ModelStore extends ModelMain {
     constructor() {
-            this.container;
-            this.filterContainer = [];
-            this.subFilterContainer = [];
-            this.filterParams = [];
-            this.dictionary;
-            this.count = 0;
-            this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
-                JSON.parse(localStorage.getItem("cartOrderAmount")): []
-                }
-                makeInst(dataBase) {
-                    const res = [];
+        super();
+        this.dataBase;
+        this.filterDataBase = [];
+        this.subFilterDataBase = [];
+        this.filterParams = [];
+        this.dictionary;
+        this.count = 0;
+        this.cartOrderAmount = (this.getFromLocalStorage("cartOrderAmount")) ?
+        this.getFromLocalStorage("cartOrderAmount") : []
+    }
+}
 
-                    dataBase.forEach(element => {
-                        switch (element.type) {
-                            case 'cat':
-                                res.push(new Cat(element));
-                                break;
-                            case 'dog':
-                                res.push(new Dog(element));
-                                break;
-                            case 'fish':
-                                res.push(new Fish(element));
-                                break;
-                            case 'bird':
-                                res.push(new Bird(element));
-                                break;
-                        }
-                    });
-                  
-                    this.container = JSON.parse(localStorage.getItem("container")) ?
-                    JSON.parse(localStorage.getItem("container")): res;
+class MakeData extends ModelMain {
+    makeInst(data) {
+        const res = [];
 
-                    localStorage.setItem("container", JSON.stringify(this.container));
-                    ViewInit.create();
-
-                }
-
-                makeDictinary(dictionary) {
-                    this.dictionary = dictionary;
-                }
+        data.forEach(element => {
+            switch (element.type) {
+                case 'cat':
+                    res.push(new Cat(element));
+                    break;
+                case 'dog':
+                    res.push(new Dog(element));
+                    break;
+                case 'fish':
+                    res.push(new Fish(element));
+                    break;
+                case 'bird':
+                    res.push(new Bird(element));
+                    break;
             }
+        });
 
-            export const dataForRendiring = new MakeData();
+        modelStore.dataBase = this.getFromLocalStorage("dataBase") ?
+        this.getFromLocalStorage("dataBase") : res;
 
-            class Animal {
-                constructor(dataBase) {
-                    this.id = dataBase.id;
-                    this.type = dataBase.type;
-                    this.name = dataBase.name;
-                    this.price = dataBase.price;
-                    this.orderAmount = 0;
-                    this.url = dataBase.url;
-                    this.quantity = dataBase.quantity;
-                    this.ageMonth = dataBase.ageMonth;
-                    this.weightKg = dataBase.weightKg;
-                    this.color = dataBase.color;
-                    this.gender = dataBase.gender;
-                    this.lifetimeYears = dataBase.lifetimeYears;
-                    this.rapacity = dataBase.rapacity
-                }
-            }
+        this.addToLocalStorage("dataBase", modelStore.dataBase);
+        /* ViewInit.create(); */
 
-            class CatDog extends Animal {
-                constructor(dataBase) {
-                    super(dataBase);
-                    this.fur = dataBase.fur;
-                    this.shortLegged = dataBase.shortLegged;
-                    this.pedigree = dataBase.pedigree;
-                    this.trimming = dataBase.trimming;
-                }
-            }
+    }
+    makeDictinary(dictionary) {
+        this.dictionary = dictionary;
+    }
+}
 
-            export class Cat extends CatDog {
-                constructor(dataBase) {
-                    super(dataBase);
-                    this.lopiness = dataBase.lopiness;
-                }
-            }
+/* export const dataForRendiring = new MakeData(); */
 
-            export class Dog extends CatDog {
-                constructor(dataBase) {
-                    super(dataBase);
-                    this.specialization = dataBase.specialization;
-                }
-            }
+class Animal {
+    constructor(dataBase) {
+        this.id = dataBase.id;
+        this.type = dataBase.type;
+        this.name = dataBase.name;
+        this.price = dataBase.price;
+        this.orderAmount = 0;
+        this.url = dataBase.url;
+        this.quantity = dataBase.quantity;
+        this.ageMonth = dataBase.ageMonth;
+        this.weightKg = dataBase.weightKg;
+        this.color = dataBase.color;
+        this.gender = dataBase.gender;
+        this.lifetimeYears = dataBase.lifetimeYears;
+        this.rapacity = dataBase.rapacity
+    }
+}
 
-            export class Fish extends Animal {
-                constructor(dataBase) {
-                    super(dataBase);
-                    this.freshwater = dataBase.zonality;
-                    this.zonality = dataBase.zonality;
-                }
-            }
+class CatDog extends Animal {
+    constructor(dataBase) {
+        super(dataBase);
+        this.fur = dataBase.fur;
+        this.shortLegged = dataBase.shortLegged;
+        this.pedigree = dataBase.pedigree;
+        this.trimming = dataBase.trimming;
+    }
+}
 
-            export class Bird extends Animal {
-                constructor(dataBase) {
-                    super(dataBase);
-                    this.flying = dataBase.flying;
-                    this.talking = dataBase.talking;
-                    this.singing = dataBase.singing;
-                }
-            }
+class Cat extends CatDog {
+    constructor(dataBase) {
+        super(dataBase);
+        this.lopiness = dataBase.lopiness;
+    }
+}
+
+class Dog extends CatDog {
+    constructor(dataBase) {
+        super(dataBase);
+        this.specialization = dataBase.specialization;
+    }
+}
+
+class Fish extends Animal {
+    constructor(dataBase) {
+        super(dataBase);
+        this.freshwater = dataBase.zonality;
+        this.zonality = dataBase.zonality;
+    }
+}
+
+class Bird extends Animal {
+    constructor(dataBase) {
+        super(dataBase);
+        this.flying = dataBase.flying;
+        this.talking = dataBase.talking;
+        this.singing = dataBase.singing;
+    }
+}

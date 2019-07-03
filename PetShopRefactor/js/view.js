@@ -1,38 +1,39 @@
 import {
   dataForRendiring
 } from './model.js';
-import HangEvents from './controller.js';
+import controllerMain  from './main.js';
 
-export default class ViewInit {
-  static create() {
-    ViewHeader.create();
-    ViewCart.buildCart(LaunchView.lang = 'en');
-    ViewMain.create();
-    ViewStartPage.create();
-    ViewFooter.create();
-    ViewModalHistory.create(); 
-    document.querySelector('.main__wrapper').addEventListener('click', HangEvents.handlerEnter);
-    document.querySelector('.main__wrapper').addEventListener('click', HangEvents.chooseCategory);
+
+export class ViewInitStartPage {
+   create() {
+    controllerMain.viewHeaderSection.create();
+    controllerMain.viewCart.buildCart();
+    controllerMain.viewMainSection.create();
+    controllerMain.viewStartPageSection.create();
+    controllerMain.viewFooterSection.create();
+    controllerMain.viewModalHistory.create(); 
+    document.querySelector('.main__wrapper').addEventListener('click', controllerMain.controllerHangEvents.handlerEnter);
+    document.querySelector('.main__wrapper').addEventListener('click', controllerMain.controllerHangEvents.chooseCategory);
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
-    document.querySelector('.cartttt').addEventListener('click', HangEvents.showCart);
+    document.querySelector('.cartttt').addEventListener('click', controllerMain.controllerHangEvents.showCart);
   }
 }
 
-export class LaunchView {
-  static rendering(container) {
+export class ViewInitPageSlider {
+  rendering(container) {
     dataForRendiring.filterContainer = dataForRendiring.container;
-    ViewPageChoice.createPageChoice();
+    controllerMain.viewPageChoice.createPageChoice();
     this.cs = new ViewComposeSlider(container);
     this.lang = 'en';
     this.cs.create(this.lang);
-    HangEvents.listeners();
+    controllerMain.controllerHangEvents.listeners();
     document.querySelector('.CartCart').remove();
-    ViewCart.buildCart();
-    ViewModalHistory.create(); 
+    controllerMain.viewCart.buildCart();
+    controllerMain.viewModalHistory.create(); 
   }
 }
 
-export class ViewComposeSlider {
+ class ViewComposeSlider {
   constructor(goodsForRending) {
     this.targetElem = document.querySelector('.slider');
     this.goodsForRending = goodsForRending;
@@ -49,7 +50,7 @@ export class ViewComposeSlider {
     let dataLength = data.length < 4 ? data.length : 4;
     for (let i = 0; i < dataLength; i++) {
       if (data[count]) {
-        parentDiv.appendChild(ViewBuildCard.buildItem(data[count], lang));
+        parentDiv.appendChild(controllerMain.viewBuildCard.buildItem(data[count], lang));
         dataForRendiring.count < 19 ?dataForRendiring.count++ : dataForRendiring.count = 0;
         count++
       }
@@ -86,8 +87,8 @@ export class ViewComposeSlider {
   }
 }
 
-class ViewBuildCard {
-  static chooseSpecialCharacteristics(goodsUnit, lang) {
+export class ViewBuildCard {
+   chooseSpecialCharacteristics(goodsUnit, lang) {
     let res = ``;
 
     for (let key in goodsUnit) {
@@ -116,7 +117,7 @@ class ViewBuildCard {
     return res;
   }
 
-  static buildItem(goodsUnit, lang) {
+   buildItem(goodsUnit, lang) {
     const cardDiv = document.createElement('div');
 
     cardDiv.classList.add('card');
@@ -143,7 +144,7 @@ class ViewBuildCard {
 }
 
 export class ViewPopupEnough {
-  static showPopup(element) {
+   showPopup(element) {
     const popup = document.createElement('div');
     popup.classList.add('showPopup');
     popup.innerText = `Not enough goods in stock`;
@@ -154,7 +155,7 @@ export class ViewPopupEnough {
 }
 
 export class ViewCart {
-  static buildCart() {
+   buildCart() {
     let totalCost = 0,
     popup = document.createElement('div');
     popup.classList.add('CartCart');
@@ -168,21 +169,20 @@ export class ViewCart {
         totalCost += (goodsUnit.price * goodsUnit.orderAmount);
 
         popup.innerHTML += `
-      <div class="cart-item">
-        <div>
-          <img src=${goodsUnit.url} class="purches-img">
-        </div>
-        <div>
-          <span class="purches-name">${dataForRendiring.dictionary[LaunchView.lang][goodsUnit.name]}</span>
-          <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}
-          </p>
-        </div>
+        <div class="cart-item">
+      <div>
+      <img src=${goodsUnit.url} class="purches-img">
+      </div>
+      <div>
+      <span class="purches-name">${dataForRendiring.dictionary[controllerMain.defaultLang][goodsUnit.name]}</span>
+      <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}</p>
+      </div> 
       </div>`
       })
       popup.innerHTML += `
       <div class="totalPrice">
-        <span>Total cost: ${totalCost}</span>
-        <button class="purchase">BUY</button>
+      <span>Total cost: ${totalCost}</span>
+      <button class="purchase">BUY</button>
       </div>
       `
     }
@@ -190,7 +190,7 @@ export class ViewCart {
          popup.querySelector('.order-controlsss').addEventListener('click', HangEvents.handlerCart) : 0; кнопки в корзине*/
     popup.querySelector('.purchase') !== null ?
       popup.querySelector('.purchase')
-      .addEventListener('click', HangEvents.purchaseGoods) : 0;
+      .addEventListener('click', controllerMain.controllerHangEvents.purchaseGoods) : 0;
 
     document.querySelector('.header').appendChild(popup);
 
@@ -198,7 +198,7 @@ export class ViewCart {
 }
 
 export class ViewModalPurchase {
-  static buildModalPurchase() {
+   buildModalPurchase() {
 
     const modalPurchase = document.createElement('div');
     modalPurchase.classList.add('modalPurchase');
@@ -217,14 +217,14 @@ export class ViewModalPurchase {
       </form>`
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
-      .addEventListener('click', HangEvents.confirmOrder);
+      .addEventListener('click', controllerMain.controllerHangEvents.confirmOrder);
       document.querySelector('.modalPurchase__form-abort')
-      .addEventListener('click', HangEvents.modalClose);
+      .addEventListener('click', controllerMain.controllerHangEvents.modalClose);
   }
 }
 
 export class ViewPageChoice {
-  static createPageChoice() {
+   createPageChoice() {
     const pageChoice = document.createElement('div');
     pageChoice.classList.add('page-choice');
     pageChoice.innerHTML += `
@@ -258,14 +258,14 @@ export class ViewPageChoice {
   </div>
     `
     pageChoice.querySelector('.categories')
-      .addEventListener('click', HangEvents.chooseCategory);
+      .addEventListener('click', controllerMain.controllerHangEvents.chooseCategory);
       pageChoice.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
+      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
     document.querySelector('.main__wrapper').appendChild(pageChoice);
   }
 }
 export class ViewFilterAll {
-  static create() {
+   create() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -274,13 +274,13 @@ export class ViewFilterAll {
     </label>
     `
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
+      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
 
     document.querySelector('.main__filter').appendChild(filters);
   }
 } 
 export class ViewFilterCat {
-  static createPageChoice() {
+   createPageChoice() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -299,17 +299,17 @@ export class ViewFilterCat {
     </div>
     `
     filters.querySelector('.filters-checkbox')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
 
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
+      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
 
     document.querySelector('.main__filter').appendChild(filters);
   }
 }
 
 export class ViewFilterDog {
-  static createPageChoice() {
+   createPageChoice() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -338,15 +338,15 @@ export class ViewFilterDog {
     </div>
     `
     filters.querySelector('.filters-searchBar')
-    .addEventListener('keyup', HangEvents.filterSearchBar);
+    .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
     document.querySelector('.main__filter').appendChild(filters);
     document.querySelector('.categories__filters')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
   }
 }
 
 export class ViewFilterFish {
-  static createPageChoice() {
+   createPageChoice() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -381,15 +381,15 @@ export class ViewFilterFish {
     `
   
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
+      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
     document.querySelector('.main__filter').appendChild(filters);
     document.querySelector('.categories__filters')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
   }
 }
 
 export class ViewFilterBird {
-  static createPageChoice() {
+   createPageChoice() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -421,59 +421,62 @@ export class ViewFilterBird {
     `
    
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', HangEvents.filterSearchBar);
+      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
     document.querySelector('.main__filter').appendChild(filters);
     document.querySelector('.categories__filters')
-      .addEventListener('click', HangEvents.filtersCheckbox);
+      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
   }
 }
 
-class ViewHeader {
-  static create() {
+export class ViewHeaderSection {
+  create() {
     const header = document.createElement('header');
     header.classList.add('header');
     header.innerHTML += `
     <div class="modalPurchaseBack"></div>
     <div class="header__wrapper">
-      <a href='javascript:void(0);'>
-        <img src='assets/img/generic/logo.png'>
-      </a>
-      <div class="language">
-        <button class="btn-lang-au">
-          УКРАIНСЬКИЙ
-        </button>
-        <button class="btn-lang-ru">
-          РУССКИЙ
-        </button>
-        <button class="btn-lang-en">
-          ENGLISH
-        </button>
-      </div>
-      <div class="cartttt">
-        <span><i class="goodsIntoCart"></i> item(s)</span>
-      </div>
-      <button class="btn-history">
-        Purches History
-      </button>
+    <a href='javascript:void(0);'>
+    <img src='assets/img/generic/logo.png'>
+    </a>
+    <div class="language">
+    <button class="btn-lang-au">
+      УКРАIНСЬКИЙ
+    </button>
+    <button class="btn-lang-ru">
+      РУССКИЙ
+    </button>
+    <button class="btn-lang-en">
+      ENGLISH
+    </button>
+    </div>
+    <div class="cartttt">
+    <span><i class="goodsIntoCart"></i> item(s)</span>
+    </div>
+    <button class="btn-history">
+    Purches History
+  </button>
     </div>
     `
     document.querySelector('.root').appendChild(header);
     header.querySelector('.btn-history')
-      .addEventListener('click', HangEvents.handlerHistory);
+      .addEventListener('click', controllerMain.controllerHangEvents.handlerHistory);
   }
 }
 
-class ViewMain {
-  static create() {
+export class ViewMainSection {
+   create() {
     const main = document.createElement('main');
     main.classList.add('main');
-    main.innerHTML += `<div class="main__wrapper"></div>`
+    main.innerHTML += `
+    <div class="main__wrapper">
+    </div>
+    `
     document.querySelector('.root').appendChild(main);
   }
 }
 
-class ViewFooter {
-  static create() {
+export class ViewFooterSection {
+   create() {
     const footer = document.createElement('footer');
     footer.classList.add('footer');
     footer.innerHTML += `
@@ -494,8 +497,8 @@ class ViewFooter {
 }
 
 
-class ViewStartPage {
-  static create() {
+export class ViewStartPageSection {
+  create() {
     const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
     startPage.innerHTML += `
@@ -563,7 +566,7 @@ class ViewStartPage {
 }
 
 export class ViewModalHistory{
-  static create(){
+   create(){
     const history = document.createElement('div'),
     purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
     /* let order =``; */
@@ -601,3 +604,22 @@ export class ViewModalHistory{
     document.querySelector('.header').appendChild(history);
   }
 }
+
+/* export const viewModalHistory = new ViewModalHistory();
+export const viewFooterSection = new ViewFooterSection();
+export const viewMainSection = new ViewMainSection();
+export const viewHeaderSection = new ViewHeaderSection();
+export const viewStartPageSection = new ViewStartPageSection();
+export const viewFilterBird = new ViewFilterBird();
+export const viewFilterFish = new ViewFilterFish();
+export const viewFilterDog = new ViewFilterDog();
+export const viewFilterCat = new ViewFilterCat();
+export const viewFilterAll = new ViewFilterAll();
+export const viewPageChoice = new ViewPageChoice();
+export const viewModalPurchase = new ViewModalPurchase();
+export const viewPopupEnough = new ViewPopupEnough();
+export const viewBuildCard = new ViewBuildCard();
+export const viewCart = new ViewCart();
+export const viewInitPageSlider = new ViewInitPageSlider();
+export const viewInitPage = new ViewInitStartPage(); */
+

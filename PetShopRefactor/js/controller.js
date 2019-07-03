@@ -1,5 +1,6 @@
 import {
-  LaunchView,
+  ViewInitPageSlider,
+  ViewInitStartPage,
   ViewPopupEnough,
   ViewCart,
   ViewModalPurchase,
@@ -8,20 +9,51 @@ import {
   ViewFilterFish,
   ViewFilterBird,
   ViewFilterAll,
-  ViewModalHistory
-} from './view.js';
-import {
+  ViewModalHistory,
+  ViewFooterSection,
+  ViewMainSection,
+  ViewHeaderSection,
+  ViewStartPageSection,
+  ViewPageChoice,
+  ViewBuildCard
+} from './view.js'; 
+import ModelGetStart, {
   dataForRendiring
 } from './model.js';
+import controllerMain from './main.js';
+
+export default class ControllerMain {
+  constructor(){
+    this.defaultLang = "en";
+    this.controllerHangEvents = new ControllerHangEvents;
+    this.viewModalHistory = new ViewModalHistory();
+    this.viewFooterSection = new ViewFooterSection();
+    this.viewMainSection = new ViewMainSection();
+    this.viewHeaderSection = new ViewHeaderSection();
+    this.viewStartPageSection = new ViewStartPageSection();
+    this.viewFilterBird = new ViewFilterBird();
+    this.viewFilterFish = new ViewFilterFish();
+    this.viewFilterDog = new ViewFilterDog();
+    this.viewFilterCat = new ViewFilterCat();
+    this.viewFilterAll = new ViewFilterAll();
+    this.viewPageChoice = new ViewPageChoice();
+    this.viewModalPurchase = new ViewModalPurchase();
+    this.viewPopupEnough = new ViewPopupEnough();
+    this.viewBuildCard = new ViewBuildCard();
+    this.viewCart = new ViewCart();
+    this.viewInitPageSlider = new ViewInitPageSlider();
+    this.viewInitPage = new ViewInitStartPage();
+    this.modelGetStart = new ModelGetStart;/* переписать в модели*/
+  }
+  init(){
+    this.modelGetStart.getData(); /* переписать */
+    this.viewInitPage.create();
+  }
+}
 
 
-
-
-
-
-
-/* export default class HangEvents {
-    listeners() {
+class ControllerHangEvents {
+   listeners() {
     this.isShow = false;
     const btnContainer = document.querySelector('.language');
     btnContainer.addEventListener('click', this.switchLang);
@@ -38,45 +70,44 @@ import {
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
   }
 
-    showCart() {
+   showCart() {
     document.querySelector('.CartCart').classList.toggle("showCart");
   }
- */
-export default class ControllerHangEvents {
-    toggleSliderItem(e) {
+
+   showInfo(e) {
     switch (e.target.innerText) {
       case 'next': {
-        LaunchView.cs.createNext(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
+        controllerMain.viewInitPageSlider.cs.createNext(controllerMain.viewInitPageSlider.lang, dataForRendiring.filterContainer, dataForRendiring.count);
         break;
       };
     case 'prev': {
-      LaunchView.cs.createPrev(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count)
+      controllerMain.viewInitPageSlider.cs.createPrev(controllerMain.viewInitPageSlider.lang, dataForRendiring.filterContainer, dataForRendiring.count)
       break;
     };
     }
   }
-    switchLang(e) {
+   switchLang(e) {
     switch (e.target.innerText) {
       case 'РУССКИЙ': {
-        LaunchView.lang = 'ru';
-        LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
+        controllerMain.lang = 'ru';
+        controllerMain.viewInitPageSlider.cs.createWithAnotherLang(controllerMain.lang, dataForRendiring.filterContainer, dataForRendiring.count);
         break;
       };
     case 'ENGLISH': {
-      LaunchView.lang = 'en';
-      LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
+      controllerMain.lang = 'en';
+      controllerMain.viewInitPageSlider.cs.createWithAnotherLang(controllerMain.lang, dataForRendiring.filterContainer, dataForRendiring.count);
       break;
     };
     case 'УКРАIНСЬКИЙ': {
-      LaunchView.lang = 'ua';
-      LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer, dataForRendiring.count);
+      controllerMain.lang = 'ua';
+      controllerMain.viewInitPageSlider.cs.createWithAnotherLang(controllerMain.lang, dataForRendiring.filterContainer, dataForRendiring.count);
       break;
     };
    
   }
 }
 
-    handlerCart(e) {
+   handlerCart(e) {
     let check = true,
       data = dataForRendiring.container,
       cart = dataForRendiring.cartOrderAmount;
@@ -87,10 +118,10 @@ export default class ControllerHangEvents {
           if (el.id == e.target.dataset.id) {
             el.orderAmount--;
             data[el.id - 1].orderAmount = el.orderAmount;
-            el.orderAmount === 0 ? cart.splice(i, 1) : 0;
             e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
+            el.orderAmount === 0 ? cart.splice(i, 1) : 0;
             document.querySelector('.CartCart').remove();
-            ViewCart.buildCart();
+            controllerMain.viewCart.buildCart();
             document.querySelector('.goodsIntoCart').innerText = cart.length;
             localStorage.setItem("cartOrderAmount", JSON.stringify(cart));
             localStorage.setItem("container", JSON.stringify(data));
@@ -103,9 +134,9 @@ export default class ControllerHangEvents {
       cart.forEach((el) => {
         if (el.id == e.target.dataset.id) {
           if (el.orderAmount == el.quantity) {
-            ViewPopupEnough.showPopup(e.target)
+            controllerMain.viewPopupEnough.showPopup(e.target)
           } else if (el.quantity <= 0) {
-            ViewPopupEnough.showPopup(e.target)
+            controllerMain.viewPopupEnough.showPopup(e.target)
           } else {
             el.orderAmount++;
           }
@@ -123,9 +154,9 @@ export default class ControllerHangEvents {
         data.forEach((el) => {
           if (el.id == e.target.dataset.id) {
             if (el.orderAmount == el.quantity) {
-              ViewPopupEnough.showPopup(e.target)
+              controllerMain.viewPopupEnough.showPopup(e.target)
             } else if (data.quantity === 0) {
-              ViewPopupEnough.showPopup(e.target)
+              controllerMain.viewPopupEnough.showPopup(e.target)
             } else {
               el.orderAmount++;
               cart.push(el);
@@ -140,13 +171,13 @@ export default class ControllerHangEvents {
         })
       }
       document.querySelector('.CartCart').remove();
-      ViewCart.buildCart();
+      controllerMain.viewCart.buildCart();
     }
     break;
     };
   }
-    purchaseGoods() {
-    ViewModalPurchase.buildModalPurchase();
+   purchaseGoods() {
+    controllerMain.viewModalPurchase.buildModalPurchase();
     document.querySelector('.modalPurchaseBack').classList.add('modalPurchaseBack-show');
     const form = document.querySelector('.modalPurchase__form'),
       clientData = JSON.parse(localStorage.getItem("clientData"));
@@ -158,7 +189,7 @@ export default class ControllerHangEvents {
     }
   }
 
-    confirmOrder() {
+   confirmOrder() {
     const form = document.querySelector('.modalPurchase__form'),
       clientData = {
         name: form[0].value,
@@ -189,54 +220,54 @@ export default class ControllerHangEvents {
     document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
     document.querySelector('.modalPurchase').remove();
     document.querySelector('.CartCart').remove();
-    ViewCart.buildCart();
+    controllerMain.viewCart.buildCart();
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
-    LaunchView.cs.createWithAnotherLang(LaunchView.lang, dataForRendiring.filterContainer);
-    ViewModalHistory.create(); 
+    controllerMain.viewInitPageSlider.cs.createWithAnotherLang(controllerMain.viewInitPageSlider.lang, dataForRendiring.filterContainer);
+    controllerMain.viewModalHistory.create(); 
   }
 
-    chooseCategory(e) {
+   chooseCategory(e) {
     switch (true) {
       case (e.target.classList.value.includes('all')): {
         document.body.querySelector('.main__filter').innerHTML = "";
         dataForRendiring.filterContainer = dataForRendiring.container;
         dataForRendiring.count = 0;
-        ViewFilterAll.create();
-        LaunchView.cs.create(LaunchView.lang, dataForRendiring.filterContainer);
+        controllerMain.viewFilterAll.create();
+        controllerMain.viewInitPageSlider.cs.create(controllerMain.viewInitPageSlider.lang, dataForRendiring.filterContainer);
         break;
       }
       case (e.target.classList.value.includes('cats')): {
-        HangEvents.chooseCategoryWorker('cat');
-        ViewFilterCat.createPageChoice();
+        controllerMain.controllerHangEvents.chooseCategoryWorker('cat');
+        controllerMain.viewFilterCat.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('dogs')): {
-        HangEvents.chooseCategoryWorker('dog');
-        ViewFilterDog.createPageChoice();
+        controllerMain.controllerHangEvents.chooseCategoryWorker('dog');
+        controllerMain.viewFilterDog.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('fishes')): {
-        HangEvents.chooseCategoryWorker('fish');
-        ViewFilterFish.createPageChoice();
+        controllerMain.controllerHangEvents.chooseCategoryWorker('fish');
+        controllerMain.viewFilterFish.createPageChoice();
         break;
       }
       case (e.target.classList.value.includes('birds')): {
-        HangEvents.chooseCategoryWorker('bird');
-        ViewFilterBird.createPageChoice();
+        controllerMain.controllerHangEvents.chooseCategoryWorker('bird');
+        controllerMain.viewFilterBird.createPageChoice();
         break;
       }
     }
   }
 
-    chooseCategoryWorker(type) {
+   chooseCategoryWorker(type) {
     document.body.querySelector('.main__filter').innerHTML = "";
     dataForRendiring.filterContainer = dataForRendiring.container
       .filter((el) => el.type == type);
     dataForRendiring.count = 0;
-    LaunchView.cs.create(LaunchView.lang, dataForRendiring.filterContainer);
+    controllerMain.viewInitPageSlider.cs.create(controllerMain.viewInitPageSlider.lang, dataForRendiring.filterContainer);
   }
 
-    filtersCheckbox(e) {
+   filtersCheckbox(e) {
     if (e.target.checked) {
       dataForRendiring.filterParams.push(e.target.id);
     } else {
@@ -244,12 +275,12 @@ export default class ControllerHangEvents {
         .filter((el) => el != e.target.id);
     }
     dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
-      .filter((el) => HangEvents.filtersCheckboxWorker(el));
+      .filter((el) => controllerMain.controllerHangEvents.filtersCheckboxWorker(el));
     dataForRendiring.count = 0;
-    LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
+    controllerMain.viewInitPageSlider.cs.create(controllerMain.viewInitPageSlider.lang, dataForRendiring.subFilterContainer);
 
   }
-    filtersCheckboxWorker(el) {
+   filtersCheckboxWorker(el) {
     let res = 0;
     dataForRendiring.filterParams.forEach((param) => {
       el[param] ? res++ : 0;
@@ -261,26 +292,27 @@ export default class ControllerHangEvents {
   }
 
 
-    filterSearchBar(e) {
+   filterSearchBar(e) {
     dataForRendiring.subFilterContainer = dataForRendiring.filterContainer
       .filter((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()));
     dataForRendiring.count = 0;
-    LaunchView.cs.create(LaunchView.lang, dataForRendiring.subFilterContainer);
+    controllerMain.viewInitPageSlider.cs.create(controllerMain.viewInitPageSlider.lang, dataForRendiring.subFilterContainer);
   }
 
-    handlerEnter(e) {
+   handlerEnter(e) {
     if (e.target.classList.value.includes('enterBtn')) {
       document.querySelector('.main__wrapper').innerHTML = '';
-      LaunchView.rendering(dataForRendiring.container);
+      console.log(controllerMain.viewInitPageSlider)
+      controllerMain.viewInitPageSlider.rendering(dataForRendiring.container);
     }
   }
-    modalClose() {
+   modalClose() {
     document.querySelector('.modalPurchase').remove();
     document.querySelector('.CartCart').classList.toggle("showCart");
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
   }
   
-    handlerHistory(){
+   handlerHistory(){
     document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
   }
 }
