@@ -1,94 +1,82 @@
-import {
-  dataForRendiring
-} from './model.js';
-import controllerMain  from './main.js';
+ import {
+  storage
+} from './main.js';
 
 
-export class ViewInitStartPage {
-   create() {
-    controllerMain.viewHeaderSection.create();
-    controllerMain.viewCart.buildCart();
-    controllerMain.viewMainSection.create();
-    controllerMain.viewStartPageSection.create();
-    controllerMain.viewFooterSection.create();
-    controllerMain.viewModalHistory.create(); 
-    document.querySelector('.main__wrapper').addEventListener('click', controllerMain.controllerHangEvents.handlerEnter);
-    document.querySelector('.main__wrapper').addEventListener('click', controllerMain.controllerHangEvents.chooseCategory);
-    document.querySelector('.goodsIntoCart').innerText = dataForRendiring.cartOrderAmount.length;
-    document.querySelector('.cartttt').addEventListener('click', controllerMain.controllerHangEvents.showCart);
+/* export class ViewInitPageSlider {
+  constructor(control) {
+    this.control = control;
   }
-}
-
-export class ViewInitPageSlider {
-  rendering(container) {
-    dataForRendiring.filterContainer = dataForRendiring.container;
-    controllerMain.viewPageChoice.createPageChoice();
-    this.cs = new ViewComposeSlider(container);
-    this.lang = 'en';
-    this.cs.create(this.lang);
-    controllerMain.controllerHangEvents.listeners();
+  rendering() {
+    storage.filterContainer = storage.dataBase;
+    this.control.viewPageChoice.createPageChoice();
+    this.cs = new ViewComposeSlider(this.control);
+    this.cs.create();
     document.querySelector('.CartCart').remove();
-    controllerMain.viewCart.buildCart();
-    controllerMain.viewModalHistory.create(); 
+    this.control.viewCart.buildCart();
+    this.control.viewModalHistory.create();
   }
-}
+} */
 
- class ViewComposeSlider {
-  constructor(goodsForRending) {
-    this.targetElem = document.querySelector('.slider');
-    this.goodsForRending = goodsForRending;
-    this.lang;
+export default class View {
+  constructor(control) {
+    this.control = control; /* remove */
   }
 
-  create(lang, data = this.goodsForRending, count = dataForRendiring.count) {
-    this.targetElem.innerHTML = '';
+  viewComposeSlider(data = storage.dataBase, count = storage.count) {
+    const targetElem = document.querySelector('.slider');
     let parentDiv = document.createElement('div');
+    storage.filteredBase = storage.dataBase;
+    let dataLength = storage.filteredBase.length < 4 ? storage.filteredBase.length : 4;
+
+    targetElem.innerHTML = '';
     parentDiv.classList.add('wrapp');
-    parentDiv.innerHTML += `<button class="btn-slider btn-slider--prev">
+    parentDiv.innerHTML += `
+    <button class="btn-slider btn-slider--prev">
     prev
-  </button>`
-    let dataLength = data.length < 4 ? data.length : 4;
+    </button>`
     for (let i = 0; i < dataLength; i++) {
-      if (data[count]) {
-        parentDiv.appendChild(controllerMain.viewBuildCard.buildItem(data[count], lang));
-        dataForRendiring.count < 19 ?dataForRendiring.count++ : dataForRendiring.count = 0;
-        count++
+      if (storage.filteredBase[storage.count]) {
+        parentDiv.appendChild(this.viewBuildCard(storage.filteredBase[storage.count]));
+        storage.count < 19 ? storage.count++ : storage.count = 0;
+        /* count++ */
       }
     }
-    parentDiv.innerHTML += `<button class="btn-slider btn-slider--next">
+    parentDiv.innerHTML += `
+    <button class="btn-slider btn-slider--next">
     next
-  </button>`
- /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
-    document.querySelector('.slider').appendChild(parentDiv);
+    </button>`
+    /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
+    targetElem.appendChild(parentDiv);
+    targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
+    targetElem.addEventListener('click', this.control.handlerCart.bind(this.control));
   }
 
 
-  createWithAnotherLang(lang, data) {
-    dataForRendiring.count = dataForRendiring.count - 4 < 0 ?
-    dataForRendiring.count = 0 :
-    dataForRendiring.count - 4;
-    this.create(lang, data);
+  createWithAnotherLang() {
+    storage.count = storage.count - 4 < 0 ?
+      storage.count = 0 :
+      storage.count - 4;
+    this.viewComposeSlider();
   }
 
-  createNext(lang, data) {
-    let data_ = data[0].id === 1 ?
-      data :
-      data.reverse();
+  createNext() {
+    let data_ = storage.dataBase[0].id === 1 ?
+      storage.dataBase :
+      storage.dataBase.reverse();
 
-    this.create(lang, data_);
+    this.viewComposeSlider(data_);
   }
 
-  createPrev(lang, data) {
-    let data_ = data[0].id === 1 ?
-      data.reverse() :
-      data;
+  createPrev() {
+    let data_ = storage.dataBase[0].id === 1 ?
+      storage.dataBase.reverse() :
+      storage.dataBase;
 
-    this.create(lang, data_);
+    this.viewComposeSlider(data_);
   }
-}
 
-export class ViewBuildCard {
-   chooseSpecialCharacteristics(goodsUnit, lang) {
+  viewChooseSpecialFeatureCard(goodsUnit) {
     let res = ``;
 
     for (let key in goodsUnit) {
@@ -96,11 +84,11 @@ export class ViewBuildCard {
 
       if (Array.isArray(goodsUnit[key])) {
         goodsUnit[key].forEach((el) => {
-          values += `${dataForRendiring.dictionary[lang][el]} `
+          values += `${storage.dictionary[el]} `
         })
       } else {
         values = Number.isNaN(+[goodsUnit[key]]) ?
-          dataForRendiring.dictionary[lang][goodsUnit[key]] :
+          storage.dictionary[goodsUnit[key]] :
           goodsUnit[key];
       }
 
@@ -111,25 +99,24 @@ export class ViewBuildCard {
         key !== "price" &&
         key !== "orderAmount") {
 
-        res += `<p>${dataForRendiring.dictionary[lang][key]} : ${values}</p>`
+        res += `<p>${storage.dictionary[key]} : ${values}</p>`
       }
     }
     return res;
   }
 
-   buildItem(goodsUnit, lang) {
+  viewBuildCard(goodsUnit) {
     const cardDiv = document.createElement('div');
-
     cardDiv.classList.add('card');
     /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
     cardDiv.innerHTML = `
                 <div class="card-wrap">           
                 <img src=${goodsUnit.url}>
                 <div class="card-section">
-                <h4>${dataForRendiring.dictionary[lang][goodsUnit.name]}</h4>
+                <h4>${storage.dictionary[goodsUnit.name]}</h4>
                 <p>${goodsUnit.price}$</p>
                 <div class="animalInfo">
-                ${this.chooseSpecialCharacteristics(goodsUnit, lang)}
+                ${this.viewChooseSpecialFeatureCard(goodsUnit)}
                 </div>
                 </div>
                 </div>
@@ -141,10 +128,8 @@ export class ViewBuildCard {
                 `;
     return cardDiv;
   }
-}
 
-export class ViewPopupEnough {
-   showPopup(element) {
+  viewPopupEnough(element) {
     const popup = document.createElement('div');
     popup.classList.add('showPopup');
     popup.innerText = `Not enough goods in stock`;
@@ -152,29 +137,27 @@ export class ViewPopupEnough {
 
     setTimeout(() => element.children[0].remove(), 1500);
   }
-}
 
-export class ViewCart {
-   buildCart() {
+  viewCreateCart() {
     let totalCost = 0,
-    popup = document.createElement('div');
+      popup = document.createElement('div');
     popup.classList.add('CartCart');
 
-    if (dataForRendiring.cartOrderAmount.length === 0) {
+    if (storage.cartOrderAmount.length === 0) {
 
       popup.innerHTML = `<p>Nothing ordered</p>`
 
     } else {
-      dataForRendiring.cartOrderAmount.forEach((goodsUnit) => {
+      storage.cartOrderAmount.forEach((goodsUnit) => {
         totalCost += (goodsUnit.price * goodsUnit.orderAmount);
-
+console.log(storage.dictionary)
         popup.innerHTML += `
         <div class="cart-item">
       <div>
       <img src=${goodsUnit.url} class="purches-img">
       </div>
       <div>
-      <span class="purches-name">${dataForRendiring.dictionary[controllerMain.defaultLang][goodsUnit.name]}</span>
+      <span class="purches-name">${storage.dictionary[goodsUnit.name]}</span>
       <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}</p>
       </div> 
       </div>`
@@ -190,16 +173,13 @@ export class ViewCart {
          popup.querySelector('.order-controlsss').addEventListener('click', HangEvents.handlerCart) : 0; кнопки в корзине*/
     popup.querySelector('.purchase') !== null ?
       popup.querySelector('.purchase')
-      .addEventListener('click', controllerMain.controllerHangEvents.purchaseGoods) : 0;
-
-    document.querySelector('.header').appendChild(popup);
+      .addEventListener('click', this.control.purchaseGoods) : 0;
+      document.querySelector('.header').appendChild(popup);
+      document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
 
   }
-}
 
-export class ViewModalPurchase {
-   buildModalPurchase() {
-
+  viewModalPurchase() {
     const modalPurchase = document.createElement('div');
     modalPurchase.classList.add('modalPurchase');
     modalPurchase.innerHTML += `
@@ -217,35 +197,34 @@ export class ViewModalPurchase {
       </form>`
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
-      .addEventListener('click', controllerMain.controllerHangEvents.confirmOrder);
-      document.querySelector('.modalPurchase__form-abort')
-      .addEventListener('click', controllerMain.controllerHangEvents.modalClose);
+      .addEventListener('click', this.control.confirmOrder);
+    document.querySelector('.modalPurchase__form-abort')
+      .addEventListener('click', this.control.modalClose);
   }
-}
 
-export class ViewPageChoice {
-   createPageChoice() {
+  viewPageChoice() {
     const pageChoice = document.createElement('div');
+
     pageChoice.classList.add('page-choice');
     pageChoice.innerHTML += `
     <aside class="page-choice-aside">
     <div class="categories">
     <input type="radio" name="pets" class="categories-items-input categories-items-input-all" id="radio-all"></input>
     <label class="categories-items categories-items-all" for="radio-all">All Animals</label>
-
+    
     <input type="radio" name="pets" class="categories-items-input categories-items-input-cats" id="radio-cats"></input>
     <label class="categories-items categories-items-cats" for="radio-cats">Cats</label>
-
+    
     <input type="radio" name="pets" class="categories-items-input categories-items-input-dogs" id="radio-dogs"></input>
     <label class="categories-items categories-items-dogs" for="radio-dogs">Dogs</label>
-
+    
     <input type="radio" name="pets" class="categories-items-input categories-items-input-fishes" id="radio-fishes"></input>
     <label class="categories-items categories-items-fishes" for="radio-fishes">Fishes</label>
-
+    
     <input type="radio" name="pets" class="categories-items-input categories-items-input-birds" id="radio-birds"></input>
     <label class="categories-items categories-items-birds" for="radio-birds">Birds</label>
     </aside>
-
+    
     <div class="main__slider">
     <div class="main__filter">
     <div class="categories__filters">
@@ -255,17 +234,20 @@ export class ViewPageChoice {
     </div>
     </div>
     <div class='slider'></div>
-  </div>
+    </div>
     `
     pageChoice.querySelector('.categories')
-      .addEventListener('click', controllerMain.controllerHangEvents.chooseCategory);
-      pageChoice.querySelector('.filters-searchBar')
-      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
+      .addEventListener('click', this.control.chooseCategory.bind(this.control));
+
+    pageChoice.querySelector('.filters-searchBar')
+      .addEventListener('keyup', this.control.filterSearchBar);
+
+    document.querySelector('.main__wrapper').innerHTML = '';
+
     document.querySelector('.main__wrapper').appendChild(pageChoice);
   }
-}
-export class ViewFilterAll {
-   create() {
+
+  viewFilterAll() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -274,13 +256,12 @@ export class ViewFilterAll {
     </label>
     `
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
-
+      .addEventListener('keyup', this.control.filterSearchBar);
+    document.querySelector('.main__filter').innerHTML = "";
     document.querySelector('.main__filter').appendChild(filters);
   }
-} 
-export class ViewFilterCat {
-   createPageChoice() {
+
+  viewFilterCat() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -299,21 +280,18 @@ export class ViewFilterCat {
     </div>
     `
     filters.querySelector('.filters-checkbox')
-      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
+      .addEventListener('click', this.control.filtersCheckbox);
 
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
-
+      .addEventListener('keyup', this.control.filterSearchBar);
+    document.querySelector('.main__filter').innerHTML = "";
     document.querySelector('.main__filter').appendChild(filters);
   }
-}
 
-export class ViewFilterDog {
-   createPageChoice() {
+  viewFilterDog() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
-
     <label>Breed
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
@@ -338,15 +316,17 @@ export class ViewFilterDog {
     </div>
     `
     filters.querySelector('.filters-searchBar')
-    .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
-    document.querySelector('.main__filter').appendChild(filters);
-    document.querySelector('.categories__filters')
-      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
-  }
-}
+      .addEventListener('keyup', this.control.filterSearchBar);
 
-export class ViewFilterFish {
-   createPageChoice() {
+    document.querySelector('.categories__filters')
+      .addEventListener('click', this.control.filtersCheckbox);
+
+    document.querySelector('.main__filter').innerHTML = "";
+
+    document.querySelector('.main__filter').appendChild(filters);
+  }
+
+  viewFilterFish() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -379,17 +359,20 @@ export class ViewFilterFish {
     <input type="checkbox" id="red" class="e">
     </div>
     `
-  
-    filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
-    document.querySelector('.main__filter').appendChild(filters);
-    document.querySelector('.categories__filters')
-      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
-  }
-}
 
-export class ViewFilterBird {
-   createPageChoice() {
+    filters.querySelector('.filters-searchBar')
+      .addEventListener('keyup', this.control.filterSearchBar);
+
+    document.querySelector('.categories__filters')
+      .addEventListener('click', this.control.filtersCheckbox);
+
+    document.querySelector('.main__filter').innerHTML = "";
+
+    document.querySelector('.main__filter').appendChild(filters);
+  }
+
+
+  viewFilterBird() {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
@@ -416,20 +399,19 @@ export class ViewFilterBird {
     <input type="checkbox" id="red" class="e">
     <label for="white">white</label>
     <input type="checkbox" id="white" class="e">
-    </div>
-    
-    `
-   
+    </div> `
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', controllerMain.controllerHangEvents.filterSearchBar);
-    document.querySelector('.main__filter').appendChild(filters);
-    document.querySelector('.categories__filters')
-      .addEventListener('click', controllerMain.controllerHangEvents.filtersCheckbox);
-  }
-}
+      .addEventListener('keyup', this.control.filterSearchBar);
 
-export class ViewHeaderSection {
-  create() {
+    document.querySelector('.categories__filters')
+      .addEventListener('click', this.control.filtersCheckbox);
+
+    document.querySelector('.main__filter').innerHTML = "";
+
+    document.querySelector('.main__filter').appendChild(filters);
+  }
+
+  viewHeaderSection() {
     const header = document.createElement('header');
     header.classList.add('header');
     header.innerHTML += `
@@ -459,12 +441,13 @@ export class ViewHeaderSection {
     `
     document.querySelector('.root').appendChild(header);
     header.querySelector('.btn-history')
-      .addEventListener('click', controllerMain.controllerHangEvents.handlerHistory);
+      .addEventListener('click', this.control.handlerHistory);
+    document.querySelector('.language').addEventListener('click', this.control.switchLang);
+    document.querySelector('.cartttt').addEventListener('click', this.control.makeVisibleCart);
+    document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
   }
-}
 
-export class ViewMainSection {
-   create() {
+  viewMainSection() {
     const main = document.createElement('main');
     main.classList.add('main');
     main.innerHTML += `
@@ -472,11 +455,11 @@ export class ViewMainSection {
     </div>
     `
     document.querySelector('.root').appendChild(main);
+    document.querySelector('.main__wrapper')
+      .addEventListener('click', this.control.handlerEnter.bind(this.control));
   }
-}
 
-export class ViewFooterSection {
-   create() {
+  viewFooterSection() {
     const footer = document.createElement('footer');
     footer.classList.add('footer');
     footer.innerHTML += `
@@ -494,11 +477,8 @@ export class ViewFooterSection {
     `
     document.querySelector('.root').appendChild(footer);
   }
-}
 
-
-export class ViewStartPageSection {
-  create() {
+  viewStartPageSection() {
     const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
     startPage.innerHTML += `
@@ -563,27 +543,25 @@ export class ViewStartPageSection {
     `
     document.querySelector('.main__wrapper').appendChild(startPage);
   }
-}
 
-export class ViewModalHistory{
-   create(){
+  viewModalHistory() {
     const history = document.createElement('div'),
-    purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
+      purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
     /* let order =``; */
-    
-    document.querySelector('.main__history-modal') ? 
-    document.querySelector('.main__history-modal').remove(): 0;
-    
+
+    document.querySelector('.main__history-modal') ?
+      document.querySelector('.main__history-modal').remove() : 0;
+
     history.classList.add('main__history-modal');
-    if (purchaseHistory){ 
-      purchaseHistory.forEach((purchase, i)=>{
+    if (purchaseHistory) {
+      purchaseHistory.forEach((purchase, i) => {
         let order = ``;
-       purchase.order.forEach((el)=>order +=`
+        purchase.order.forEach((el) => order += `
        <div>
        <span>${el.type}</span> 
        <span>${el.name}</span> 
        <span>${el.orderAmount}</span>
-       </div>`); 
+       </div>`);
         history.innerHTML += `
     <div class="main__history-modal-item">
     <p>${i+1}</p> 
@@ -595,8 +573,7 @@ export class ViewModalHistory{
     </div>
         `
       })
-     }
-    else {
+    } else {
       history.innerHTML += `
       There were no purchases yet.
       `
@@ -604,22 +581,3 @@ export class ViewModalHistory{
     document.querySelector('.header').appendChild(history);
   }
 }
-
-/* export const viewModalHistory = new ViewModalHistory();
-export const viewFooterSection = new ViewFooterSection();
-export const viewMainSection = new ViewMainSection();
-export const viewHeaderSection = new ViewHeaderSection();
-export const viewStartPageSection = new ViewStartPageSection();
-export const viewFilterBird = new ViewFilterBird();
-export const viewFilterFish = new ViewFilterFish();
-export const viewFilterDog = new ViewFilterDog();
-export const viewFilterCat = new ViewFilterCat();
-export const viewFilterAll = new ViewFilterAll();
-export const viewPageChoice = new ViewPageChoice();
-export const viewModalPurchase = new ViewModalPurchase();
-export const viewPopupEnough = new ViewPopupEnough();
-export const viewBuildCard = new ViewBuildCard();
-export const viewCart = new ViewCart();
-export const viewInitPageSlider = new ViewInitPageSlider();
-export const viewInitPage = new ViewInitStartPage(); */
-
