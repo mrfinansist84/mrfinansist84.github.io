@@ -1,154 +1,97 @@
 import View from './view.js';
 import Model from './model.js';
- import {
-  storage
-} from './main.js'; 
 
 export default class ControllerMain {
   constructor() {
     this.lang = "En";
     this.isShow = false;
     this.view = new View(this);
-    this.model = new Model();
+    this.model = new Model(this);
   }
   init() {
-    this.model.getDataFromServer(storage);
-    this.model.getDictionaryFromServer(storage, this.lang);
-    this.controllermakeStartPage();
+    this.model.getDataFromServer();
+
   }
 
   controllermakeStartPage() {
-    this.view.viewHeaderSection();
+    this.view.viewHeaderSection(this.model);
     this.view.viewMainSection();
     this.view.viewFooterSection();
     this.view.viewStartPageSection();
-    this.view.viewCreateCart();
+    this.view.viewCreateCart(this.model);
     this.view.viewModalHistory();
-  }
-
-  controllerMakeSliderPage() {
-    this.view.viewPageChoice();
-    this.view.viewComposeSlider();
   }
 
   handlerEnter(e) {
     if (e.target.classList.value.includes('enterBtn')) {
-      this.controllerMakeSliderPage();
+      this.model.getDictionaryFromServer(this.lang);
     }
   }
 
-  makeVisibleCart() {
-    document.querySelector('.CartCart').classList.toggle("showCart");
+  controllerMakeSliderPage() {
+    this.model.getDataBaseWithoutFilters();
+    this.view.viewPageChoice();
+    this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
   }
 
   leafSliders(e) {
     switch (e.target.innerText) {
       case 'next': {
-        this.view.createNext(); 
-        /* переписать это метод контроллера. 
-        Манипуляции с storage.count производить в модели */
+        this.model.changeDataBaseForLeafSliderNext()
+        this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
         break;
       };
     case 'prev': {
-      this.view.createPrev()
-       /* переписать это метод контроллера. 
-        Манипуляции с storage.count производить в модели */
+      this.model.changeDataBaseForLeafSliderPrev()
+      this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
       break;
     };
     }
   }
-  switchLang(e) {
-    switch (e.target.innerText) {
-      case 'РУССКИЙ': {
-        this.lang = 'Ru';
-        this.view.createWithAnotherLang();
-        break;
-      };
-    case 'ENGLISH': {
-      this.lang = 'En';
-      this.view.createWithAnotherLang();
-      break;
-    };
-    case 'УКРАIНСЬКИЙ': {
-      this.lang = 'Ua';
-      this.view.createWithAnotherLang();
-      break;
-    };
 
-    }
+  switchLang(e) {
+    const lang = e.target.innerText,
+      supportedLang = [{
+          lang: 'Ru',
+          name: 'РУССКИЙ'
+        },
+        {
+          lang: 'En',
+          name: 'ENGLISH'
+        },
+        {
+          lang: 'Ua',
+          name: 'УКРАIНСЬКИЙ'
+        }
+      ];
+    supportedLang.forEach((el) => {
+      el.name === lang ?
+        this.model.getDictionaryFromServer(el.lang) : 0;
+    })
+  }
+  updateOrderAmount(e, el) {
+    this.view.renderOrderAmount(e, el);
+  }
+  addPopUpEmotyStop(target) {
+    this.view.viewPopupEnough(target)
   }
   handlerCart(e) {
-    let check = true;
-    /*  data = dataForRendiring.dataBase,
-     cart = dataForRendiring.cartOrderAmount; */
-
-    switch (e.target.innerText) {
-      case '-': {
-        storage.cartOrderAmount.forEach((el, i) => {
-          
-          if (el.id == e.target.dataset.id) {
-            el.orderAmount--;
-            storage.dataBase[el.id - 1].orderAmount = el.orderAmount;
-            e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
-            el.orderAmount === 0 ? storage.cartOrderAmount.splice(i, 1) : 0;
-           /*  document.querySelector('.CartCart').remove(); */
-            this.view.viewCreateCart();
-
-            localStorage.setItem("cartOrderAmount", JSON.stringify(storage.cartOrderAmount));
-            localStorage.setItem("dataBase", JSON.stringify(storage.dataBase));
-          }
-        });
-        console.log(storage.cartOrderAmount)
-        break;
-      };
-
-    case '+': {
-      storage.cartOrderAmount.forEach((el) => {
-        console.log(el.id, e.target.dataset.id)
-        if (el.id == e.target.dataset.id) {
-          if (el.orderAmount == el.quantity) {
-            this.view.viewPopupEnough(e.target)
-          } else if (el.quantity <= 0) {
-            this.view.viewPopupEnough(e.target)
-          } else {
-            el.orderAmount++;
-          }
-          storage.dataBase[el.id - 1].orderAmount = el.orderAmount;
-          check = false;
-          e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
-          localStorage.setItem("cartOrderAmount", JSON.stringify(storage.cartOrderAmount));
-          localStorage.setItem("dataBase", JSON.stringify(storage.dataBase));
-          console.log(storage.cartOrderAmount)
-        }
-      });
-
-      if (check) {
-        storage.dataBase.forEach((el) => {
-          if (el.id == e.target.dataset.id) {
-            if (el.orderAmount == el.quantity) {
-              this.view.viewPopupEnough(e.target)
-            } else if (storage.dataBase.quantity === 0) {
-              this.view.viewPopupEnough(e.target)
-            } else {
-              el.orderAmount++;
-              storage.cartOrderAmount.push(el);
-              console.log(storage.cartOrderAmount)
-            }
-            e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
-            document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
-            localStorage.setItem("cartOrderAmount", JSON.stringify(storage.cartOrderAmount));
-            localStorage.setItem("dataBase", JSON.stringify(storage.dataBase));
-          }
-        })
-      }
-    /*  document.querySelector('.CartCart').remove();  */
-      this.view.viewCreateCart();
+    if (e.target.innerText == '-') {
+      this.model.delUnitFromCart(e);
     }
-    break;
-    };
+
+    if (e.target.innerText == '+') {
+      this.model.cartOrderAmount.find((el) => el.id == e.target.dataset.id) ?
+        this.model.updateUnitInCart(e) :
+        this.model.addUnitInCart(e);
+    }
+    this.model.setToLocalStorage("cartOrderAmount", this.model.cartOrderAmount);
+    this.model.setToLocalStorage("dataBase", this.model.dataBase);
+    this.view.viewCreateCart(this.model);
   }
+
   purchaseGoods() {
-    this.viewModalPurchase.buildModalPurchase();
+    this.view.viewModalPurchase();
     document.querySelector('.modalPurchaseBack').classList.add('modalPurchaseBack-show');
     const form = document.querySelector('.modalPurchase__form'),
       clientData = JSON.parse(localStorage.getItem("clientData"));
@@ -161,41 +104,50 @@ export default class ControllerMain {
   }
 
   confirmOrder() {
+
     const form = document.querySelector('.modalPurchase__form'),
+      /* модель */
       clientData = {
+        /* модель */
         name: form[0].value,
         surname: form[1].value,
         email: form[2].value,
         tel: form[3].value,
-        order: storage.cartOrderAmount
+        order: this.model.cartOrderAmount
       };
+    console.log(this.model.cartOrderAmount)
     let purchaseHistory = [];
 
-    if (localStorage.getItem("clientData")) {
-      purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
+    if (this.model.getFromLocalStorage("clientData")) {
+      /* модель */
+      purchaseHistory = this.model.getFromLocalStorage("clientData");
     };
 
-    purchaseHistory.push(clientData);
-    localStorage.setItem("clientData", JSON.stringify(purchaseHistory));
-    storage.cartOrderAmount.forEach((order) => {
-      storage.dataBase.forEach((data) => {
-        /* возможно просто находить idшки без второго перебора */
+    purchaseHistory.push(clientData); /* модель */
+
+    this.model.cartOrderAmount.forEach((order) => {
+      /* модель */
+      this.model.dataBase.forEach((data) => {
+        /* сделать через find */
         if (order.id === data.id) {
+          /* модель */
           data.quantity = data.quantity - order.orderAmount;
           data.orderAmount = 0;
         }
       })
     })
-    storage.cartOrderAmount = [];
-    localStorage.setItem("cartOrderAmount", JSON.stringify(storage.cartOrderAmount));
-    localStorage.setItem("dataBase", JSON.stringify(storage.dataBase));
-    document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
-    document.querySelector('.modalPurchase').remove();
-    document.querySelector('.CartCart').remove();
-    this.view.viewBuildCart();
-    document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
-    this.view.viewComposeSlider();
+    this.model.cartOrderAmount = []; /* модель */
+
+
+
+    this.model.setToLocalStorage("clientData", purchaseHistory);
+    this.model.setToLocalStorage("cartOrderAmount", this.model.cartOrderAmount);
+    this.model.setToLocalStorage("dataBase", this.model.dataBase);
+    this.view.viewCreateCart(this.model);
+    this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
     this.view.viewModalHistory();
+    this.view.viewModalClose();
+
   }
 
   chooseCategory(e) {
@@ -204,7 +156,7 @@ export default class ControllerMain {
         storage.filteredBase = storage.dataBase;
         storage.count = 0;
         this.view.viewFilterAll();
-        this.view.viewComposeSlider();
+        this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
         break;
       }
       case (e.target.classList.value.includes('cats')): {
@@ -231,52 +183,45 @@ export default class ControllerMain {
   }
 
   chooseCategoryWorker(type) {
-    storage.filteredBase = storage.dataBase
+    this.model.filteredBase = this.model.dataBase
       .filter((el) => el.type == type);
-    storage.count = 0;
-    this.view.viewComposeSlider();
+    this.model.count = 0;
+    this.view.viewComposeSlider(this.model.filteredBase,this.model.count, this.model.dictionary);
   }
 
   filtersCheckbox(e) {
     if (e.target.checked) {
-      storage.filterParams.push(e.target.id);
+      this.model.filterParams.push(e.target.id);
     } else {
-      storage.filterParams = storage.filterParams
+      this.model.filterParams = this.model.filterParams
         .filter((el) => el != e.target.id);
     }
-    storage.subfilteredBase = storage.filteredBase
-      .filter((el) => this.filtersCheckboxWorker(el));
-    storage.count = 0;
-    this.view.viewComposeSlider();
+
+    this.model.subfilteredBase = this.model.filteredBase.filter((el) => this.filtersCheckboxWorker(el));
+    this.model.count = 0;
+    this.view.viewComposeSlider(this.model.subfilteredBase,this.model.count, this.model.dictionary);
 
   }
   filtersCheckboxWorker(el) {
     let res = 0;
-    storage.filterParams.forEach((param) => {
+    this.model.filterParams.forEach((param) => {
       el[param] ? res++ : 0;
       if (typeof el[param] !== "boolean") {
         Object.values(el).join('').includes(param) ? res++ : 0
       };
     })
-    return res === storage.filterParams.length;
+    return res === this.model.filterParams.length;
   }
-
 
   filterSearchBar(e) {
-    storage.subfilteredBase = storage.filteredBase
+    this.model.subfilteredBase = this.model.filteredBase
       .filter((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()));
-    storage.count = 0;
-    this.viewInitPageSlider.cs.create(this.viewInitPageSlider.lang, storage.subfilteredBase);
+
+    this.model.count = 0;
+    this.view.viewComposeSlider(this.model.subfilteredBase,this.model.count, this.model.dictionary);
   }
 
-  
   modalClose() {
-    document.querySelector('.modalPurchase').remove();
-    document.querySelector('.CartCart').classList.toggle("showCart");
-    document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
-  }
-
-  handlerHistory() {
-    document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
+    this.view.viewModalClose();
   }
 }

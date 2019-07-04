@@ -1,29 +1,102 @@
 export default class Model {
-    getDataFromServer(storage) {
-        fetch('./js/dataBase.json')
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                this.makeDataBase(data, storage);
-            });
+    constructor(control) {
+        this.control = control;
+        this.dataBase = [];
+        this.filteredBase = [];
+        this.subFilteredBase = [];
+        this.filterParams = [];
+        this.dictionary = {};
+        this.count = 0;
+        this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
+        JSON.parse(localStorage.getItem("cartOrderAmount")) : [];
     }
-    getDictionaryFromServer(storage, lang="En") { 
+    getFromLocalStorage(key) {
+        JSON.parse(localStorage.getItem(key));
+    }
+    setToLocalStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+    }
+    getDataBaseWithoutFilters() {
+        this.filteredBase = this.dataBase;
+    }
+    changeDataBaseForLeafSliderNext() {
+        this.filteredBase = this.filteredBase[0].id === 1 ?
+            this.filteredBase :
+            this.filteredBase.reverse();
+    }
+    changeDataBaseForLeafSliderPrev() {
+        this.filteredBase = this.filteredBase[0].id === 1 ?
+            this.filteredBase.reverse() :
+            this.filteredBase;
+    }
+    delUnitFromCart(e) {
+        this.cartOrderAmount.forEach((el, i) => {
+            if (el.id == e.target.dataset.id) {
+                el.orderAmount--;
+                this.dataBase[el.id - 1].orderAmount = el.orderAmount;
+                el.orderAmount === 0 ? this.cartOrderAmount.splice(i, 1) : 0;
+                this.control.updateOrderAmount(e, el);
+            }
+        })
+    }
+    updateUnitInCart(e) {
+        this.cartOrderAmount.forEach((el) => {
+            if (el.id == e.target.dataset.id) {
+                if (el.orderAmount == el.quantity) {
+                    this.control.addPopUpEmotyStop(e.target);
+                } else if (el.quantity <= 0) {
+                    this.control.addPopUpEmotyStop(e.target);
+                } else {
+                    el.orderAmount++;
+                }
+                this.dataBase.find((el) => el.id == e.target.dataset.id)
+                .orderAmount = el.orderAmount;
+            }
+            this.control.updateOrderAmount(e, el);
+        })
+    }
+    addUnitInCart(e) {
+        this.dataBase.forEach((el) => {
+            if (el.id == e.target.dataset.id) {
+                if (el.orderAmount == el.quantity) {
+                    this.control.addPopUpEmotyStop(e.target);
+                } else if (this.dataBase.quantity === 0) {
+                    this.control.addPopUpEmotyStop(e.target);
+                } else {
+                    el.orderAmount++;
+                    this.cartOrderAmount.push(el);
+                }
+                this.control.updateOrderAmount(e, el);
+            }
+        })
+    }
+    getDataFromServer() {
+        if (JSON.parse(localStorage.getItem("dataBase"))) {
+            this.dataBase = JSON.parse(localStorage.getItem("dataBase"))
+            this.control.controllermakeStartPage();
+        } else {
+            fetch('./js/dataBase.json')
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+                    this.makeDataBase(data);
+                    this.control.controllermakeStartPage();
+                });
+        }
+    }
+    getDictionaryFromServer(lang = "En") {
         fetch(`./js/dictionary${lang}.json`)
             .then(response => {
                 return response.json()
             })
             .then(dictionary => {
-                this.makedictionary(dictionary, storage);
+                this.dictionary = dictionary;
+                this.control.controllerMakeSliderPage(this.dictionary);
             })
-
     }
 
-    makedictionary(dictionary, storage){
-        storage.dictionary = dictionary;
-    }
-
-    makeDataBase(dataBase, storage) {
+    makeDataBase(dataBase) {
         const res = [];
         dataBase.forEach(element => {
             switch (element.type) {
@@ -41,11 +114,8 @@ export default class Model {
                     break;
             }
         });
-
-        storage.dataBase = JSON.parse(localStorage.getItem("dataBase")) ?
-            JSON.parse(localStorage.getItem("dataBase")) : res;
-
-        localStorage.setItem("dataBase", JSON.stringify(storage.dataBase));
+        this.dataBase = res;
+        localStorage.setItem("dataBase", JSON.stringify(this.dataBase));
     }
 }
 

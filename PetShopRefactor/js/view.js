@@ -1,45 +1,23 @@
- import {
-  storage
-} from './main.js';
-
-
-/* export class ViewInitPageSlider {
-  constructor(control) {
-    this.control = control;
-  }
-  rendering() {
-    storage.filterContainer = storage.dataBase;
-    this.control.viewPageChoice.createPageChoice();
-    this.cs = new ViewComposeSlider(this.control);
-    this.cs.create();
-    document.querySelector('.CartCart').remove();
-    this.control.viewCart.buildCart();
-    this.control.viewModalHistory.create();
-  }
-} */
-
 export default class View {
   constructor(control) {
     this.control = control; /* remove */
   }
 
-  viewComposeSlider(data = storage.dataBase, count = storage.count) {
+  viewComposeSlider(dataBase, count, dictionary) {
     const targetElem = document.querySelector('.slider');
     let parentDiv = document.createElement('div');
-    storage.filteredBase = storage.dataBase;
-    let dataLength = storage.filteredBase.length < 4 ? storage.filteredBase.length : 4;
+    let dataLength = dataBase.length < 4 ? dataBase.length : 4;
 
-    targetElem.innerHTML = '';
+    targetElem !== null ? targetElem.innerHTML = '' : 0;
     parentDiv.classList.add('wrapp');
     parentDiv.innerHTML += `
     <button class="btn-slider btn-slider--prev">
     prev
     </button>`
     for (let i = 0; i < dataLength; i++) {
-      if (storage.filteredBase[storage.count]) {
-        parentDiv.appendChild(this.viewBuildCard(storage.filteredBase[storage.count]));
-        storage.count < 19 ? storage.count++ : storage.count = 0;
-        /* count++ */
+      if (dataBase[count]) {
+        parentDiv.appendChild(this.viewBuildCard(dataBase[count], dictionary));
+        count < 19 ? count++ : count = 0;
       }
     }
     parentDiv.innerHTML += `
@@ -47,76 +25,26 @@ export default class View {
     next
     </button>`
     /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
-    targetElem.appendChild(parentDiv);
-    targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
-    targetElem.addEventListener('click', this.control.handlerCart.bind(this.control));
-  }
-
-
-  createWithAnotherLang() {
-    storage.count = storage.count - 4 < 0 ?
-      storage.count = 0 :
-      storage.count - 4;
-    this.viewComposeSlider();
-  }
-
-  createNext() {
-    let data_ = storage.dataBase[0].id === 1 ?
-      storage.dataBase :
-      storage.dataBase.reverse();
-
-    this.viewComposeSlider(data_);
-  }
-
-  createPrev() {
-    let data_ = storage.dataBase[0].id === 1 ?
-      storage.dataBase.reverse() :
-      storage.dataBase;
-
-    this.viewComposeSlider(data_);
-  }
-
-  viewChooseSpecialFeatureCard(goodsUnit) {
-    let res = ``;
-
-    for (let key in goodsUnit) {
-      let values = ``;
-
-      if (Array.isArray(goodsUnit[key])) {
-        goodsUnit[key].forEach((el) => {
-          values += `${storage.dictionary[el]} `
-        })
-      } else {
-        values = Number.isNaN(+[goodsUnit[key]]) ?
-          storage.dictionary[goodsUnit[key]] :
-          goodsUnit[key];
-      }
-
-      if (key !== "name" &&
-        key !== "id" &&
-        key !== "url" &&
-        key !== "type" &&
-        key !== "price" &&
-        key !== "orderAmount") {
-
-        res += `<p>${storage.dictionary[key]} : ${values}</p>`
-      }
+    parentDiv.addEventListener('click', this.control.handlerCart.bind(this.control));
+    if (targetElem) {
+      targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
+      targetElem.appendChild(parentDiv);
     }
-    return res;
   }
 
-  viewBuildCard(goodsUnit) {
+  viewBuildCard(goodsUnit, dictionary) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
     /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
+
     cardDiv.innerHTML = `
                 <div class="card-wrap">           
                 <img src=${goodsUnit.url}>
                 <div class="card-section">
-                <h4>${storage.dictionary[goodsUnit.name]}</h4>
+                <h4 class="card-animal-name">${dictionary[goodsUnit.name]}</h4>
                 <p>${goodsUnit.price}$</p>
                 <div class="animalInfo">
-                ${this.viewChooseSpecialFeatureCard(goodsUnit)}
+                ${this.viewChooseSpecialFeatureCard(goodsUnit, dictionary)}
                 </div>
                 </div>
                 </div>
@@ -129,6 +57,35 @@ export default class View {
     return cardDiv;
   }
 
+  viewChooseSpecialFeatureCard(goodsUnit, dictionary) {
+    let res = ``;
+
+    for (let key in goodsUnit) {
+      let values = ``;
+
+      if (Array.isArray(goodsUnit[key])) {
+        goodsUnit[key].forEach((el) => {
+          values += `${dictionary[el]} `
+        })
+      } else {
+        values = Number.isNaN(+[goodsUnit[key]]) ?
+          dictionary[goodsUnit[key]] :
+          goodsUnit[key];
+      }
+
+      if (key !== "name" &&
+        key !== "id" &&
+        key !== "url" &&
+        key !== "type" &&
+        key !== "price" &&
+        key !== "orderAmount") {
+
+        res += `<p>${dictionary[key]} : ${values}</p>`
+      }
+    }
+    return res;
+  }
+
   viewPopupEnough(element) {
     const popup = document.createElement('div');
     popup.classList.add('showPopup');
@@ -138,26 +95,26 @@ export default class View {
     setTimeout(() => element.children[0].remove(), 1500);
   }
 
-  viewCreateCart() {
-    let totalCost = 0,
-      popup = document.createElement('div');
-    popup.classList.add('CartCart');
+  viewCreateCart(storage) {
+
+    let totalCost = 0;
+    const popup = document.createElement('div');
+    popup.classList.add('InnerCart');
 
     if (storage.cartOrderAmount.length === 0) {
-
       popup.innerHTML = `<p>Nothing ordered</p>`
 
     } else {
       storage.cartOrderAmount.forEach((goodsUnit) => {
         totalCost += (goodsUnit.price * goodsUnit.orderAmount);
-console.log(storage.dictionary)
+
         popup.innerHTML += `
         <div class="cart-item">
       <div>
       <img src=${goodsUnit.url} class="purches-img">
       </div>
       <div>
-      <span class="purches-name">${storage.dictionary[goodsUnit.name]}</span>
+      <span class="purches-name">${goodsUnit.name}</span>
       <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}</p>
       </div> 
       </div>`
@@ -173,9 +130,14 @@ console.log(storage.dictionary)
          popup.querySelector('.order-controlsss').addEventListener('click', HangEvents.handlerCart) : 0; кнопки в корзине*/
     popup.querySelector('.purchase') !== null ?
       popup.querySelector('.purchase')
-      .addEventListener('click', this.control.purchaseGoods) : 0;
-      document.querySelector('.header').appendChild(popup);
-      document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
+      .addEventListener('click', this.control.purchaseGoods.bind(this.control)) : 0;
+
+    document.querySelector('.CartCart').innerHTML = '';
+
+    document.querySelector('.CartCart').appendChild(popup);
+
+    document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
+
 
   }
 
@@ -197,10 +159,17 @@ console.log(storage.dictionary)
       </form>`
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
-      .addEventListener('click', this.control.confirmOrder);
+      .addEventListener('click', this.control.confirmOrder.bind(this.control));
     document.querySelector('.modalPurchase__form-abort')
-      .addEventListener('click', this.control.modalClose);
+      .addEventListener('click', this.control.modalClose.bind(this.control));
   }
+
+  viewModalClose() {
+    document.querySelector('.modalPurchase').remove();
+    document.querySelector('.CartCart').classList.toggle("showCart");
+    document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
+  }
+
 
   viewPageChoice() {
     const pageChoice = document.createElement('div');
@@ -240,7 +209,7 @@ console.log(storage.dictionary)
       .addEventListener('click', this.control.chooseCategory.bind(this.control));
 
     pageChoice.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__wrapper').innerHTML = '';
 
@@ -256,7 +225,7 @@ console.log(storage.dictionary)
     </label>
     `
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
     document.querySelector('.main__filter').innerHTML = "";
     document.querySelector('.main__filter').appendChild(filters);
   }
@@ -280,10 +249,10 @@ console.log(storage.dictionary)
     </div>
     `
     filters.querySelector('.filters-checkbox')
-      .addEventListener('click', this.control.filtersCheckbox);
+      .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
 
     filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
     document.querySelector('.main__filter').innerHTML = "";
     document.querySelector('.main__filter').appendChild(filters);
   }
@@ -296,6 +265,7 @@ console.log(storage.dictionary)
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
+    <div>
     <label for="shortLegged">shortLegged</label>
     <input type="checkbox" id="shortLegged" class="e">
     <label for="pedigree">pedigree</label>
@@ -314,12 +284,13 @@ console.log(storage.dictionary)
     <label for="hunting">hunting</label>
     <input type="checkbox" id="hunting" class="e">
     </div>
+    </div>
     `
-    filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+    filters.querySelector('.filters-checkbox')
+    .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
 
-    document.querySelector('.categories__filters')
-      .addEventListener('click', this.control.filtersCheckbox);
+  filters.querySelector('.filters-searchBar')
+    .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__filter').innerHTML = "";
 
@@ -335,6 +306,7 @@ console.log(storage.dictionary)
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
+    <div>
     <label for="freshwater">freshwater</label>
     <input type="checkbox" id="freshwater" class="e">
     </div>
@@ -358,13 +330,14 @@ console.log(storage.dictionary)
     <label for="red">red</label>
     <input type="checkbox" id="red" class="e">
     </div>
+    </div>
     `
 
-    filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+    filters.querySelector('.filters-checkbox')
+    .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
 
-    document.querySelector('.categories__filters')
-      .addEventListener('click', this.control.filtersCheckbox);
+  filters.querySelector('.filters-searchBar')
+    .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__filter').innerHTML = "";
 
@@ -380,6 +353,7 @@ console.log(storage.dictionary)
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
+    <div>
     <label for="flying">flying</label>
     <input type="checkbox" id="flying" class="e">
     <label for="talking">talking</label>
@@ -399,19 +373,20 @@ console.log(storage.dictionary)
     <input type="checkbox" id="red" class="e">
     <label for="white">white</label>
     <input type="checkbox" id="white" class="e">
+    </div>
     </div> `
-    filters.querySelector('.filters-searchBar')
-      .addEventListener('keyup', this.control.filterSearchBar);
+    filters.querySelector('.filters-checkbox')
+      .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
 
-    document.querySelector('.categories__filters')
-      .addEventListener('click', this.control.filtersCheckbox);
+    filters.querySelector('.filters-searchBar')
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__filter').innerHTML = "";
 
     document.querySelector('.main__filter').appendChild(filters);
   }
 
-  viewHeaderSection() {
+  viewHeaderSection(storage) {
     const header = document.createElement('header');
     header.classList.add('header');
     header.innerHTML += `
@@ -438,13 +413,20 @@ console.log(storage.dictionary)
     Purches History
   </button>
     </div>
+    <div class="CartCart"></div>
     `
     document.querySelector('.root').appendChild(header);
-    header.querySelector('.btn-history')
-      .addEventListener('click', this.control.handlerHistory);
-    document.querySelector('.language').addEventListener('click', this.control.switchLang);
-    document.querySelector('.cartttt').addEventListener('click', this.control.makeVisibleCart);
+    header.querySelector('.btn-history').addEventListener('click', () => {
+      document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
+    });
+
+    document.querySelector('.language').addEventListener('click', this.control.switchLang.bind(this.control));
+
     document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
+
+    document.querySelector('.cartttt').addEventListener('click', () => {
+      document.querySelector('.CartCart').classList.toggle("showCart");
+    });
   }
 
   viewMainSection() {
@@ -579,5 +561,9 @@ console.log(storage.dictionary)
       `
     }
     document.querySelector('.header').appendChild(history);
+  }
+
+  renderOrderAmount(e, el) {
+    e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
   }
 }
