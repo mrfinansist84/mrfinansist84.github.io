@@ -1,7 +1,7 @@
 [{
     "id": 1,
     "type": "cat",
-    "url": "assets/img/generic/cat.png",
+    "url": "assets/img/generic/pets/siamskaya.jpg",
     "name": "Siamese",
     "price": 100,
     "quantity": 2,
@@ -20,7 +20,7 @@
 {
     "id": 2,
     "type": "cat",
-    "url": "assets/img/generic/cat.png",
+    "url": "assets/img/generic/pets/balines.jpg",
     "name": "Balinese",
     "price": 150,
     "quantity": 1,
@@ -39,7 +39,7 @@
 {
     "id": 3,
     "type": "cat",
-    "url": "assets/img/generic/cat.png",
+    "url": "assets/img/generic/pets/abussian.jpg",
     "name": "Abyssinian",
     "price": 550,
     "quantity": 5,
@@ -58,7 +58,7 @@
 {
     "id": 4,
     "type": "cat",
-    "url": "assets/img/generic/cat.png",
+    "url": "assets/img/generic/pets/bambino.jpg",
     "name": "Bambino",
     "price": 1550,
     "quantity": 1,
@@ -77,7 +77,7 @@
 {
     "id": 5,
     "type": "cat",
-    "url": "assets/img/generic/cat.png",
+    "url": "assets/img/generic/pets/bobtail.jpg",
     "name": "American Bobtail",
     "price": 1550,
     "quantity": 1,
@@ -96,7 +96,7 @@
 {
     "id": 6,
     "type": "dog",
-    "url": "assets/img/generic/dog.png",
+    "url": "assets/img/generic/pets/bulldog.jpg",
     "name": "English Bulldog",
     "price": 650,
     "quantity": 2,
@@ -115,7 +115,7 @@
 {
     "id": 7,
     "type": "dog",
-    "url": "assets/img/generic/dog.png",
+    "url": "assets/img/generic/pets/doberman.jpg",
     "name": "Doberman",
     "price": 2650,
     "quantity": 1,
@@ -134,7 +134,7 @@
 {
     "id": 8,
     "type": "dog",
-    "url": "assets/img/generic/dog.png",
+    "url": "assets/img/generic/pets/kitayskaya.jpg",
     "name": "Chinese Crested",
     "price": 5650,
     "quantity": 4,
@@ -153,7 +153,7 @@
 {
     "id": 9,
     "type": "dog",
-    "url": "assets/img/generic/dog.png",
+    "url": "assets/img/generic/pets/ovcharka.jpg",
     "name": "German Shepherd",
     "price": 250,
     "quantity": 10,
@@ -172,7 +172,7 @@
 {
     "id": 10,
     "type": "dog",
-    "url": "assets/img/generic/dog.png",
+    "url": "assets/img/generic/pets/taksa.jpg",
     "name": "Dachshund",
     "price": 950,
     "quantity": 2,

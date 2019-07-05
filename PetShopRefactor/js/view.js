@@ -3,7 +3,7 @@ export default class View {
     this.control = control; /* remove */
   }
 
-  viewComposeSlider(dataBase, count, dictionary) {
+  viewComposeSlider(dataBase, model, dictionary) {
     const targetElem = document.querySelector('.slider');
     let parentDiv = document.createElement('div');
     let dataLength = dataBase.length < 4 ? dataBase.length : 4;
@@ -15,9 +15,9 @@ export default class View {
     prev
     </button>`
     for (let i = 0; i < dataLength; i++) {
-      if (dataBase[count]) {
-        parentDiv.appendChild(this.viewBuildCard(dataBase[count], dictionary));
-        count < 19 ? count++ : count = 0;
+      if (dataBase[model.count]) {
+        parentDiv.appendChild(this.viewBuildCard(dataBase[model.count], dictionary));
+        model.count < 19 ? model.count++ : model.count = 0;
       }
     }
     parentDiv.innerHTML += `
@@ -29,6 +29,8 @@ export default class View {
     if (targetElem) {
       targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
       targetElem.appendChild(parentDiv);
+      document.querySelector('.main__start-page') ?
+      document.querySelector('.main__start-page').classList.remove('main__start-page'):0;
     }
   }
 
@@ -137,8 +139,6 @@ export default class View {
     document.querySelector('.CartCart').appendChild(popup);
 
     document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
-
-
   }
 
   viewModalPurchase() {
@@ -169,8 +169,29 @@ export default class View {
     document.querySelector('.CartCart').classList.toggle("showCart");
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
   }
-
-
+  viewModalShow(){
+    document.querySelector('.modalPurchaseBack').classList.add('modalPurchaseBack-show');
+  } 
+  setUserDataForModal(){
+    const clientData = JSON.parse(localStorage.getItem("clientData"));
+console.log(clientData)
+  if (clientData) {
+    document.querySelector('.modalPurchase__form-name').value = clientData[clientData.length - 1].name;
+    document.querySelector('.modalPurchase__form-surname').value = clientData[clientData.length - 1].surname;
+    document.querySelector('.modalPurchase__form-email').value = clientData[clientData.length - 1].email;
+    document.querySelector('.modalPurchase__form-tel').value = clientData[clientData.length - 1].tel;
+  }
+  }
+getUserDataForModal(storage){
+  const clientData = { 
+    name: document.querySelector('.modalPurchase__form-name').value,
+    surname: document.querySelector('.modalPurchase__form-surname').value,
+    email: document.querySelector('.modalPurchase__form-email').value,
+    tel: document.querySelector('.modalPurchase__form-tel').value,
+    order: storage.cartOrderAmount
+  };
+  return clientData;
+}
   viewPageChoice() {
     const pageChoice = document.createElement('div');
 
@@ -412,6 +433,7 @@ export default class View {
     <button class="btn-history">
     Purches History
   </button>
+  <button class="main__start-page-block-enterBtn">enter</button>
     </div>
     <div class="CartCart"></div>
     `
@@ -427,18 +449,21 @@ export default class View {
     document.querySelector('.cartttt').addEventListener('click', () => {
       document.querySelector('.CartCart').classList.toggle("showCart");
     });
+    document.querySelector('.header')
+    .addEventListener('click', this.control.handlerEnter.bind(this.control));
+
   }
 
   viewMainSection() {
     const main = document.createElement('main');
     main.classList.add('main');
+    main.classList.add('main__start-page');
     main.innerHTML += `
     <div class="main__wrapper">
     </div>
     `
     document.querySelector('.root').appendChild(main);
-    document.querySelector('.main__wrapper')
-      .addEventListener('click', this.control.handlerEnter.bind(this.control));
+   
   }
 
   viewFooterSection() {
@@ -457,13 +482,14 @@ export default class View {
         </div>
     </div>
     `
+   
     document.querySelector('.root').appendChild(footer);
   }
 
   viewStartPageSection() {
     const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
-    startPage.innerHTML += `
+    /* startPage.innerHTML += `
   
 
     <div class="main__start-page-block main__start-page-block--bird">
@@ -522,7 +548,7 @@ export default class View {
   <img src="assets/img/generic/pug.jpg" class="main__start-page-block-img-item" alt="pug">
   </div>
 </div>
-    `
+    ` */
     document.querySelector('.main__wrapper').appendChild(startPage);
   }
 

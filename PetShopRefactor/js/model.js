@@ -8,7 +8,7 @@ export default class Model {
         this.dictionary = {};
         this.count = 0;
         this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
-        JSON.parse(localStorage.getItem("cartOrderAmount")) : [];
+            JSON.parse(localStorage.getItem("cartOrderAmount")) : [];
     }
     getFromLocalStorage(key) {
         JSON.parse(localStorage.getItem(key));
@@ -19,6 +19,39 @@ export default class Model {
     getDataBaseWithoutFilters() {
         this.filteredBase = this.dataBase;
     }
+    setFiltersOnDataBaseByType(type) {
+        this.filteredBase = this.dataBase
+            .filter((el) => el.type == type);
+    }
+    setSubfilteredBaseByName(e) {
+        this.subfilteredBase = this.filteredBase
+            .filter((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()));
+    }
+    setSubfilteredBaseByFeatures() {
+        this.subfilteredBase = this.filteredBase.filter((el) => this.filtersCheckboxWorker(el));
+    }
+    filtersCheckboxWorker(el) {
+        let res = 0;
+        this.filterParams.forEach((param) => {
+            el[param] ? res++ : 0;
+            if (typeof el[param] !== "boolean") {
+                Object.values(el).join('').includes(param) ? res++ : 0
+            };
+        })
+        return res === this.filterParams.length;
+    }
+    collectFiltresParams(e) {
+        if (e.target.checked) {
+            this.filterParams.push(e.target.id);
+        } else {
+            this.filterParams = this.filterParams
+                .filter((el) => el != e.target.id);
+        }
+    }
+    setToZeroCount() {
+        this.count = 0;
+    }
+
     changeDataBaseForLeafSliderNext() {
         this.filteredBase = this.filteredBase[0].id === 1 ?
             this.filteredBase :
@@ -29,6 +62,7 @@ export default class Model {
             this.filteredBase.reverse() :
             this.filteredBase;
     }
+
     delUnitFromCart(e) {
         this.cartOrderAmount.forEach((el, i) => {
             if (el.id == e.target.dataset.id) {
@@ -50,7 +84,7 @@ export default class Model {
                     el.orderAmount++;
                 }
                 this.dataBase.find((el) => el.id == e.target.dataset.id)
-                .orderAmount = el.orderAmount;
+                    .orderAmount = el.orderAmount;
             }
             this.control.updateOrderAmount(e, el);
         })
@@ -95,7 +129,30 @@ export default class Model {
                 this.control.controllerMakeSliderPage(this.dictionary);
             })
     }
+    addToPurchaseHistory(clientData) {
+        let purchaseHistory = [];
 
+        if (this.getFromLocalStorage("clientData")) {
+            purchaseHistory = this.getFromLocalStorage("clientData");
+        };
+        purchaseHistory.push(clientData);
+
+        return purchaseHistory;
+    }
+    updateQuantityGoodsInShop() {
+        this.cartOrderAmount.forEach((order) => {
+            this.dataBase.forEach((data) => {
+                if (data.id === order.id) {
+                    data.quantity = data.quantity - order.orderAmount;
+                    data.orderAmount = 0;
+                }
+            })
+        })
+    }
+
+    cleaningCart() {
+        this.cartOrderAmount = [];
+    }
     makeDataBase(dataBase) {
         const res = [];
         dataBase.forEach(element => {
