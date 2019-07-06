@@ -7,7 +7,6 @@ export default class View {
     const targetElem = document.querySelector('.slider');
     let parentDiv = document.createElement('div');
     let dataLength = dataBase.length < 4 ? dataBase.length : 4;
-
     targetElem !== null ? targetElem.innerHTML = '' : 0;
     parentDiv.classList.add('wrapp');
     parentDiv.innerHTML += `
@@ -16,15 +15,13 @@ export default class View {
     </button>`
     for (let i = 0; i < dataLength; i++) {
       if (dataBase[model.count]) {
-        parentDiv.appendChild(this.viewBuildCard(dataBase[model.count], dictionary));
-        model.count < 19 ? model.count++ : model.count = 0;
+        parentDiv.appendChild(this.viewBuildCard(dataBase[model.count + i], dictionary));
       }
     }
     parentDiv.innerHTML += `
     <button class="btn-slider btn-slider--next">
     next
     </button>`
-    /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
     parentDiv.addEventListener('click', this.control.handlerCartInCard.bind(this.control));
     if (targetElem) {
       targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
@@ -104,7 +101,14 @@ export default class View {
     popup.classList.add('InnerCart');
 
     if (storage.cartOrderAmount.length === 0) {
-      popup.innerHTML = `<p>Nothing ordered</p>`
+      popup.innerHTML = `
+      <span class="cart__form-abort">X</span>
+      <div class="cart__empty">
+      <p class="cart__empty-text">NOTHING ORDERED</p>
+      <button class="btn-history">
+      Purches History
+      </button>
+      </div>`
 
     } else {
       storage.cartOrderAmount.forEach((goodsUnit) => {
@@ -120,24 +124,27 @@ export default class View {
 
       <div class="purches-price">
       ${goodsUnit.price}$ x 
-      <div class="order-controlsssss">
+      <div class="order-control-in-cart">
       <button class="btn-remove-from-cart" data-id=${goodsUnit.id}>-</button>
       <span class="order-amount">${goodsUnit.orderAmount}</span>
       <button class="btn-add-from-cart" data-id=${goodsUnit.id}>+</button>
       </div> 
-      ${goodsUnit.price * goodsUnit.orderAmount}$  <button data-id=${goodsUnit.id}>del</button></div>
-      </div></div>`})
-
+      ${goodsUnit.price * goodsUnit.orderAmount}$  
+      <button data-id=${goodsUnit.id} class="trashingGoods">del</button></div>
+      </div></div>`
+      })
 
       popup.innerHTML += `
       <div class="totalPrice">
       <span>Total cost: ${totalCost}$</span>
       <button class="purchase">BUY</button>
+      <button class="btn-history">
+      Purches History
+      </button>
       </div>
+      <span class="cart__form-abort">X</span>
       `
     }
-    /*      popup.querySelector('.order-controlsss') !== null ? 
-         popup.querySelector('.order-controlsss').addEventListener('click', HangEvents.handlerCart) : 0; кнопки в корзине*/
     popup.querySelector('.purchase') !== null ?
       popup.querySelector('.purchase')
       .addEventListener('click', this.control.purchaseGoods.bind(this.control)) : 0;
@@ -149,6 +156,13 @@ export default class View {
     document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
 
     popup.addEventListener('click', this.control.handlerCart.bind(this.control));
+
+    popup.querySelector('.btn-history').addEventListener('click', () => {
+      document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
+    });
+
+    document.querySelector('.cart__form-abort')
+      .addEventListener('click', this.control.modalClose.bind(this.control));
   }
 
   viewModalPurchase() {
@@ -175,7 +189,10 @@ export default class View {
   }
 
   viewModalClose() {
-    document.querySelector('.modalPurchase').remove();
+    document.querySelector('.main__history-modal') ?
+      document.querySelector('.main__history-modal').classList.remove('main__history-modal--show') : 0;
+
+    document.querySelector('.modalPurchase') ? document.querySelector('.modalPurchase').remove() : 0;
     document.querySelector('.CartCart').classList.toggle("showCart");
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
   }
@@ -270,13 +287,13 @@ export default class View {
     </label>
     <div class="filters-checkbox">
     <label for="shortLegged">shortLegged</label>
-    <input type="checkbox" id="shortLegged" class="e">
+    <input type="checkbox" id="shortLegged" class="checkboxItem">
     <label for="pedigree">pedigree</label>
-    <input type="checkbox" id="pedigree" class="e">
+    <input type="checkbox" id="pedigree" class="checkboxItem">
     <label for="trimming">trimming</label>
-    <input type="checkbox" id="trimming" class="e">
+    <input type="checkbox" id="trimming" class="checkboxItem">
     <label for="lopiness">lopiness</label>
-    <input type="checkbox" id="lopiness" class="e">
+    <input type="checkbox" id="lopiness" class="checkboxItem">
     </div>
     `
     filters.querySelector('.filters-checkbox')
@@ -298,22 +315,22 @@ export default class View {
     <div class="filters-checkbox">
     <div>
     <label for="shortLegged">shortLegged</label>
-    <input type="checkbox" id="shortLegged" class="e">
+    <input type="checkbox" id="shortLegged" class="checkboxItem">
     <label for="pedigree">pedigree</label>
-    <input type="checkbox" id="pedigree" class="e">
+    <input type="checkbox" id="pedigree" class="checkboxItem">
     <label for="trimming">trimming</label>
-    <input type="checkbox" id="trimming" class="e">
+    <input type="checkbox" id="trimming" class="checkboxItem">
    </div>
    <div>
    <span class="extraFeature"> Specialization: </span>
     <label for="domastic">domastic</label>
-    <input type="checkbox" id="domastic" class="e">
+    <input type="checkbox" id="domastic" class="checkboxItem">
     <label for="decorate">decorate</label>
-    <input type="checkbox" id="decorate" class="e">
+    <input type="checkbox" id="decorate" class="checkboxItem">
     <label for="guard">guard</label>
-    <input type="checkbox" id="guard" class="e">
+    <input type="checkbox" id="guard" class="checkboxItem">
     <label for="hunting">hunting</label>
-    <input type="checkbox" id="hunting" class="e">
+    <input type="checkbox" id="hunting" class="checkboxItem">
     </div>
     </div>
     `
@@ -339,27 +356,27 @@ export default class View {
     <div class="filters-checkbox">
     <div>
     <label for="freshwater">freshwater</label>
-    <input type="checkbox" id="freshwater" class="e">
+    <input type="checkbox" id="freshwater" class="checkboxItem">
     </div>
     <div>
     <span class="extraFeature">zonality: </span>
     <label for="up">up</label>
-    <input type="checkbox" id="up" class="e">
+    <input type="checkbox" id="up" class="checkboxItem">
     <label for="down">down</label>
-    <input type="checkbox" id="down" class="e">
+    <input type="checkbox" id="down" class="checkboxItem">
     <label for="mid">mid</label>
-    <input type="checkbox" id="mid" class="e">
+    <input type="checkbox" id="mid" class="checkboxItem">
     </div>
     <div>
     <span class="extraFeature">color: </span>
     <label for="yellow">yellow</label>
-    <input type="checkbox" id="yellow" class="e">
+    <input type="checkbox" id="yellow" class="checkboxItem">
     <label for="grey">grey</label>
-    <input type="checkbox" id="grey" class="e">
+    <input type="checkbox" id="grey" class="checkboxItem">
     <label for="blue">blue</label>
-    <input type="checkbox" id="blue" class="e">
+    <input type="checkbox" id="blue" class="checkboxItem">
     <label for="red">red</label>
-    <input type="checkbox" id="red" class="e">
+    <input type="checkbox" id="red" class="checkboxItem">
     </div>
     </div>
     `
@@ -386,24 +403,24 @@ export default class View {
     <div class="filters-checkbox">
     <div>
     <label for="flying">flying</label>
-    <input type="checkbox" id="flying" class="e">
+    <input type="checkbox" id="flying" class="checkboxItem">
     <label for="talking">talking</label>
-    <input type="checkbox" id="talking" class="e">
+    <input type="checkbox" id="talking" class="checkboxItem">
     <label for="singing">singing</label>
-    <input type="checkbox" id="singing" class="e">
+    <input type="checkbox" id="singing" class="checkboxItem">
     </div>
     <div>
     <span class="extraFeature">color: </span>
     <label for="yellow">yellow</label>
-    <input type="checkbox" id="yellow" class="e">
+    <input type="checkbox" id="yellow" class="checkboxItem">
     <label for="grey">grey</label>
-    <input type="checkbox" id="grey" class="e">
+    <input type="checkbox" id="grey" class="checkboxItem">
     <label for="blue">blue</label>
-    <input type="checkbox" id="blue" class="e">
+    <input type="checkbox" id="blue" class="checkboxItem">
     <label for="red">red</label>
-    <input type="checkbox" id="red" class="e">
+    <input type="checkbox" id="red" class="checkboxItem">
     <label for="white">white</label>
-    <input type="checkbox" id="white" class="e">
+    <input type="checkbox" id="white" class="checkboxItem">
     </div>
     </div> `
     filters.querySelector('.filters-checkbox')
@@ -440,28 +457,26 @@ export default class View {
     <div class="cartttt">
     <span><i class="goodsIntoCart"></i> item(s)</span>
     </div>
-    <button class="btn-history">
-    Purches History
-  </button>
   <button class="main__start-page-block-enterBtn">enter</button>
     </div>
     <div class="CartCart"></div>
     `
     document.querySelector('.root').appendChild(header);
-    header.querySelector('.btn-history').addEventListener('click', () => {
-      document.querySelector('.main__history-modal').classList.toggle("main__history-modal--show");
-    });
 
     document.querySelector('.language').addEventListener('click', this.control.switchLang.bind(this.control));
 
     document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
 
-    document.querySelector('.cartttt').addEventListener('click', () => {
-      document.querySelector('.CartCart').classList.toggle("showCart");
-    });
+    document.querySelector('.cartttt').addEventListener('click', this.control.toggleCart.bind(this.control));
+
     document.querySelector('.header')
       .addEventListener('click', this.control.handlerEnter.bind(this.control));
 
+  }
+
+  showHidddenCart() {
+    document.querySelector('.modalPurchaseBack').classList.toggle('modalPurchaseBack-show');
+    document.querySelector('.CartCart').classList.toggle("showCart");
   }
 
   viewMainSection() {
@@ -499,7 +514,7 @@ export default class View {
   viewStartPageSection() {
     const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
-   
+
     document.querySelector('.main__wrapper').appendChild(startPage);
   }
 
@@ -511,21 +526,33 @@ export default class View {
       document.querySelector('.main__history-modal').remove() : 0;
 
     history.classList.add('main__history-modal');
+
     if (purchaseHistory) {
+      history.innerHTML += `
+        <div class="main__history-modal-item-header">
+        <span class="main__history-modal-item-text">Date</span> 
+    <span class="main__history-modal-item-text">Name</span> 
+    <span class="main__history-modal-item-text">Surname</span>
+    <span>Order</span>
+    <span class="history__form-abort">X</span>
+        </div>
+        `
       purchaseHistory.forEach((purchase, i) => {
         let order = ``;
+
         purchase.order.forEach((el) => order += `
-       <div>
+       <div class="main__history-modal-order">
        <span>${el.type}</span> 
        <span>${el.name}</span> 
        <span>${el.orderAmount}</span>
        </div>`);
+
         history.innerHTML += `
     <div class="main__history-modal-item">
-    <p>${i+1}</p> 
-    <span>${purchase.name}</span> 
-    <span>${purchase.surname}</span>
-    <div>
+    <span class="main__history-modal-item-text">${new Date().toLocaleDateString()}</span> 
+    <span class="main__history-modal-item-text">${purchase.name}</span> 
+    <span class="main__history-modal-item-text">${purchase.surname}</span>
+    <div class="history__order">
     ${order}
     </div>
     </div>
@@ -533,10 +560,26 @@ export default class View {
       })
     } else {
       history.innerHTML += `
+      <span class="history__form-abort">X</span>
+      <div class="history__empty-text">
       There were no purchases yet.
+      </div>
       `
     }
     document.querySelector('.header').appendChild(history);
+
+    document.querySelector('.history__form-abort')
+      .addEventListener('click', this.control.modalClose.bind(this.control));
   }
 
+  disableBtnSlider(e) {
+    if (e.target.value !== '') {
+      document.querySelector('.btn-slider--next').classList.add("hidden");
+      document.querySelector('.btn-slider--prev').classList.add("hidden");
+    }
+    if (e.target.className === 'checkboxItem') {
+      document.querySelector('.btn-slider--next').classList.add("hidden");
+      document.querySelector('.btn-slider--prev').classList.add("hidden");
+    }
+  }
 }

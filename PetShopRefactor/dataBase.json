@@ -191,7 +191,7 @@
 {
     "id": 11,
     "type": "fish",
-    "url": "assets/img/generic/fish.png",
+    "url": "assets/img/generic/pets/Astronotus.png",
     "name": "Astronotus",
     "price": 50,
     "quantity": 15,
@@ -207,7 +207,7 @@
 {
     "id": 12,
     "type": "fish",
-    "url": "assets/img/generic/fish.png",
+    "url": "assets/img/generic/pets/Coryphaena.png",
     "name": "Coryphaena hippurus",
     "price": 220,
     "quantity": 5,
@@ -223,7 +223,7 @@
 {
     "id": 13,
     "type": "fish",
-    "url": "assets/img/generic/fish.png",
+    "url": "assets/img/generic/pets/betta.jpg",
     "name": "Betta splendens",
     "price": 920,
     "quantity": 5,
@@ -239,7 +239,7 @@
 {
     "id": 14,
     "type": "fish",
-    "url": "assets/img/generic/fish.png",
+    "url": "assets/img/generic/pets/Ancistrus.jpg",
     "name": "Ancistrus",
     "price": 20,
     "quantity": 50,
@@ -255,7 +255,7 @@
 {
     "id": 15,
     "type": "fish",
-    "url": "assets/img/generic/fish.png",
+    "url": "assets/img/generic/pets/Guppi.jpg",
     "name": "Guppi",
     "price": 10,
     "quantity": 2,
@@ -271,7 +271,7 @@
 {
     "id": 16,
     "type": "bird",
-    "url": "assets/img/generic/bird.svg",
+    "url": "assets/img/generic/pets/canary.jpg",
     "name": "Сanary",
     "price": 50,
     "quantity": 2,
@@ -288,7 +288,7 @@
 {
     "id": 17,
     "type": "bird",
-    "url": "assets/img/generic/bird.svg",
+    "url": "assets/img/generic/pets/aratingi.jpg",
     "name": "Aratingi",
     "price": 100,
     "quantity": 2,
@@ -305,7 +305,7 @@
 {
     "id": 18,
     "type": "bird",
-    "url": "assets/img/generic/bird.svg",
+    "url": "assets/img/generic/pets/Cockatoo.png",
     "name": "Cockatoo",
     "price": 2000,
     "quantity": 4,
@@ -322,7 +322,7 @@
 {
     "id": 19,
     "type": "bird",
-    "url": "assets/img/generic/bird.svg",
+    "url": "assets/img/generic/pets/sova.jpg",
     "name": "Owl",
     "price": 6000,
     "quantity": 1,
@@ -339,7 +339,7 @@
 {
     "id": 20,
     "type": "bird",
-    "url": "assets/img/generic/bird.svg",
+    "url": "assets/img/generic/pets/Jaco.jpg",
     "name": "Jaco",
     "price": 600,
     "quantity": 4,

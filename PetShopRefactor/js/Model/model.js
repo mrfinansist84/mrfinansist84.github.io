@@ -10,9 +10,9 @@ export default class Model {
         this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
             JSON.parse(localStorage.getItem("cartOrderAmount")) : [];
     }
-    getFromLocalStorage(key) {
-        JSON.parse(localStorage.getItem(key));
-    }
+    /*     getFromLocalStorage(key) {
+            JSON.parse(localStorage.getItem(key));
+        } */
     setToLocalStorage(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
     }
@@ -53,18 +53,13 @@ export default class Model {
     }
 
     changeDataBaseForLeafSliderNext() {
-        this.filteredBase = this.filteredBase[0].id === 1 ?
-            this.filteredBase :
-            this.filteredBase.reverse();
+            this.count < this.filteredBase.length - 4 ? this.count++ : this.count = 0;
     }
     changeDataBaseForLeafSliderPrev() {
-        this.filteredBase = this.filteredBase[0].id === 1 ?
-            this.filteredBase.reverse() :
-            this.filteredBase;
+            this.count > 0 ? this.count-- : this.count = this.filteredBase.length - 4;
     }
 
     delOnePointOfUnitFromCart(e) {
-        console.log(e.target)
         this.cartOrderAmount.forEach((el, i) => {
             if (el.id == e.target.dataset.id) {
                 el.orderAmount--;
@@ -74,9 +69,7 @@ export default class Model {
         })
     }
     delUnitFromCart(e) {
-        console.log(e.target)
         this.cartOrderAmount.forEach((el, i) => {
-            console.log(el.id == e.target.dataset.id, el.id, e.target.dataset.id)
             if (el.id == e.target.dataset.id) {
                 this.dataBase[el.id - 1].orderAmount = 0;
                 this.cartOrderAmount.splice(i, 1);
@@ -140,11 +133,13 @@ export default class Model {
     addToPurchaseHistory(clientData) {
         let purchaseHistory = [];
 
-        if (this.getFromLocalStorage("clientData")) {
-            purchaseHistory = this.getFromLocalStorage("clientData");
+        if (JSON.parse(localStorage.getItem("clientData"))) {
+            console.log(JSON.parse(localStorage.getItem("clientData")));
+            purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
         };
-        purchaseHistory.push(clientData);
 
+        purchaseHistory.push(clientData);
+        console.log(purchaseHistory)
         return purchaseHistory;
     }
     updateQuantityGoodsInShop() {

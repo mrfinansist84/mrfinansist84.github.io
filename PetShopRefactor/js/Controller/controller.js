@@ -91,7 +91,13 @@ export default class ControllerMain {
     this.model.setToLocalStorage("dataBase", this.model.dataBase);
     this.view.viewCreateCart(this.model);
   }
+  toggleCart(){
+  this.view.showHidddenCart();
+}
 
+/* closeCart(){
+
+} */
   handlerCartInCard(e) {
     if (e.target.innerText == '+') {
       this.model.cartOrderAmount.find((el) => el.id == e.target.dataset.id) ?
@@ -166,13 +172,14 @@ export default class ControllerMain {
     this.model.setSubfilteredBaseByFeatures()
     this.model.setToZeroCount();
     this.view.viewComposeSlider(this.model.subfilteredBase, this.model, this.model.dictionary);
-
+    this.view.disableBtnSlider(e);
   }
 
   filterSearchBar(e) {
     this.model.setSubfilteredBaseByName(e);
     this.model.setToZeroCount();
     this.view.viewComposeSlider(this.model.subfilteredBase, this.model, this.model.dictionary);
+    this.view.disableBtnSlider(e);
   }
 
   modalClose() {
