@@ -25,12 +25,12 @@ export default class View {
     next
     </button>`
     /*  parentDiv.querySelector('.btn-slider').addEventListener('click', HangEvents.showInfo);  */
-    parentDiv.addEventListener('click', this.control.handlerCart.bind(this.control));
+    parentDiv.addEventListener('click', this.control.handlerCartInCard.bind(this.control));
     if (targetElem) {
       targetElem.addEventListener('click', this.control.leafSliders.bind(this.control));
       targetElem.appendChild(parentDiv);
       document.querySelector('.main__start-page') ?
-      document.querySelector('.main__start-page').classList.remove('main__start-page'):0;
+        document.querySelector('.main__start-page').classList.remove('main__start-page') : 0;
     }
   }
 
@@ -40,6 +40,7 @@ export default class View {
     /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
 
     cardDiv.innerHTML = `
+
                 <div class="card-wrap">           
                 <img src=${goodsUnit.url}>
                 <div class="card-section">
@@ -50,10 +51,9 @@ export default class View {
                 </div>
                 </div>
                 </div>
-                <div class="order-controls">
-                <button class="btn-remove-from-cart" data-id=${goodsUnit.id}>-</button>
-                <span class="order-amount">${goodsUnit.orderAmount}</span>
-                <button class="btn-add-from-cart" data-id=${goodsUnit.id}>+</button>
+                <div class="cartInCard">
+                <div class="btn-addCart" data-id=${goodsUnit.id}>+</div>
+                </div>
                 </div>
                 `;
     return cardDiv;
@@ -117,13 +117,21 @@ export default class View {
       </div>
       <div>
       <span class="purches-name">${goodsUnit.name}</span>
-      <p class="purches-price">${goodsUnit.price}$ x ${goodsUnit.orderAmount} = ${goodsUnit.price * goodsUnit.orderAmount}</p>
+
+      <div class="purches-price">
+      ${goodsUnit.price}$ x 
+      <div class="order-controlsssss">
+      <button class="btn-remove-from-cart" data-id=${goodsUnit.id}>-</button>
+      <span class="order-amount">${goodsUnit.orderAmount}</span>
+      <button class="btn-add-from-cart" data-id=${goodsUnit.id}>+</button>
       </div> 
-      </div>`
-      })
+      ${goodsUnit.price * goodsUnit.orderAmount}$  <button data-id=${goodsUnit.id}>del</button></div>
+      </div></div>`})
+
+
       popup.innerHTML += `
       <div class="totalPrice">
-      <span>Total cost: ${totalCost}</span>
+      <span>Total cost: ${totalCost}$</span>
       <button class="purchase">BUY</button>
       </div>
       `
@@ -139,6 +147,8 @@ export default class View {
     document.querySelector('.CartCart').appendChild(popup);
 
     document.querySelector('.goodsIntoCart').innerText = storage.cartOrderAmount.length;
+
+    popup.addEventListener('click', this.control.handlerCart.bind(this.control));
   }
 
   viewModalPurchase() {
@@ -155,7 +165,7 @@ export default class View {
       <input type="email" placeholder="Input your email" id="email" required="required" class="modalPurchase__form-email">
       <label for="tel">Telephone</label>
       <input type="tel" placeholder="Input tel number" id="tel" class="modalPurchase__form-tel">
-      <input type="button" value="Сonfirm order" class="confirm-order">
+      <input type="submit" value="Сonfirm order" class="confirm-order">
       </form>`
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
@@ -169,29 +179,29 @@ export default class View {
     document.querySelector('.CartCart').classList.toggle("showCart");
     document.querySelector('.modalPurchaseBack').classList.remove('modalPurchaseBack-show');
   }
-  viewModalShow(){
+  viewModalShow() {
     document.querySelector('.modalPurchaseBack').classList.add('modalPurchaseBack-show');
-  } 
-  setUserDataForModal(){
+  }
+  setUserDataForModal() {
     const clientData = JSON.parse(localStorage.getItem("clientData"));
-console.log(clientData)
-  if (clientData) {
-    document.querySelector('.modalPurchase__form-name').value = clientData[clientData.length - 1].name;
-    document.querySelector('.modalPurchase__form-surname').value = clientData[clientData.length - 1].surname;
-    document.querySelector('.modalPurchase__form-email').value = clientData[clientData.length - 1].email;
-    document.querySelector('.modalPurchase__form-tel').value = clientData[clientData.length - 1].tel;
+    console.log(clientData)
+    if (clientData) {
+      document.querySelector('.modalPurchase__form-name').value = clientData[clientData.length - 1].name;
+      document.querySelector('.modalPurchase__form-surname').value = clientData[clientData.length - 1].surname;
+      document.querySelector('.modalPurchase__form-email').value = clientData[clientData.length - 1].email;
+      document.querySelector('.modalPurchase__form-tel').value = clientData[clientData.length - 1].tel;
+    }
   }
+  getUserDataForModal(storage) {
+    const clientData = {
+      name: document.querySelector('.modalPurchase__form-name').value,
+      surname: document.querySelector('.modalPurchase__form-surname').value,
+      email: document.querySelector('.modalPurchase__form-email').value,
+      tel: document.querySelector('.modalPurchase__form-tel').value,
+      order: storage.cartOrderAmount
+    };
+    return clientData;
   }
-getUserDataForModal(storage){
-  const clientData = { 
-    name: document.querySelector('.modalPurchase__form-name').value,
-    surname: document.querySelector('.modalPurchase__form-surname').value,
-    email: document.querySelector('.modalPurchase__form-email').value,
-    tel: document.querySelector('.modalPurchase__form-tel').value,
-    order: storage.cartOrderAmount
-  };
-  return clientData;
-}
   viewPageChoice() {
     const pageChoice = document.createElement('div');
 
@@ -270,7 +280,7 @@ getUserDataForModal(storage){
     </div>
     `
     filters.querySelector('.filters-checkbox')
-      .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
+      .addEventListener('click', this.control.filtersCheckbox.bind(this.control));
 
     filters.querySelector('.filters-searchBar')
       .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
@@ -308,10 +318,10 @@ getUserDataForModal(storage){
     </div>
     `
     filters.querySelector('.filters-checkbox')
-    .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
+      .addEventListener('click', this.control.filtersCheckbox.bind(this.control));
 
-  filters.querySelector('.filters-searchBar')
-    .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
+    filters.querySelector('.filters-searchBar')
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__filter').innerHTML = "";
 
@@ -355,10 +365,10 @@ getUserDataForModal(storage){
     `
 
     filters.querySelector('.filters-checkbox')
-    .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
+      .addEventListener('click', this.control.filtersCheckbox.bind(this.control));
 
-  filters.querySelector('.filters-searchBar')
-    .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
+    filters.querySelector('.filters-searchBar')
+      .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
 
     document.querySelector('.main__filter').innerHTML = "";
 
@@ -397,7 +407,7 @@ getUserDataForModal(storage){
     </div>
     </div> `
     filters.querySelector('.filters-checkbox')
-      .addEventListener('click', this.control.filtersCheckbox.bind( this.control));
+      .addEventListener('click', this.control.filtersCheckbox.bind(this.control));
 
     filters.querySelector('.filters-searchBar')
       .addEventListener('keyup', this.control.filterSearchBar.bind(this.control));
@@ -450,7 +460,7 @@ getUserDataForModal(storage){
       document.querySelector('.CartCart').classList.toggle("showCart");
     });
     document.querySelector('.header')
-    .addEventListener('click', this.control.handlerEnter.bind(this.control));
+      .addEventListener('click', this.control.handlerEnter.bind(this.control));
 
   }
 
@@ -463,7 +473,7 @@ getUserDataForModal(storage){
     </div>
     `
     document.querySelector('.root').appendChild(main);
-   
+
   }
 
   viewFooterSection() {
@@ -482,80 +492,20 @@ getUserDataForModal(storage){
         </div>
     </div>
     `
-   
+
     document.querySelector('.root').appendChild(footer);
   }
 
   viewStartPageSection() {
     const startPage = document.createElement('div');
     startPage.classList.add('main__start-page');
-    /* startPage.innerHTML += `
-  
-
-    <div class="main__start-page-block main__start-page-block--bird">
-            <div class="main__start-page-block-img">
-            <img src='assets/img/generic/papuga.jpg' class="main__start-page-block-img-item" alt="papu">
-            </div>
-          <div class="main__start-page-block-text">
-          <h2 class="main__start-page-block-header">Birds of any breeds and colors</h2>
-          <p class="main__start-page-block-subheader">Birds are extraordinarily pleasant 
-          creatures. With their appearance, songs, lively bustle, they can decorate any home.</p>
-          <button class="main__start-page-block-enterBtn">enter</button>
-          </div>
-          </div>
-
-    <div class="main__start-page-block main__start-page-block--categories">
-    <h2 class="main__start-page-block-header main__start-page-block-header--popular">Popular categories</h2>
-    <div class="main__start-page-block-links">
-      <a href="javascript:void(0);" class="main__start-page-block-dogs">
-      <figure class="main__start-page-block-dogs">
-      <img src="assets/img/generic/dog.jpg" alt="dog" class="main__start-page-block-dogs"/>
-      <figcaption class="main__start-page-block-dogs">Dogs</figcaption>
-      </figure>
-      </a>
-
-      <a href="javascript:void(0);" class="main__start-page-block-cats">
-      <figure class="main__start-page-block-cats">
-      <img src="assets/img/generic/cat.jpg" alt="cat" class="main__start-page-block-cats"/>
-      <figcaption class="main__start-page-block-cats">Cats</figcaption>
-      </figure>
-      </a>
-
-      <a href="javascript:void(0);" class="main__start-page-block-fishes">
-      <figure class="main__start-page-block-fishes">
-      <img src="assets/img/generic/fish.jpg" alt="fishes" class="main__start-page-block-fishes" />
-      <figcaption class="main__start-page-block-fishes">Fish</figcaption>
-      </figure>
-      </a>
-
-      <a href="javascript:void(0);" class="main__start-page-block-birds">
-      <figure class="main__start-page-block-birds">
-      <img src="assets/img/generic/bird.jpg" alt="bird" class="main__start-page-block-birds"/>
-      <figcaption class="main__start-page-block-bird">Birds</figcaption>
-      </figure>
-      </a>
-      </div>
-    </div>
-
-    <div class="main__start-page-block main__start-page-block--dog">
-    <div class="main__start-page-block-text">
-    <h2 class="main__start-page-block-header">Dog of any breeds and specializations</h2>
-    <p class="main__start-page-block-subheader">Dogs tend to give than to ask for something for themselves. 
-    Their love is unconditional.</p>
-    <button class="main__start-page-block-enterBtn">enter</button>
-    </div>
-  <div class="main__start-page-block-img">
-  <img src="assets/img/generic/pug.jpg" class="main__start-page-block-img-item" alt="pug">
-  </div>
-</div>
-    ` */
+   
     document.querySelector('.main__wrapper').appendChild(startPage);
   }
 
   viewModalHistory() {
     const history = document.createElement('div'),
       purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
-    /* let order =``; */
 
     document.querySelector('.main__history-modal') ?
       document.querySelector('.main__history-modal').remove() : 0;
@@ -589,7 +539,4 @@ getUserDataForModal(storage){
     document.querySelector('.header').appendChild(history);
   }
 
-  renderOrderAmount(e, el) {
-    e.target.parentElement.querySelector(".order-amount").innerText = el.orderAmount;
-  }
 }

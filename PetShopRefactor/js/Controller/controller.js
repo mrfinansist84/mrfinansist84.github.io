@@ -1,5 +1,5 @@
-import View from './view.js';
-import Model from './model.js';
+import View from '../View/view.js';
+import Model from '../Model/model.js';
 
 export default class ControllerMain {
   constructor() {
@@ -69,17 +69,30 @@ export default class ControllerMain {
         this.model.getDictionaryFromServer(el.lang) : 0;
     })
   }
-  updateOrderAmount(e, el) {
-    this.view.renderOrderAmount(e, el);
-  }
+
   addPopUpEmotyStop(target) {
     this.view.viewPopupEnough(target)
   }
   handlerCart(e) {
     if (e.target.innerText == '-') {
-      this.model.delUnitFromCart(e);
+      this.model.delOnePointOfUnitFromCart(e);
     }
 
+    if (e.target.innerText == '+') {
+      this.model.cartOrderAmount.find((el) => el.id == e.target.dataset.id) ?
+        this.model.updateUnitInCart(e) :
+        this.model.addUnitInCart(e);
+
+    }
+    if (e.target.innerText == 'del') {
+      this.model.delUnitFromCart(e);
+    }
+    this.model.setToLocalStorage("cartOrderAmount", this.model.cartOrderAmount);
+    this.model.setToLocalStorage("dataBase", this.model.dataBase);
+    this.view.viewCreateCart(this.model);
+  }
+
+  handlerCartInCard(e) {
     if (e.target.innerText == '+') {
       this.model.cartOrderAmount.find((el) => el.id == e.target.dataset.id) ?
         this.model.updateUnitInCart(e) :
@@ -90,13 +103,15 @@ export default class ControllerMain {
     this.view.viewCreateCart(this.model);
   }
 
+
   purchaseGoods() {
     this.view.viewModalPurchase();
     this.view.viewModalShow();
     this.view.setUserDataForModal()
   }
 
-  confirmOrder() {
+  confirmOrder(e) {
+    e.preventDefault();
     this.model.setToLocalStorage("clientData", this.model.addToPurchaseHistory(this.view.getUserDataForModal(this.model)));
     this.model.updateQuantityGoodsInShop();
     this.model.cleaningCart();
@@ -153,7 +168,7 @@ export default class ControllerMain {
     this.view.viewComposeSlider(this.model.subfilteredBase, this.model, this.model.dictionary);
 
   }
-  
+
   filterSearchBar(e) {
     this.model.setSubfilteredBaseByName(e);
     this.model.setToZeroCount();

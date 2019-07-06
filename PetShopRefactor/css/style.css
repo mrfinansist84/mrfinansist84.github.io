@@ -5,15 +5,14 @@
 .card {
     position: relative;
     margin: 0 10px;
-    /* background-color: gray; */
     padding: 20px;
     width: 200px;
     font-size: 20px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    /* overflow: hidden; */
+    overflow: hidden;
     border: 1px solid rgb(197, 197, 197);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
 }
 
 .card-wrap {
@@ -32,23 +31,36 @@
     background-color: white;
     width: 100%;
     font-size: 13px;
-    padding-top: 10px;
     height: 97%;
     transition: top .8s;
     opacity: .9;
     text-align: center;
 }
 
-.order-controls {
+.cartInCard {
     display: block;
     position: absolute;
-    top: 100%;
-    left: 30%;
+    top: 90%;
+    left: 45%;
     z-index: 10;
-
+    cursor: pointer;
 }
 
-.order-controls>button {
+.btn-addCart {
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+}
+.btn-addCart:active{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+}
+.order-controlsssss{
+    display: inline;
+}
+/* .order-controls>button {
     border-radius: 5px;
     width: 50px;
     outline: none;
@@ -60,7 +72,7 @@
 
 .order-controls>button:last-of-type {
     background-color: #b30000;
-}
+} */
 
 .showPopup {
     display: block;
@@ -228,21 +240,23 @@ img {
     margin: 0 auto;
 }
 
-.main{
-  min-height:70vh;
-  
+.main {
+    min-height: 70vh;
+
 }
 
 .main__wrapper {
     margin: 0 auto;
 }
-.main__start-page{
+
+.main__start-page {
     background-image: url(../assets/img/generic/startPage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .footer {
-   
+
     background-color: #000000;
     justify-self: flex-end;
     padding-top: 100px;
@@ -392,7 +406,7 @@ img {
 }
 
 .categories-items-input {
-    display: none; 
+    display: none;
 }
 
 .extraFeature {
@@ -454,18 +468,21 @@ img {
 .btn-slider--prev::after {
     background-image: url(../assets/img/generic/prev.png);
 }
-.main__history-modal{
+
+.main__history-modal {
     display: none;
     position: absolute;
     right: 10px;
     background-color: #fab209;
     padding: 10px;
-    
+
 }
-.main__history-modal--show{
+
+.main__history-modal--show {
     display: block;
 }
-.main__history-modal-item{
+
+.main__history-modal-item {
     border-bottom: 1px solid #df7700;
     margin-bottom: 10px;
 }

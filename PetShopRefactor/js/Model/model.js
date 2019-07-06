@@ -63,13 +63,23 @@ export default class Model {
             this.filteredBase;
     }
 
-    delUnitFromCart(e) {
+    delOnePointOfUnitFromCart(e) {
+        console.log(e.target)
         this.cartOrderAmount.forEach((el, i) => {
             if (el.id == e.target.dataset.id) {
                 el.orderAmount--;
                 this.dataBase[el.id - 1].orderAmount = el.orderAmount;
                 el.orderAmount === 0 ? this.cartOrderAmount.splice(i, 1) : 0;
-                this.control.updateOrderAmount(e, el);
+            }
+        })
+    }
+    delUnitFromCart(e) {
+        console.log(e.target)
+        this.cartOrderAmount.forEach((el, i) => {
+            console.log(el.id == e.target.dataset.id, el.id, e.target.dataset.id)
+            if (el.id == e.target.dataset.id) {
+                this.dataBase[el.id - 1].orderAmount = 0;
+                this.cartOrderAmount.splice(i, 1);
             }
         })
     }
@@ -86,7 +96,6 @@ export default class Model {
                 this.dataBase.find((el) => el.id == e.target.dataset.id)
                     .orderAmount = el.orderAmount;
             }
-            this.control.updateOrderAmount(e, el);
         })
     }
     addUnitInCart(e) {
@@ -100,7 +109,6 @@ export default class Model {
                     el.orderAmount++;
                     this.cartOrderAmount.push(el);
                 }
-                this.control.updateOrderAmount(e, el);
             }
         })
     }
@@ -109,7 +117,7 @@ export default class Model {
             this.dataBase = JSON.parse(localStorage.getItem("dataBase"))
             this.control.controllermakeStartPage();
         } else {
-            fetch('./js/dataBase.json')
+            fetch('./dataBase.json')
                 .then(response => {
                     return response.json()
                 })
@@ -120,7 +128,7 @@ export default class Model {
         }
     }
     getDictionaryFromServer(lang = "En") {
-        fetch(`./js/dictionary${lang}.json`)
+        fetch(`./js/Dictionary/dictionary${lang}.json`)
             .then(response => {
                 return response.json()
             })
