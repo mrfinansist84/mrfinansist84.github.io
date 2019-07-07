@@ -1,6 +1,6 @@
 export default class View {
   constructor(control) {
-    this.control = control; /* remove */
+    this.control = control;
   }
 
   viewComposeSlider(dataBase, model, dictionary) {
@@ -28,14 +28,15 @@ export default class View {
       targetElem.appendChild(parentDiv);
       document.querySelector('.main__start-page') ?
         document.querySelector('.main__start-page').classList.remove('main__start-page') : 0;
+
+      document.querySelector('.cartttt').classList.remove('hidden');
+      document.querySelector('.language').classList.remove('hidden');
     }
   }
 
   viewBuildCard(goodsUnit, dictionary) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
-    /*  cardDiv.setAttribute('id',`${goodsUnit.id}`); */
-
     cardDiv.innerHTML = `
 
                 <div class="card-wrap">           
@@ -85,19 +86,25 @@ export default class View {
     return res;
   }
 
-  viewPopupEnough(element) {
+  viewPopupEnough(el, dictionary) {
     const popup = document.createElement('div');
+    let phase = dictionary? dictionary.phase: 'Not enough goods in stock';
     popup.classList.add('showPopup');
-    popup.innerText = `Not enough goods in stock`;
-    element.appendChild(popup);
+    popup.innerText = `${phase}`;
+    el.appendChild(popup);
 
-    setTimeout(() => element.children[0].remove(), 1500);
+    setTimeout(() => el.querySelector('.showPopup').remove(), 1500);
   }
 
   viewCreateCart(storage) {
-
-    let totalCost = 0;
     const popup = document.createElement('div');
+
+    let totalCost = 0,
+      name,
+      history = storage.dictionary.history ? storage.dictionary.history : "Purchase history",
+      buy = storage.dictionary.buy ? storage.dictionary.buy : "BUY",
+      totalCostText = storage.dictionary.totalCost ? storage.dictionary.totalCost : "Total cost";
+
     popup.classList.add('InnerCart');
 
     if (storage.cartOrderAmount.length === 0) {
@@ -112,6 +119,7 @@ export default class View {
 
     } else {
       storage.cartOrderAmount.forEach((goodsUnit) => {
+        name = storage.dictionary[goodsUnit.name] ? storage.dictionary[goodsUnit.name] : goodsUnit.name;
         totalCost += (goodsUnit.price * goodsUnit.orderAmount);
 
         popup.innerHTML += `
@@ -120,26 +128,26 @@ export default class View {
       <img src=${goodsUnit.url} class="purches-img">
       </div>
       <div>
-      <span class="purches-name">${goodsUnit.name}</span>
+      <span class="purches-name">${name}</span>
 
       <div class="purches-price">
-      ${goodsUnit.price}$ x 
-      <div class="order-control-in-cart">
+      <span class="purches-price-item">${goodsUnit.price}$</span> 
+      <div class="order-control-in-cart purches-price-item">
       <button class="btn-remove-from-cart" data-id=${goodsUnit.id}>-</button>
       <span class="order-amount">${goodsUnit.orderAmount}</span>
       <button class="btn-add-from-cart" data-id=${goodsUnit.id}>+</button>
       </div> 
-      ${goodsUnit.price * goodsUnit.orderAmount}$  
-      <button data-id=${goodsUnit.id} class="trashingGoods">del</button></div>
+      <span  class="purches-price-item">${goodsUnit.price * goodsUnit.orderAmount}$</span>  
+      <button data-id=${goodsUnit.id} class="trashingGoods purches-price-item">del</button></div>
       </div></div>`
       })
 
       popup.innerHTML += `
       <div class="totalPrice">
-      <span>Total cost: ${totalCost}$</span>
-      <button class="purchase">BUY</button>
+      <span>${totalCostText}: ${totalCost}$</span>
+      <button class="purchase">${buy}</button>
       <button class="btn-history">
-      Purches History
+      ${history}
       </button>
       </div>
       <span class="cart__form-abort">X</span>
@@ -165,21 +173,21 @@ export default class View {
       .addEventListener('click', this.control.modalClose.bind(this.control));
   }
 
-  viewModalPurchase() {
+  viewModalPurchase(storage) {
     const modalPurchase = document.createElement('div');
     modalPurchase.classList.add('modalPurchase');
     modalPurchase.innerHTML += `
     <span class="modalPurchase__form-abort">X</span>
     <form action="#" class="modalPurchase__form">
-      <label for="name">Name</label>
+      <label for="name">${storage.dictionary.name}</label>
       <input type="text" placeholder="Input your name" id="name" required="required" class="modalPurchase__form-name">
-      <label for="surname">Surname</label>
+      <label for="surname">${storage.dictionary.surname}</label>
       <input type="text" placeholder="Input your Surname" id="surname" required="required" class="modalPurchase__form-surname">
-      <label for="email">Email</label>
+      <label for="email">${storage.dictionary.email}</label>
       <input type="email" placeholder="Input your email" id="email" required="required" class="modalPurchase__form-email">
-      <label for="tel">Telephone</label>
+      <label for="tel">${storage.dictionary.telephone}</label>
       <input type="tel" placeholder="Input tel number" id="tel" class="modalPurchase__form-tel">
-      <input type="submit" value="Сonfirm order" class="confirm-order">
+      <input type="submit" value="${storage.dictionary.confirm}" class="confirm-order">
       </form>`
     document.querySelector('.main__wrapper').appendChild(modalPurchase);
     document.querySelector('.confirm-order')
@@ -219,7 +227,7 @@ export default class View {
     };
     return clientData;
   }
-  viewPageChoice() {
+  viewPageChoice(storage) {
     const pageChoice = document.createElement('div');
 
     pageChoice.classList.add('page-choice');
@@ -227,25 +235,25 @@ export default class View {
     <aside class="page-choice-aside">
     <div class="categories">
     <input type="radio" name="pets" class="categories-items-input categories-items-input-all" id="radio-all"></input>
-    <label class="categories-items categories-items-all" for="radio-all">All Animals</label>
+    <label class="categories-items categories-items-all" for="radio-all">${storage.dictionary.allanimals}</label>
     
     <input type="radio" name="pets" class="categories-items-input categories-items-input-cats" id="radio-cats"></input>
-    <label class="categories-items categories-items-cats" for="radio-cats">Cats</label>
+    <label class="categories-items categories-items-cats" for="radio-cats">${storage.dictionary.cats}</label>
     
     <input type="radio" name="pets" class="categories-items-input categories-items-input-dogs" id="radio-dogs"></input>
-    <label class="categories-items categories-items-dogs" for="radio-dogs">Dogs</label>
+    <label class="categories-items categories-items-dogs" for="radio-dogs">${storage.dictionary.dogs}</label>
     
     <input type="radio" name="pets" class="categories-items-input categories-items-input-fishes" id="radio-fishes"></input>
-    <label class="categories-items categories-items-fishes" for="radio-fishes">Fishes</label>
+    <label class="categories-items categories-items-fishes" for="radio-fishes">${storage.dictionary.fishes}</label>
     
     <input type="radio" name="pets" class="categories-items-input categories-items-input-birds" id="radio-birds"></input>
-    <label class="categories-items categories-items-birds" for="radio-birds">Birds</label>
+    <label class="categories-items categories-items-birds" for="radio-birds">${storage.dictionary.birds}</label>
     </aside>
     
     <div class="main__slider">
     <div class="main__filter">
     <div class="categories__filters">
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     </div>
@@ -264,11 +272,11 @@ export default class View {
     document.querySelector('.main__wrapper').appendChild(pageChoice);
   }
 
-  viewFilterAll() {
+  viewFilterAll(storage) {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     `
@@ -278,21 +286,21 @@ export default class View {
     document.querySelector('.main__filter').appendChild(filters);
   }
 
-  viewFilterCat() {
+  viewFilterCat(storage) {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
-    <label for="shortLegged">shortLegged</label>
+    <label for="shortLegged">${storage.dictionary.shortLegged}</label>
     <input type="checkbox" id="shortLegged" class="checkboxItem">
-    <label for="pedigree">pedigree</label>
+    <label for="pedigree">${storage.dictionary.pedigree}</label>
     <input type="checkbox" id="pedigree" class="checkboxItem">
-    <label for="trimming">trimming</label>
+    <label for="trimming">${storage.dictionary.trimming}</label>
     <input type="checkbox" id="trimming" class="checkboxItem">
-    <label for="lopiness">lopiness</label>
+    <label for="lopiness">${storage.dictionary.lopiness}</label>
     <input type="checkbox" id="lopiness" class="checkboxItem">
     </div>
     `
@@ -305,31 +313,31 @@ export default class View {
     document.querySelector('.main__filter').appendChild(filters);
   }
 
-  viewFilterDog() {
+  viewFilterDog(storage) {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
     <div>
-    <label for="shortLegged">shortLegged</label>
+    <label for="shortLegged">${storage.dictionary.shortLegged}</label>
     <input type="checkbox" id="shortLegged" class="checkboxItem">
-    <label for="pedigree">pedigree</label>
+    <label for="pedigree">${storage.dictionary.pedigree}</label>
     <input type="checkbox" id="pedigree" class="checkboxItem">
-    <label for="trimming">trimming</label>
+    <label for="trimming">${storage.dictionary.trimming}</label>
     <input type="checkbox" id="trimming" class="checkboxItem">
    </div>
    <div>
-   <span class="extraFeature"> Specialization: </span>
-    <label for="domastic">domastic</label>
+   <span class="extraFeature"> ${storage.dictionary.specialization}: </span>
+    <label for="domastic">${storage.dictionary.domastic}</label>
     <input type="checkbox" id="domastic" class="checkboxItem">
-    <label for="decorate">decorate</label>
+    <label for="decorate">${storage.dictionary.decorate}</label>
     <input type="checkbox" id="decorate" class="checkboxItem">
-    <label for="guard">guard</label>
+    <label for="guard">${storage.dictionary.guard}</label>
     <input type="checkbox" id="guard" class="checkboxItem">
-    <label for="hunting">hunting</label>
+    <label for="hunting">${storage.dictionary.hunting}</label>
     <input type="checkbox" id="hunting" class="checkboxItem">
     </div>
     </div>
@@ -345,37 +353,37 @@ export default class View {
     document.querySelector('.main__filter').appendChild(filters);
   }
 
-  viewFilterFish() {
+  viewFilterFish(storage) {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
 
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
     <div>
-    <label for="freshwater">freshwater</label>
+    <label for="freshwater">${storage.dictionary.freshwater}</label>
     <input type="checkbox" id="freshwater" class="checkboxItem">
     </div>
     <div>
-    <span class="extraFeature">zonality: </span>
-    <label for="up">up</label>
+    <span class="extraFeature">${storage.dictionary.zonality}: </span>
+    <label for="up">${storage.dictionary.up}</label>
     <input type="checkbox" id="up" class="checkboxItem">
-    <label for="down">down</label>
+    <label for="down">${storage.dictionary.down}</label>
     <input type="checkbox" id="down" class="checkboxItem">
-    <label for="mid">mid</label>
+    <label for="mid">${storage.dictionary.mid}</label>
     <input type="checkbox" id="mid" class="checkboxItem">
     </div>
     <div>
-    <span class="extraFeature">color: </span>
-    <label for="yellow">yellow</label>
+    <span class="extraFeature">${storage.dictionary.color}: </span>
+    <label for="yellow">${storage.dictionary.yellow}</label>
     <input type="checkbox" id="yellow" class="checkboxItem">
-    <label for="grey">grey</label>
+    <label for="grey">${storage.dictionary.grey}</label>
     <input type="checkbox" id="grey" class="checkboxItem">
-    <label for="blue">blue</label>
+    <label for="blue">${storage.dictionary.blue}</label>
     <input type="checkbox" id="blue" class="checkboxItem">
-    <label for="red">red</label>
+    <label for="red">${storage.dictionary.red}</label>
     <input type="checkbox" id="red" class="checkboxItem">
     </div>
     </div>
@@ -393,33 +401,33 @@ export default class View {
   }
 
 
-  viewFilterBird() {
+  viewFilterBird(storage) {
     const filters = document.createElement('div');
     filters.classList.add('categories__filters');
     filters.innerHTML += `
-    <label>Breed
+    <label>${storage.dictionary.breed}
     <input type="text" id="searchBar" class="filters-searchBar">
     </label>
     <div class="filters-checkbox">
     <div>
-    <label for="flying">flying</label>
+    <label for="flying">${storage.dictionary.flying}</label>
     <input type="checkbox" id="flying" class="checkboxItem">
-    <label for="talking">talking</label>
+    <label for="talking">${storage.dictionary.talking}</label>
     <input type="checkbox" id="talking" class="checkboxItem">
-    <label for="singing">singing</label>
+    <label for="singing">${storage.dictionary.singing}</label>
     <input type="checkbox" id="singing" class="checkboxItem">
     </div>
     <div>
-    <span class="extraFeature">color: </span>
-    <label for="yellow">yellow</label>
+    <span class="extraFeature">${storage.dictionary.color}: </span>
+    <label for="yellow">${storage.dictionary.yellow}</label>
     <input type="checkbox" id="yellow" class="checkboxItem">
-    <label for="grey">grey</label>
+    <label for="grey">${storage.dictionary.grey}</label>
     <input type="checkbox" id="grey" class="checkboxItem">
-    <label for="blue">blue</label>
+    <label for="blue">${storage.dictionary.blue}</label>
     <input type="checkbox" id="blue" class="checkboxItem">
-    <label for="red">red</label>
+    <label for="red">${storage.dictionary.red}</label>
     <input type="checkbox" id="red" class="checkboxItem">
-    <label for="white">white</label>
+    <label for="white">${storage.dictionary.white}</label>
     <input type="checkbox" id="white" class="checkboxItem">
     </div>
     </div> `
@@ -443,21 +451,24 @@ export default class View {
     <a href='javascript:void(0);'>
     <img src='assets/img/generic/logo.png'>
     </a>
-    <div class="language">
-    <button class="btn-lang-au">
-      УКРАIНСЬКИЙ
-    </button>
-    <button class="btn-lang-ru">
-      РУССКИЙ
-    </button>
-    <button class="btn-lang-en">
-      ENGLISH
-    </button>
-    </div>
-    <div class="cartttt">
+    <div class="container-for-cartLang">
+    
+    <div class="cartttt hidden">
     <span><i class="goodsIntoCart"></i> item(s)</span>
     </div>
-  <button class="main__start-page-block-enterBtn">enter</button>
+    <div class="language hidden">
+    <button class="btn-lang-au">
+      UA
+    </button>
+    <button class="btn-lang-ru">
+      RU
+    </button>
+    <button class="btn-lang-en">
+      EN
+    </button>
+    </div>
+    <button class="main__start-page-block-enterBtn">enter</button>
+  </div>
     </div>
     <div class="CartCart"></div>
     `
@@ -472,6 +483,8 @@ export default class View {
     document.querySelector('.header')
       .addEventListener('click', this.control.handlerEnter.bind(this.control));
 
+    document.querySelector('.main__start-page-block-enterBtn')
+      .addEventListener('click', (e) => e.target.classList.add("hidden"));
   }
 
   showHidddenCart() {
@@ -513,14 +526,19 @@ export default class View {
 
   viewStartPageSection() {
     const startPage = document.createElement('div');
-    startPage.classList.add('main__start-page');
 
+    startPage.classList.add('main__start-page');
     document.querySelector('.main__wrapper').appendChild(startPage);
   }
 
-  viewModalHistory() {
+  viewModalHistory(storage = {}) {
     const history = document.createElement('div'),
       purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
+    let historyEmpty = storage.dictionary ? storage.dictionary.historyEmpty : "There were no purchases yet",
+    date = storage.dictionary ? storage.dictionary.date : "Date",
+    name = storage.dictionary ? storage.dictionary.name : "Name",
+    surnameHistory = storage.dictionary ? storage.dictionary.surnameHistory : "Surname",
+    order = storage.dictionary ? storage.dictionary.order : "Order";
 
     document.querySelector('.main__history-modal') ?
       document.querySelector('.main__history-modal').remove() : 0;
@@ -530,11 +548,11 @@ export default class View {
     if (purchaseHistory) {
       history.innerHTML += `
         <div class="main__history-modal-item-header">
-        <span class="main__history-modal-item-text">Date</span> 
-    <span class="main__history-modal-item-text">Name</span> 
-    <span class="main__history-modal-item-text">Surname</span>
-    <span>Order</span>
-    <span class="history__form-abort">X</span>
+        <span class="main__history-modal-item-text">${date}</span> 
+        <span class="main__history-modal-item-text">${name}</span> 
+        <span class="main__history-modal-item-text">${surnameHistory}</span>
+        <span>${order}</span>
+        <span class="history__form-abort">X</span>
         </div>
         `
       purchaseHistory.forEach((purchase, i) => {
@@ -562,7 +580,7 @@ export default class View {
       history.innerHTML += `
       <span class="history__form-abort">X</span>
       <div class="history__empty-text">
-      There were no purchases yet.
+      ${historyEmpty}
       </div>
       `
     }

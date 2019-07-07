@@ -75,26 +75,24 @@
     background-image: url(../assets/img/generic/cart.png);
     background-size: contain;
     background-repeat: no-repeat;
-    
+
 }
 
 .showPopup {
+    line-height: 200px;
     display: block;
     position: absolute;
     color: red;
-    top: 120%;
-    z-index: 11;
+    top: -30%;
+    left:-75%;
+    z-index: 5;
+    transform: rotate(-55deg);   
+    background-color: #ffffff;
+    width: 200%;
+    padding: 100px;
 }
 
-.cart {
-    position: absolute;
-    bottom: -17px;
-    left: 40%;
-    font-size: 20px;
-    background-color: aqua;
-    padding: 5px;
-    border-radius: 50%;
-}
+
 
 .wrapp {
     display: flex;
@@ -109,14 +107,38 @@ img {
 .language {
     width: 100%;
     text-align: center;
-    margin-bottom: 50px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+
+}
+
+.language>button {
+    background-color: #fab209;
+    border: 1px solid #df7700;
+    outline: none;
+    color: #975203;
+}
+
+.language>button:first-of-type {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.language>button:last-of-type {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.language>button:hover {
+    background-color: #df7700;
 }
 
 .CartCart {
     display: none;
     position: fixed;
-    background-color:#ffffff;
+    background-color: #ffffff;
     top: 20%;
     left: 35%;
     width: 520px;
@@ -131,7 +153,21 @@ img {
 }
 
 .purches-name {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.purches-price {
+    margin: 20px 0;
     font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.purches-price-item {
+    min-width: 100px;
+    flex: 0 0 100px;
 }
 
 .showCart {
@@ -180,25 +216,19 @@ img {
 }
 
 .confirm-order {
-    width: 150px;
+    width: 170px;
     align-self: center;
-    padding: 10px 30px;
-}
-
-
-.confirm-order{
-    width: 150px;
-    align-self: center;
+    padding: 10px 20px;
     border-radius: 3px;
-    border:1px solid #008cff;
-    padding: 10px 30px;
+    border: 1px solid #008cff;
     background-color: #ffffff;
     cursor: pointer;
     margin-top: 15px;
 }
-.confirm-order:hover{
+
+.confirm-order:hover {
     background-color: #008cff;
-    color:#ffffff;
+    color: #ffffff;
     cursor: pointer;
 }
 
@@ -212,6 +242,7 @@ img {
     font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
 }
+
 .history__form-abort:hover,
 .cart__form-abort:hover,
 .modalPurchase__form-abort:hover {
@@ -267,6 +298,11 @@ img {
     align-items: center;
     width: 80%;
     margin: 0 auto;
+}
+
+.container-for-cartLang {
+    display: flex;
+    align-items: center;
 }
 
 .main {
@@ -368,7 +404,8 @@ img {
 }
 
 .cartttt {
-    width: 200px;
+
+    width: 100px;
     position: relative;
     cursor: pointer;
 }
@@ -396,28 +433,31 @@ img {
     line-height: 28px;
 }
 
- .trashingGoods {
+.trashingGoods {
     border: none;
     background-color: #ffffff;
     color: transparent;
     position: relative;
     outline: none;
-} 
-.trashingGoods::after{
+}
+
+.trashingGoods::after {
     content: "";
     position: absolute;
     display: block;
-    top:0;
-    left:40%;
+    top: 0;
+    left: 40%;
     width: 20px;
     height: 20px;
     background-image: url(../assets/img/generic/trash.png);
     background-repeat: no-repeat;
     background-size: contain;
 }
-.trashingGoods:hover::after{
+
+.trashingGoods:hover::after {
     background-image: url(../assets/img/generic/trash_blue.png)
 }
+
 .cartttt>span:hover {
     color: #008cff;
 }
@@ -449,6 +489,7 @@ img {
     display: flex;
     padding: 20px;
     line-height: 20px;
+    width: 1250px;
 }
 
 .categories-items-input {
@@ -464,11 +505,13 @@ img {
     display: flex;
     margin-left: 20px;
 }
-.checkboxItem{
+
+.checkboxItem {
     margin: 5px 10px 0 3px;
     line-height: 20px;
-  
+
 }
+
 .main__start-page-block-header {
     font-size: 30px;
 }
@@ -541,56 +584,97 @@ img {
     border-bottom: 1px solid #df7700;
     margin-bottom: 10px;
 }
-.purchase, .btn-history{
+
+.btn-remove-from-cart,
+.btn-add-from-cart,
+.purchase,
+.btn-history {
     border-radius: 3px;
-    border:1px solid #008cff;
+    border: 1px solid #008cff;
     padding: 5px 10px;
     background-color: #ffffff;
     cursor: pointer;
-    
 }
-.purchase:hover, .btn-history:hover{
+
+.btn-remove-from-cart {
+    padding: 5px 12px;
+}
+
+.btn-remove-from-cart:hover,
+.btn-add-from-cart:hover,
+.purchase:hover,
+.btn-history:hover {
     background-color: #008cff;
-    color:#ffffff;
+    color: #ffffff;
 }
- .cart__empty{
+
+.cart__empty {
     display: flex;
     justify-content: space-between;
-    margin-top:10px;
+    margin-top: 10px;
     align-items: center;
-} 
+}
+
 .history__empty-text,
-.cart__empty-text{
+.cart__empty-text {
     font-size: 30px;
     padding-left: 20px;
     opacity: 0.5;
     line-height: 10px;
 }
-.history__empty-text{
+
+.history__empty-text {
     line-height: 400px;
     font-size: 40px;
     margin-top: 50px;
 }
-.main__history-modal-item-header, .main__history-modal-item{
+
+.main__history-modal-item-header,
+.main__history-modal-item {
     display: flex;
     margin-top: 10px;
     padding: 10px;
     align-items: baseline;
-    min-width:100px;
-        
+    min-width: 100px;
+
 }
-.main__history-modal-item-header{
+
+.main__history-modal-item-header {
     font-weight: 700;
 }
-.main__history-modal-item-text{
-    min-width:100px;
+
+.main__history-modal-item-text {
+    min-width: 100px;
     word-break: break-all;
     margin: 0 10px;
     flex: 0 0 100px;
 }
-.history__order{
-    width:120px;
+
+.history__order {
+    width: 120px;
 }
-.hidden{
+
+.hidden {
     visibility: hidden;
+}
+
+.main__start-page-block-enterBtn {
+    border: none;
+    background-color: transparent;
+    color: transparent;
+    position: relative;
+    outline: none;
+}
+
+.main__start-page-block-enterBtn::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -70%;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../assets/img/generic/enter.png);
+
 }

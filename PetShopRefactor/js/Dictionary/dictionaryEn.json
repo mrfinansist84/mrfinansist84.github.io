@@ -70,5 +70,25 @@
     "grey": "grey",
 
     "true": "yes",
-    "false": "not"
+    "false": "not",
+
+    "history": "Purchase history",
+    "birds": "Birds",
+    "fishes": "Fishes",
+    "dogs": "Dogs",
+    "cats": "Cats",
+    "allanimals": "All animals",
+    "breed": "Breed",
+    "historyEmpty": "There were no purchases yet",
+    "cartEpmty": "NOTHING ORDERED",
+
+    "name": "Name",
+    "surname": "Surname",
+    "email": "Email",
+    "telephone": "Telephone",
+    "confirm": "Confirm order",
+     "order": "Order",
+     "date": "Date",
+     "surnameHistory": "Surname",
+     "phase": "Not enough goods in stock"
 }

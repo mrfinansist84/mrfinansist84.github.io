@@ -80,9 +80,11 @@ export default class Model {
         this.cartOrderAmount.forEach((el) => {
             if (el.id == e.target.dataset.id) {
                 if (el.orderAmount == el.quantity) {
-                    this.control.addPopUpEmotyStop(e.target);
+                   
+                    this.control.addPopUpEmotyStop(e.path[2], this.dictionary);
                 } else if (el.quantity <= 0) {
-                    this.control.addPopUpEmotyStop(e.target);
+                  
+                    this.control.addPopUpEmotyStop(e.path[2], this.dictionary);
                 } else {
                     el.orderAmount++;
                 }
@@ -95,9 +97,11 @@ export default class Model {
         this.dataBase.forEach((el) => {
             if (el.id == e.target.dataset.id) {
                 if (el.orderAmount == el.quantity) {
-                    this.control.addPopUpEmotyStop(e.target);
+                  
+                    this.control.addPopUpEmotyStop(e.path[2], this.dictionary);
                 } else if (this.dataBase.quantity === 0) {
-                    this.control.addPopUpEmotyStop(e.target);
+                   
+                    this.control.addPopUpEmotyStop(e.path[2], this.dictionary);
                 } else {
                     el.orderAmount++;
                     this.cartOrderAmount.push(el);

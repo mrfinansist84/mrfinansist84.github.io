@@ -8,9 +8,9 @@ export default class ControllerMain {
     this.view = new View(this);
     this.model = new Model(this);
   }
+
   init() {
     this.model.getDataFromServer();
-
   }
 
   controllermakeStartPage() {
@@ -30,7 +30,9 @@ export default class ControllerMain {
 
   controllerMakeSliderPage() {
     this.model.getDataBaseWithoutFilters();
-    this.view.viewPageChoice();
+    this.view.viewPageChoice(this.model);
+    this.view.viewCreateCart(this.model);
+    this.view.viewModalHistory(this.model);
     this.view.viewComposeSlider(this.model.filteredBase, this.model, this.model.dictionary);
   }
 
@@ -53,15 +55,15 @@ export default class ControllerMain {
     const lang = e.target.innerText,
       supportedLang = [{
           lang: 'Ru',
-          name: 'РУССКИЙ'
+          name: 'RU'
         },
         {
           lang: 'En',
-          name: 'ENGLISH'
+          name: 'EN'
         },
         {
           lang: 'Ua',
-          name: 'УКРАIНСЬКИЙ'
+          name: 'UA'
         }
       ];
     supportedLang.forEach((el) => {
@@ -70,8 +72,8 @@ export default class ControllerMain {
     })
   }
 
-  addPopUpEmotyStop(target) {
-    this.view.viewPopupEnough(target)
+  addPopUpEmotyStop(el, dictionary) {
+    this.view.viewPopupEnough(el, dictionary)
   }
   handlerCart(e) {
     if (e.target.innerText == '-') {
@@ -91,13 +93,11 @@ export default class ControllerMain {
     this.model.setToLocalStorage("dataBase", this.model.dataBase);
     this.view.viewCreateCart(this.model);
   }
+
   toggleCart(){
   this.view.showHidddenCart();
 }
 
-/* closeCart(){
-
-} */
   handlerCartInCard(e) {
     if (e.target.innerText == '+') {
       this.model.cartOrderAmount.find((el) => el.id == e.target.dataset.id) ?
@@ -111,7 +111,7 @@ export default class ControllerMain {
 
 
   purchaseGoods() {
-    this.view.viewModalPurchase();
+    this.view.viewModalPurchase(this.model);
     this.view.viewModalShow();
     this.view.setUserDataForModal()
   }
@@ -125,7 +125,7 @@ export default class ControllerMain {
     this.model.setToLocalStorage("dataBase", this.model.dataBase);
     this.view.viewCreateCart(this.model);
     this.view.viewComposeSlider(this.model.filteredBase, this.model, this.model.dictionary);
-    this.view.viewModalHistory();
+    this.view.viewModalHistory(this.model);
     this.view.viewModalClose();
   }
 
@@ -134,28 +134,28 @@ export default class ControllerMain {
       case (e.target.classList.value.includes('all')): {
         this.model.getDataBaseWithoutFilters();
         this.model.setToZeroCount();
-        this.view.viewFilterAll();
+        this.view.viewFilterAll(this.model);
         this.view.viewComposeSlider(this.model.filteredBase, this.model, this.model.dictionary);
         break;
       }
       case (e.target.classList.value.includes('cats')): {
         this.chooseCategoryWorker('cat');
-        this.view.viewFilterCat();
+        this.view.viewFilterCat(this.model);
         break;
       }
       case (e.target.classList.value.includes('dogs')): {
         this.chooseCategoryWorker('dog');
-        this.view.viewFilterDog();
+        this.view.viewFilterDog(this.model);
         break;
       }
       case (e.target.classList.value.includes('fishes')): {
         this.chooseCategoryWorker('fish');
-        this.view.viewFilterFish();
+        this.view.viewFilterFish(this.model);
         break;
       }
       case (e.target.classList.value.includes('birds')): {
         this.chooseCategoryWorker('bird');
-        this.view.viewFilterBird();
+        this.view.viewFilterBird(this.model);
         break;
       }
     }
