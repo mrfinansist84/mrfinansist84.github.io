@@ -1,10 +1,9 @@
-import View from '../View/view.js';
-import Model from '../Model/model.js';
+import View from '../View/View.js';
+import Model from '../Model/Model.js';
 
-export default class ControllerMain {
+export default class Controller {
   constructor() {
     this.lang = "En";
-    this.isShow = false;
     this.view = new View(this);
     this.model = new Model(this);
   }
@@ -118,7 +117,7 @@ export default class ControllerMain {
 
   confirmOrder(e) {
     e.preventDefault();
-    this.model.setToLocalStorage("clientData", this.model.addToPurchaseHistory(this.view.getUserDataForModal(this.model)));
+    this.model.setToLocalStorage("clientData", this.model.addToPurchaseHistory(this.view.getUserDataFromModal()));
     this.model.updateQuantityGoodsInShop();
     this.model.cleaningCart();
     this.model.setToLocalStorage("cartOrderAmount", this.model.cartOrderAmount);

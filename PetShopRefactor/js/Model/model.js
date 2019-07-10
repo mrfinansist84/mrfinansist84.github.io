@@ -10,9 +10,7 @@ export default class Model {
         this.cartOrderAmount = (JSON.parse(localStorage.getItem("cartOrderAmount"))) ?
             JSON.parse(localStorage.getItem("cartOrderAmount")) : [];
     }
-    /*     getFromLocalStorage(key) {
-            JSON.parse(localStorage.getItem(key));
-        } */
+
     setToLocalStorage(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
     }
@@ -114,7 +112,7 @@ export default class Model {
             this.dataBase = JSON.parse(localStorage.getItem("dataBase"))
             this.control.controllermakeStartPage();
         } else {
-            fetch('./dataBase.json')
+            fetch('./js/Data/dataBase.json')
                 .then(response => {
                     return response.json()
                 })
@@ -138,12 +136,13 @@ export default class Model {
         let purchaseHistory = [];
 
         if (JSON.parse(localStorage.getItem("clientData"))) {
-            console.log(JSON.parse(localStorage.getItem("clientData")));
             purchaseHistory = JSON.parse(localStorage.getItem("clientData"));
         };
 
+        clientData.order = this.cartOrderAmount;
+
         purchaseHistory.push(clientData);
-        console.log(purchaseHistory)
+
         return purchaseHistory;
     }
     updateQuantityGoodsInShop() {

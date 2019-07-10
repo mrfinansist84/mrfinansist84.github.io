@@ -191,7 +191,7 @@
 {
     "id": 11,
     "type": "fish",
-    "url": "assets/img/generic/pets/Astronotus.png",
+    "url": "assets/img/generic/pets/Astronotus.jpg",
     "name": "Astronotus",
     "price": 50,
     "quantity": 15,
@@ -207,7 +207,7 @@
 {
     "id": 12,
     "type": "fish",
-    "url": "assets/img/generic/pets/Coryphaena.png",
+    "url": "assets/img/generic/pets/Coryphaena.jpg",
     "name": "Coryphaena hippurus",
     "price": 220,
     "quantity": 5,
@@ -305,7 +305,7 @@
 {
     "id": 18,
     "type": "bird",
-    "url": "assets/img/generic/pets/Cockatoo.png",
+    "url": "assets/img/generic/pets/Cockatoo.jpg",
     "name": "Cockatoo",
     "price": 2000,
     "quantity": 4,

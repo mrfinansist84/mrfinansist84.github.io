@@ -1,7 +1,7 @@
-import ControllerMain from './Controller/controller.js';
+import Controller from './Controller/Controller.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const controllerMain = new ControllerMain();
-    controllerMain.init();
+    const controller = new Controller();
+    controller.init();
 });
 
